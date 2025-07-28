@@ -1,6 +1,10 @@
 # Gaplify
 
-This is a full-stack authentication demo built with the MERN stack (MongoDB, Express.js, React, Node.js) and Vite.
+## Type:
+EdTech / Career Development Platform
+
+## Mission:
+To empower students and freshers by identifying the gap between their current skill set and industry demands, and bridging it through tailored learning and mentorship.
 
 ## Features
 
