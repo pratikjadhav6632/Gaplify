@@ -1,4 +1,4 @@
-# MERN Stack Authentication Demo
+# Gaplify
 
 This is a full-stack authentication demo built with the MERN stack (MongoDB, Express.js, React, Node.js) and Vite.
 
