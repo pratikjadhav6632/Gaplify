@@ -1,5 +1,6 @@
 import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
+import { API_URL } from '../config/api';
 
 const AuthContext = createContext(null);
 
@@ -9,17 +10,22 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    console.log('AuthContext useEffect - token:', token);
+    
     if (token) {
       // You could add a verify token endpoint and check token validity here
       const userData = JSON.parse(localStorage.getItem('user'));
+      console.log('AuthContext useEffect - userData:', userData);
       setUser(userData);
+    } else {
+      console.log('AuthContext useEffect - no token found');
     }
     setLoading(false);
   }, []);
 
   const login = async (email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/login', {
+      const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
       });
@@ -38,7 +44,7 @@ export const AuthProvider = ({ children }) => {
 
   const signup = async (username, email, password) => {
     try {
-      const response = await axios.post('http://localhost:5000/api/auth/signup', {
+      const response = await axios.post(`${API_URL}/api/auth/signup`, {
         username,
         email,
         password,

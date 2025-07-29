@@ -4,7 +4,9 @@ import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import html2pdf from 'html2pdf.js';
 import { marked } from 'marked';
+import { FaMap } from 'react-icons/fa';
 import ChatBot from './ChatBot';
+import { API_URL } from '../config/api';
 
 const RoadmapPage = () => {
   const [formData, setFormData] = useState({
@@ -32,7 +34,7 @@ const RoadmapPage = () => {
     setRoadmap(null);
 
     try {
-      const response = await axios.post('http://localhost:5000/api/generate-roadmap', formData);
+      const response = await axios.post(`${API_URL}/api/generate-roadmap`, formData);
       
       if (response.data.success) {
         setRoadmap(response.data.data);
@@ -182,12 +184,29 @@ const RoadmapPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-indigo-50 via-white to-purple-50 py-8 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 mb-8 border border-indigo-100">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600 mb-8 text-center">
-            Generate Learning Roadmap
-          </h1>
+    <div className="min-h-screen bg-gray-50 py-8">
+      <div className="container-responsive">
+        <div className="max-w-4xl mx-auto">
+          {/* Header Section */}
+          <div className="text-center mb-12">
+            <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
+              <FaMap className="w-4 h-4 mr-2" />
+              Learning Roadmap
+            </div>
+            <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
+              Generate Your
+              <span className="gradient-text block">Learning Path</span>
+            </h1>
+            <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6 rounded-full"></div>
+            <p className="text-xl text-gray-600 max-w-3xl mx-auto">
+              Create personalized learning roadmaps tailored to your goals and current skill level
+            </p>
+          </div>
+
+          <div className="card p-8 mb-8" style={{ animationDelay: '0.1s' }}>
+            <h2 className="text-3xl font-bold text-center mb-8 gradient-text">
+              Generate Learning Roadmap
+            </h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div className="space-y-4">
@@ -248,7 +267,7 @@ const RoadmapPage = () => {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-6 rounded-xl bg-gradient-to-r from-indigo-600 to-purple-600 text-white font-medium shadow-lg hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 transform transition-all duration-200 hover:scale-[1.02] disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full btn btn-primary btn-lg group"
             >
               {loading ? (
                 <span className="flex items-center justify-center">
@@ -266,35 +285,35 @@ const RoadmapPage = () => {
         </div>
 
         {error && (
-          <div className="bg-red-50 border-l-4 border-red-400 p-4 mb-8 rounded-lg">
+          <div className="card p-6 mb-8 border-l-4 border-error-400 bg-error-50" style={{ animationDelay: '0.2s' }}>
             <div className="flex">
               <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                <svg className="h-5 w-5 text-error-400" viewBox="0 0 20 20" fill="currentColor">
                   <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clipRule="evenodd" />
                 </svg>
               </div>
               <div className="ml-3">
-                <p className="text-sm text-red-700">{error}</p>
+                <p className="text-sm text-error-700">{error}</p>
               </div>
             </div>
           </div>
         )}
 
         {roadmap && (
-          <div className="space-y-4">
+          <div className="space-y-4" style={{ animationDelay: '0.3s' }}>
             <div className="flex justify-end">
               <button
                 onClick={downloadPDF}
-                className="inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+                className="btn btn-secondary btn-lg group"
               >
-                <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <svg className="w-5 h-5 mr-2 group-hover:animate-bounce" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                 </svg>
                 Download PDF
               </button>
             </div>
 
-            <div ref={roadmapRef} className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-indigo-100">
+            <div ref={roadmapRef} className="card p-8">
               <div className="prose prose-indigo max-w-none">
                 <ReactMarkdown
                   remarkPlugins={[remarkGfm]}
@@ -378,6 +397,7 @@ const RoadmapPage = () => {
         )}
       </div>
       <ChatBot />
+    </div>
     </div>
   );
 };

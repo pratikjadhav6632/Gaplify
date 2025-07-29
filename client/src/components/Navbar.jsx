@@ -1,102 +1,128 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
+import { FaShoppingCart, FaUser, FaBars, FaTimes, FaHome,  } from 'react-icons/fa';
+import { HiAcademicCap } from 'react-icons/hi';
 
 const Navbar = () => {
   const { user, logout } = useAuth();
   const { cart } = useCart();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
   const location = useLocation();
+
+  // Handle scroll effect
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
 
   const isActive = (path) => {
     return location.pathname === path;
   };
 
   const navLinks = [
-    { path: '/', label: 'Home' },
-    { path: '/skills-analysis', label: 'Skills Analysis', protected: true },
-    { path: '/trending-skills', label: 'Trending Skills', protected: true },
-    { path: '/roadmap', label: 'Learning Roadmap', protected: true },
-    { path: '/resource-hub', label: 'Resource Hub', protected: true },
+    { path: '/', label: 'Home', icon: <FaHome className="w-4 h-4" /> },
+    { path: '/skills-analysis', label: 'Skills Analysis',  protected: true },
+    { path: '/trending-skills', label: 'Trending Skills',  protected: true },
+    { path: '/roadmap', label: 'Roadmap', protected: true },
+    { path: '/resource-hub', label: 'Resources', protected: true },
     { path: '/mentors', label: 'Mentors', protected: true },
-    {path:'/history',label:'History',protected:true}
+    { path: '/history', label: 'History', protected: true }
   ];
 
   const filteredNavLinks = navLinks.filter(link => !link.protected || user);
 
+  const handleLogout = () => {
+    logout();
+    setIsMenuOpen(false);
+  };
+
   return (
-    <nav className="bg-white shadow-lg sticky top-0 z-50">
-      <div className="container mx-auto px-4">
-        <div className="flex justify-between items-center h-16">
-          <Link to="/" className="text-xl font-bold text-gray-800">
-            Gaplify
+    <nav className={`sticky top-0 z-50 transition-all duration-300 ${
+      isScrolled 
+        ? 'bg-white/95 backdrop-blur-md shadow-medium border-b border-gray-100' 
+        : 'bg-white shadow-soft'
+    }`}>
+      <div className="container-responsive">
+        <div className="flex justify-between items-center h-16 lg:h-20">
+          {/* Logo */}
+          <Link to="/" className="flex items-center space-x-3 group">
+            <div className="w-10 h-10 lg:w-12 lg:h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white text-xl lg:text-2xl font-bold shadow-soft group-hover:shadow-glow transition-all duration-300">
+              <HiAcademicCap />
+            </div>
+            <div className="flex flex-col">
+              <span className="text-xl lg:text-2xl font-display font-bold gradient-text">Gaplify</span>
+              <span className="text-xs text-gray-500 hidden sm:block">AI Career Bridge</span>
+            </div>
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden lg:flex items-center space-x-2">
             {filteredNavLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={` hover:text-blue-800 transition-colors ${
-                  isActive(link.path) ? 'text-blue-700 font-semibold' : ''
+                className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  isActive(link.path) 
+                    ? 'nav-link-active bg-primary-50 text-primary-700' 
+                    : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                 }`}
               >
+                <span className="mr-2">{link.icon}</span>
                 {link.label}
               </Link>
             ))}
           </div>
 
-          <div className="hidden md:flex items-center space-x-4">
-            {user && (
-              <Link
-                to="/cart"
-                className="relative text-gray-600 hover:text-gray-800"
-              >
-                <svg
-                  className="h-6 w-6"
-                  fill="none"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth="2"
-                  viewBox="0 0 24 24"
-                  stroke="currentColor"
-                >
-                  <path d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z" />
-                </svg>
-                {cart.length > 0 && (
-                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                    {cart.length}
-                  </span>
-                )}
-              </Link>
-            )}
+          {/* Desktop Actions */}
+          <div className="hidden lg:flex items-center space-x-3">
             {user ? (
               <>
-                {/* Profile Icon */}
-                <Link to="/profile" className="text-gray-600 hover:text-gray-800">
-                  <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                    <circle cx="12" cy="8" r="4" />
-                    <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-                  </svg>
+                {/* Cart */}
+                <Link
+                  to="/cart"
+                  className="relative flex items-center p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
+                >
+                  <FaShoppingCart className="w-5 h-5" />
+                  {cart.length > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium animate-bounce-in">
+                      {cart.length}
+                    </span>
+                  )}
+                  <div className="tooltip-content">Cart ({cart.length})</div>
                 </Link>
+
+                {/* Profile */}
+                <Link 
+                  to="/profile" 
+                  className="flex items-center space-x-2 p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
+                >
+                  <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
+                  <FaUser className="w-5 h-5 " />
+                  </div>
+                 
+                </Link>
+
+               
               </>
             ) : (
               <>
                 <Link
                   to="/login"
-                  className={`text-gray-600 bg-blue-700 p-3 border-1 rounded-lg text-white ${
-                    isActive('/login') ? 'text-blue-600 font-semibold' : ''
-                  }`}
+                  className="btn btn-ghost btn-sm"
                 >
                   Login
                 </Link>
                 <Link
                   to="/signup"
-                  className="btn btn-primary border-1 bg-blue-600 text-white p-3 rounded-lg"
+                  className="btn btn-primary btn-sm"
                 >
-                  Sign Up
+                  Get Started
                 </Link>
               </>
             )}
@@ -104,86 +130,78 @@ const Navbar = () => {
 
           {/* Mobile menu button */}
           <button
-            className="md:hidden text-gray-600 hover:text-gray-800"
+            className="lg:hidden p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200"
             onClick={() => setIsMenuOpen(!isMenuOpen)}
+            aria-label="Toggle menu"
           >
-            <svg
-              className="h-6 w-6"
-              fill="none"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth="2"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              {isMenuOpen ? (
-                <path d="M6 18L18 6M6 6l12 12" />
-              ) : (
-                <path d="M4 6h16M4 12h16M4 18h16" />
-              )}
-            </svg>
+            {isMenuOpen ? (
+              <FaTimes className="w-6 h-6" />
+            ) : (
+              <FaBars className="w-6 h-6" />
+            )}
           </button>
         </div>
 
         {/* Mobile Navigation */}
         {isMenuOpen && (
-          <div className="md:hidden py-4">
-            <div className="flex flex-col space-y-4">
+          <div className="lg:hidden py-4 border-t border-gray-100 animate-fade-in-down">
+            <div className="flex flex-col space-y-2">
               {filteredNavLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`text-gray-600 hover:text-gray-800 ${
-                    isActive(link.path) ? 'text-blue-600 font-semibold' : ''
+                  className={`flex items-center px-4 py-3 rounded-lg text-sm font-medium transition-all duration-200 ${
+                    isActive(link.path) 
+                      ? 'bg-primary-50 text-primary-700 border-l-4 border-primary-600' 
+                      : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
                   }`}
                   onClick={() => setIsMenuOpen(false)}
                 >
+                  <span className="mr-3 text-lg">{link.icon}</span>
                   {link.label}
                 </Link>
               ))}
+              
               {user && (
-                <Link
-                  to="/cart"
-                  className="flex items-center text-gray-600 hover:text-gray-800"
-                  onClick={() => setIsMenuOpen(false)}
-                >
-                  <span>Cart</span>
-                  {cart.length > 0 && (
-                    <span className="ml-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                      {cart.length}
-                    </span>
-                  )}
-                </Link>
-              )}
-              {user ? (
                 <>
-                  {/* Profile Icon for mobile */}
-                  <Link to="/profile" className="text-gray-600 hover:text-gray-800 flex items-center" onClick={() => setIsMenuOpen(false)}>
-                    <svg className="h-8 w-8" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <circle cx="12" cy="8" r="4" />
-                      <path d="M4 20c0-4 4-6 8-6s8 2 8 6" />
-                    </svg>
-                    <span className="ml-2">Profile</span>
-                  </Link>
-                </>
-              ) : (
-                <>
-                  <Link
-                    to="/login"
-                    className={`text-gray-600 hover:text-gray-800 ${
-                      isActive('/login') ? 'text-blue-600 font-semibold' : ''
-                    }`}
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Login
-                  </Link>
-                  <Link
-                    to="/signup"
-                    className="btn btn-primary w-full"
-                    onClick={() => setIsMenuOpen(false)}
-                  >
-                    Sign Up
-                  </Link>
+                  <div className="border-t border-gray-100 pt-4 mt-4">
+                    <div className="flex items-center px-4 py-3 mb-2">
+                      <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
+                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
+                      </div>
+                      <div>
+                        <div className="font-medium text-gray-900">{user.name || 'User'}</div>
+                        <div className="text-sm text-gray-500">{user.email}</div>
+                      </div>
+                    </div>
+                    
+                    <Link
+                      to="/cart"
+                      className="flex items-center justify-between px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <div className="flex items-center">
+                        <FaShoppingCart className="w-5 h-5 mr-3" />
+                        <span>Cart</span>
+                      </div>
+                      {cart.length > 0 && (
+                        <span className="bg-accent-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">
+                          {cart.length}
+                        </span>
+                      )}
+                    </Link>
+                    
+                    <Link
+                      to="/profile"
+                      className="flex items-center px-4 py-3 text-gray-600 hover:bg-gray-50 rounded-lg transition-all duration-200"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <FaUser className="w-5 h-5 mr-3" />
+                      <span>Profile</span>
+                    </Link>
+                    
+                  
+                  </div>
                 </>
               )}
             </div>
