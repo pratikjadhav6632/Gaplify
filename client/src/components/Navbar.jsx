@@ -62,12 +62,12 @@ const Navbar = () => {
           </Link>
 
           {/* Desktop Navigation */}
-          <div className="hidden lg:flex items-center space-x-2">
+          <div className="hidden lg:flex items-center ml-4  space-x-2">
             {filteredNavLinks.map((link) => (
               <Link
                 key={link.path}
                 to={link.path}
-                className={`flex items-center px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                className={`flex items-center px-4 py-2 text-lg rounded-lg  font-medium transition-all duration-200 ${
                   isActive(link.path) 
                     ? 'nav-link-active bg-primary-50 text-primary-700' 
                     : 'text-gray-600 hover:bg-gray-50 hover:text-gray-900'
@@ -80,13 +80,13 @@ const Navbar = () => {
           </div>
 
           {/* Desktop Actions */}
-          <div className="hidden lg:flex items-center space-x-3">
+          <div className="hidden lg:flex items-center  space-x-3">
             {user ? (
               <>
                 {/* Cart */}
                 <Link
                   to="/cart"
-                  className="relative flex items-center p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
+                  className="relative flex items-center text-lg p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
                 >
                   <FaAtlas className="w-5 h-5" />
                   {cart.length > 0 && (
@@ -94,13 +94,13 @@ const Navbar = () => {
                       {cart.length}
                     </span>
                   )}
-                  <div className="tooltip-content">Library ({cart.length})</div>
+                  <div className="tooltip-content ">Library ({cart.length})</div>
                 </Link>
 
                 {/* Profile */}
                 <Link 
                   to="/profile" 
-                  className="flex items-center space-x-2 p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
+                  className="flex items-center text-lg space-x-2 p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
                 >
                   <div className="w-8 h-8 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-sm font-bold">
                   <FaUser className="w-5 h-5 " />

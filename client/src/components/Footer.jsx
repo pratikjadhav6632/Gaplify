@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import { FaTwitter, FaLinkedin, FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaRocket, FaGraduationCap } from 'react-icons/fa';
+import { FaTwitter, FaLinkedin, FaGithub, FaEnvelope, FaPhone, FaMapMarkerAlt, FaRocket, FaGraduationCap, FaInstagram, FaFacebook } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
 
 const Footer = () => {
@@ -29,14 +29,17 @@ const Footer = () => {
             
             {/* Social Links */}
             <div className="flex space-x-4 mt-6">
-              <a href="#" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
+              <a href="https://x.com/gaplify" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
                 <FaTwitter className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
+              <a href="https://www.linkedin.com/company/gaplify" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
                 <FaLinkedin className="w-5 h-5" />
               </a>
-              <a href="#" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
-                <FaGithub className="w-5 h-5" />
+              <a href="https://www.instagram.com/gaplify/#" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
+                <FaInstagram className="w-5 h-5" />
+              </a>
+               <a href="https://www.facebook.com/people/Gaplify/61578976407569/" className="w-10 h-10 bg-gray-800 hover:bg-primary-600 rounded-lg flex items-center justify-center text-gray-400 hover:text-white transition-all duration-200">
+                <FaFacebook className="w-5 h-5" />
               </a>
             </div>
           </div>
