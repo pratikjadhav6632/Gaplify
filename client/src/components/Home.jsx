@@ -154,7 +154,7 @@ const Home = () => {
         <div className="absolute top-1/2 left-20 w-16 h-16 bg-white/10 rounded-full float" style={{ animationDelay: '2s' }}></div>
       </section>
 
-      {/* Stats Section */}
+      {/* Stats Section
       <section className="section-sm bg-white">
         <div className="container-responsive">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-8">
@@ -169,7 +169,7 @@ const Home = () => {
             ))}
           </div>
         </div>
-      </section>
+      </section> */}
 
       {/* Our Mission Section */}
       <section className="section">

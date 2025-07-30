@@ -22,7 +22,7 @@ router.post('/create-order', auth, async (req, res) => {
   try {
     console.log('Attempting to create Razorpay order...');
     const options = {
-      amount: 8000, // ₹80 in paise
+      amount: 9900, // ₹99 in paise
       currency: 'INR',
       receipt: `receipt_order_${Date.now()}`,
       payment_capture: 1,

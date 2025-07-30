@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/api';
-import { FaUser, FaEnvelope, FaBrain, FaCog, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaBrain, FaCog, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
 
 const Profile = () => {
@@ -13,9 +13,6 @@ const Profile = () => {
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
-
-  console.log('Profile component rendering - user:', user, 'loading:', loading);
-
   useEffect(() => {
     const fetchProfile = async () => {
       try {
@@ -165,6 +162,12 @@ const Profile = () => {
               <div className="card p-6" style={{ animationDelay: '0.2s' }}>
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
                 <div className="space-y-4">
+                  <button className="w-full btn btn-outline btn-sm group"
+                    onClick={() => navigate('/history')}
+                  >
+                    <FaHistory className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                    History
+                  </button>
                   <button className="w-full btn btn-outline btn-sm group">
                     <FaFileContract className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                     Company Policy
@@ -179,7 +182,7 @@ const Profile = () => {
                   </button>
                   <button 
                     onClick={handleLogout} 
-                    className="w-full btn btn-error btn-sm group"
+                    className="w-full btn btn-error btn-sm  bg-red-500 text-white group"
                   >
                     <FaSignOutAlt className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                     Logout
@@ -197,11 +200,11 @@ const Profile = () => {
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Roadmaps Created</span>
-                    <span className="font-semibold text-secondary-600">0</span>
+                    <span className="font-semibold text-secondary-600">{profile?.roadmapGenCount.length || 0}</span>
                   </div>
                   <div className="flex justify-between items-center">
                     <span className="text-gray-600">Resources Saved</span>
-                    <span className="font-semibold text-accent-600">0</span>
+                    <span className="font-semibold text-accent-600">{profile?.resources?.length || 0}</span>
                   </div>
                 </div>
               </div>
