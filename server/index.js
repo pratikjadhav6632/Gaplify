@@ -24,6 +24,7 @@ const roadmapRoutes = require('./routes/roadmap');
 const userInterestsRoutes = require('./routes/userInterests');
 const chatbotRoute = require('./routes/chatbot');
 const paymentRoutes = require('./routes/payment');
+const emailRoutes = require('./routes/email');
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -32,6 +33,7 @@ app.use('/api', roadmapRoutes);
 app.use('/api/interests', userInterestsRoutes);
 app.use('/api/chatbot', chatbotRoute);
 app.use('/api/payment', paymentRoutes);
+app.use('/api', emailRoutes);
 
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

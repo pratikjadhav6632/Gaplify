@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -25,6 +25,22 @@ const RoadmapPage = () => {
     duration: '3',
   });
   const [roadmap, setRoadmap] = useState(null);
+
+  // Load saved roadmap from localStorage on mount so that navigation doesn't clear the generated output
+  useEffect(() => {
+    const saved = localStorage.getItem('roadmapData');
+    if (saved) {
+      try {
+        const { formData: savedFormData, roadmap: savedRoadmap } = JSON.parse(saved);
+        if (savedRoadmap) {
+          setFormData(savedFormData);
+          setRoadmap(savedRoadmap);
+        }
+      } catch (e) {
+        console.error('Failed to parse saved roadmapData', e);
+      }
+    }
+  }, []);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const roadmapRef = useRef(null);
@@ -48,6 +64,8 @@ const RoadmapPage = () => {
       
       if (response.data.success) {
         setRoadmap(response.data.data);
+        // persist to localStorage so it survives page navigation/refresh
+        localStorage.setItem('roadmapData', JSON.stringify({ formData, roadmap: response.data.data }));
       } else {
         throw new Error(response.data.error || 'Failed to generate roadmap');
       }

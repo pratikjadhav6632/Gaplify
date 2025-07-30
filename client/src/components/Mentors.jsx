@@ -4,7 +4,7 @@ import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { FaUserTie, FaEnvelope, FaPhone, FaLinkedin, FaTwitter, FaGlobe, FaStar, FaRocket } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles, HiLightningBolt } from 'react-icons/hi';
-
+import { API_URL } from '../config/api';
 console.log('RAZORPAY KEY (frontend):', import.meta.env.VITE_RAZORPAY_KEY_ID);
 
 const mentors = [
@@ -18,7 +18,8 @@ const mentors = [
     rating: 4.9,
     students: 150,
     experience: "5+ years",
-    avatar: "PJ"
+    avatar: "PJ",
+    linkedin: "https://www.linkedin.com/in/pratik-jadhav--/"
   }
 ];
 
@@ -26,6 +27,17 @@ const Mentors = () => {
   const [selectedMentor, setSelectedMentor] = useState(null);
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [messageModalOpen, setMessageModalOpen] = useState(false);
+  const [messageForm, setMessageForm] = useState({
+    name: '',
+    education: '',
+    email: '',
+    contact: '',
+    meetingTime: '',
+    meetingDay: '',
+    topic: '',
+    message: ''
+  });
   const { user, setUser } = useAuth();
 
   React.useEffect(() => {
@@ -51,6 +63,79 @@ const Mentors = () => {
 
   const handleCloseCard = () => {
     setSelectedMentor(null);
+  };
+
+  const handleOpenMessageModal = () => {
+    setMessageModalOpen(true);
+  };
+
+  const handleCloseMessageModal = () => {
+    setMessageModalOpen(false);
+    setMessageForm({
+      name: '',
+      education: '',
+      meetingTime: '',
+      meetingDay: '',
+      topic: '',
+      email: '',
+      contact: '',
+      message: ''
+    });
+  };
+
+  const handleFormChange = (e) => {
+    const { name, value } = e.target;
+    setMessageForm(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    try {
+      const emailData = {
+        to: selectedMentor.email,
+        subject: `Meeting Request: ${messageForm.topic}`,
+        html: `
+          <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; padding: 20px; border: 1px solid #ddd; border-radius: 10px;">
+            <h2 style="color: #2563eb; text-align: center;">New Meeting Request</h2>
+            <div style="background-color: #f8fafc; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #374151; margin-bottom: 15px;">Student Information:</h3>
+              <p><strong>Name:</strong> ${messageForm.name}</p>
+              <p><strong>Email:</strong> ${messageForm.email}</p>
+              <p><strong>Contact No:</strong> ${messageForm.contact}</p>
+              <p><strong>Education:</strong> ${messageForm.education}</p>
+            </div>
+            <div style="background-color: #f0f9ff; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #374151; margin-bottom: 15px;">Meeting Details:</h3>
+              <p><strong>Topic:</strong> ${messageForm.topic}</p>
+              <p><strong>Preferred Day:</strong> ${messageForm.meetingDay}</p>
+              <p><strong>Preferred Time:</strong> ${messageForm.meetingTime}</p>
+            </div>
+            <div style="background-color: #f9fafb; padding: 20px; border-radius: 8px; margin: 20px 0;">
+              <h3 style="color: #374151; margin-bottom: 15px;">Message:</h3>
+              <p style="line-height: 1.6;">${messageForm.message}</p>
+            </div>
+            <div style="text-align: center; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb;">
+              <p style="color: #6b7280; font-size: 14px;">This message was sent through SkillBridge AI Mentorship Platform</p>
+            </div>
+          </div>
+        `
+      };
+
+      const response = await axios.post(`${API_URL}/api/send-email`, emailData);
+      
+      if (response.data.success) {
+        alert('Message sent successfully! The mentor will contact you soon.');
+        handleCloseMessageModal();
+      } else {
+        alert('Failed to send message. Please try again.');
+      }
+    } catch (error) {
+      console.error('Error sending message:', error);
+      alert('Failed to send message. Please try again.');
+    }
   };
 
   const handleBuyPremium = async () => {
@@ -300,16 +385,204 @@ const Mentors = () => {
               </div>
 
               <div className="flex space-x-4">
-                <button className="btn btn-primary btn-lg group flex-1">
+                <button 
+                  className="btn btn-primary btn-lg group flex-1"
+                  onClick={handleOpenMessageModal}
+                >
                   <FaEnvelope className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                   Send Message
                 </button>
                 <button className="btn btn-outline btn-lg group flex-1">
                   <FaLinkedin className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                  View Profile
+                  <a href={selectedMentor.linkedin} target="_blank" rel="noopener noreferrer">
+                    View Profile
+                  </a>
                 </button>
               </div>
             </div>
+          </div>
+        </div>
+      )}
+
+      {/* Message Modal */}
+      {messageModalOpen && (
+        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4">
+          <div className="card p-8 max-w-lg w-full max-h-[90vh] overflow-y-auto relative">
+            <button
+              className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
+              onClick={handleCloseMessageModal}
+              aria-label="Close"
+            >
+              &times;
+            </button>
+            
+            <div className="mb-6">
+              <h2 className="text-2xl font-bold text-gray-900 mb-2">Send Message to {selectedMentor?.name}</h2>
+              <p className="text-gray-600">Fill out the form below to schedule a meeting with your mentor.</p>
+            </div>
+
+            <form onSubmit={handleSendMessage} className="space-y-4">
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    name="name"
+                    value={messageForm.name}
+                    placeholder="e.g., John Doe"
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Education/Background *
+                  </label>
+                  <input
+                    type="text"
+                    name="education"
+                    value={messageForm.education}
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="e.g., Computer Science Student"
+                    required
+                  />
+                </div>
+              </div>
+
+              {/* Email and Contact */}
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    name="email"
+                    value={messageForm.email}
+                    placeholder="abc@gmail.com"
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Contact No *
+                  </label>
+                  <input
+                    type="tel"
+                    name="contact"
+                    value={messageForm.contact}
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    placeholder="e.g., +91 9876543210"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Meeting Topic *
+                </label>
+                <input
+                  type="text"
+                  name="topic"
+                  value={messageForm.topic}
+                  onChange={handleFormChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="e.g., Career Guidance, Technical Interview Prep"
+                  required
+                />
+              </div>
+
+              <div className="grid md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preferred Day *
+                  </label>
+                  <select
+                    name="meetingDay"
+                    value={messageForm.meetingDay}
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Select a day</option>
+                    <option value="Monday">Monday</option>
+                    <option value="Tuesday">Tuesday</option>
+                    <option value="Wednesday">Wednesday</option>
+                    <option value="Thursday">Thursday</option>
+                    <option value="Friday">Friday</option>
+                    <option value="Saturday">Saturday</option>
+                    <option value="Sunday">Sunday</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Preferred Time *
+                  </label>
+                  <select
+                    name="meetingTime"
+                    value={messageForm.meetingTime}
+                    onChange={handleFormChange}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                    required
+                  >
+                    <option value="">Select time</option>
+                    <option value="9:00 AM">9:00 AM</option>
+                    <option value="10:00 AM">10:00 AM</option>
+                    <option value="11:00 AM">11:00 AM</option>
+                    <option value="12:00 PM">12:00 PM</option>
+                    <option value="1:00 PM">1:00 PM</option>
+                    <option value="2:00 PM">2:00 PM</option>
+                    <option value="3:00 PM">3:00 PM</option>
+                    <option value="4:00 PM">4:00 PM</option>
+                    <option value="5:00 PM">5:00 PM</option>
+                    <option value="6:00 PM">6:00 PM</option>
+                    <option value="7:00 PM">7:00 PM</option>
+                    <option value="8:00 PM">8:00 PM</option>
+                  </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Message *
+                </label>
+                <textarea
+                  name="message"
+                  value={messageForm.message}
+                  onChange={handleFormChange}
+                  rows={4}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+                  placeholder="Tell the mentor about your goals, what you'd like to discuss, and any specific questions you have..."
+                  required
+                />
+              </div>
+
+              <div className="flex space-x-4 pt-4">
+                <button
+                  type="button"
+                  onClick={handleCloseMessageModal}
+                  className="btn btn-outline flex-1"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="btn btn-primary flex-1 group"
+                >
+                  <FaEnvelope className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                  Send Message
+                </button>
+              </div>
+            </form>
+          
           </div>
         </div>
       )}
