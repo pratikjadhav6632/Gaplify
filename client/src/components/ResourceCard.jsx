@@ -33,7 +33,6 @@ const ResourceCard = ({ resource }) => {
         category: resource.category || '',
         image: resource.image || '',
         link: resource.link || '',
-        price: resource.price || 0,
         rating: resource.rating || 0
       };
 
@@ -70,18 +69,10 @@ const ResourceCard = ({ resource }) => {
             <span className="text-yellow-500 mr-1">★</span>
             <span className="text-gray-600">{resource.rating}</span>
           </div>
-          <span className="text-green-600 font-semibold">${resource.price}</span>
         </div>
 
         <div className="mt-4 flex justify-between items-center">
-          <a 
-            href={resource.link} 
-            target="_blank" 
-            rel="noopener noreferrer"
-            className="text-blue-500 hover:text-blue-700 font-medium"
-          >
-            View Resource
-          </a>
+          
           <button
             onClick={handleAddToCart}
             disabled={isInCart(resource.id) || isAdding}

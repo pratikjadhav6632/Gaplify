@@ -122,6 +122,8 @@ const Home = () => {
               </p>
               
               <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
+                {!user?(
+                  <>    
                 <button 
                   onClick={() => navigateTo('/signup')}
                   className="btn btn-accent btn-lg group"
@@ -129,6 +131,9 @@ const Home = () => {
                   <FaRocket className="w-5 h-5 mr-2 group-hover:animate-bounce" />
                   Get Started Free
                 </button>
+                </>
+                ): (
+              
                 <button 
                   onClick={() => navigateTo('/skills-analysis')}
                   className="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-600"
@@ -136,6 +141,8 @@ const Home = () => {
                   <TbTargetArrow className="w-5 h-5 mr-2" />
                   Analyze My Skills
                 </button>
+                )
+              }
               </div>
             </div>
           </div>
@@ -416,6 +423,7 @@ const Home = () => {
             <h2 className="text-4xl md:text-5xl font-bold mb-6 text-balance">Ready to Transform Your Career?</h2>
             <p className="text-xl md:text-2xl mb-8 opacity-90 leading-relaxed">Join thousands of professionals who have already accelerated their careers with Gaplify</p>
             <div className="flex flex-col sm:flex-row justify-center gap-4">
+              {!user?(
               <button 
                 onClick={() => navigateTo('/signup')}
                 className="btn btn-accent btn-lg group"
@@ -423,9 +431,13 @@ const Home = () => {
                 <FaRocket className="w-5 h-5 mr-2 group-hover:animate-bounce" />
                 Get Started for Free
               </button>
-              <button className="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-600">
+              ):(
+              <button className="btn btn-outline btn-lg border-white text-white hover:bg-white hover:text-primary-600"
+                onClick={() => navigateTo('/mentors')}
+              >
                 Schedule a Demo
               </button>
+              )}
             </div>
           </div>
         </div>

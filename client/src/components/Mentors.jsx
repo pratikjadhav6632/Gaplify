@@ -158,7 +158,7 @@ const Mentors = () => {
         key: import.meta.env.VITE_RAZORPAY_KEY_ID,
         amount: order.amount,
         currency: order.currency,
-        name: 'SkillBridge AI',
+        name: 'Gaplify',
         description: 'Premium Plan',
         order_id: order.id,
         handler: async function (response) {
