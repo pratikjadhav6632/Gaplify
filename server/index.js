@@ -36,6 +36,13 @@ app.use('/api/payment', paymentRoutes);
 app.use('/api', emailRoutes);
 
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-}); 
+
+// When running locally we start the listener. On Vercel (serverless) we just export the app.
+if (!process.env.VERCEL) {
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
+}
+
+// Export the Express instance for Vercel Serverless Functions
+module.exports = app; 
