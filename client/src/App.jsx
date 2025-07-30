@@ -56,8 +56,6 @@ axios.interceptors.response.use(
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useAuth();
   
-  console.log('PrivateRoute - user:', user, 'loading:', loading);
-  
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -70,11 +68,9 @@ const PrivateRoute = ({ children }) => {
   }
   
   if (!user) {
-    console.log('User not authenticated, redirecting to login');
     return <Navigate to="/login" replace />;
   }
   
-  console.log('PrivateRoute - rendering children');
   return children;
 };
 
@@ -83,8 +79,6 @@ function App() {
     // Initialize animations when the app loads
     initAnimations();
   }, []);
-
-  console.log('App component rendering');
 
   return (
     <AuthProvider>

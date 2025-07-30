@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -6,6 +6,7 @@ import html2pdf from 'html2pdf.js';
 import { marked } from 'marked';
 import { 
   FaDownload, 
+  FaTrash,
   FaRocket, 
   FaBook, 
   FaCode, 
@@ -26,24 +27,17 @@ const RoadmapPage = () => {
   });
   const [roadmap, setRoadmap] = useState(null);
 
-  // Load saved roadmap from localStorage on mount so that navigation doesn't clear the generated output
-  useEffect(() => {
-    const saved = localStorage.getItem('roadmapData');
-    if (saved) {
-      try {
-        const { formData: savedFormData, roadmap: savedRoadmap } = JSON.parse(saved);
-        if (savedRoadmap) {
-          setFormData(savedFormData);
-          setRoadmap(savedRoadmap);
-        }
-      } catch (e) {
-        console.error('Failed to parse saved roadmapData', e);
-      }
-    }
-  }, []);
+
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const roadmapRef = useRef(null);
+
+  // Reset form
+  const handleClear = () => {
+
+    setRoadmap(null);
+    setFormData({ topic: '', level: 'beginner', duration: '3' });
+  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -64,8 +58,7 @@ const RoadmapPage = () => {
       
       if (response.data.success) {
         setRoadmap(response.data.data);
-        // persist to localStorage so it survives page navigation/refresh
-        localStorage.setItem('roadmapData', JSON.stringify({ formData, roadmap: response.data.data }));
+
       } else {
         throw new Error(response.data.error || 'Failed to generate roadmap');
       }
@@ -238,7 +231,16 @@ const RoadmapPage = () => {
             transition={{ duration: 0.5 }}
             className="space-y-8"
           >
-            <div className="flex justify-end">
+            <div className="flex justify-end gap-3">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={handleClear}
+                className="flex items-center gap-2 bg-white hover:bg-gray-50 border border-gray-200 rounded-lg px-5 py-2.5 text-sm font-medium text-gray-700 shadow-sm transition-all duration-200"
+              >
+                <FaTrash className="text-red-500" />
+                Reset
+              </motion.button>
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}

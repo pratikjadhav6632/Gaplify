@@ -2,12 +2,9 @@ import React from 'react';
 import { useCart } from '../context/CartContext';
 import ChatBot from '../components/ChatBot';
 import { FaShoppingCart, FaTrash, FaEye, FaArrowLeft, FaAtlas, FaCheck } from 'react-icons/fa';
-import { HiSparkles } from 'react-icons/hi';
 
 const Cart = () => {
   const { cart, removeFromCart, clearCart } = useCart();
-
-  const total = cart.reduce((sum, item) => sum + item.price, 0);
 
   if (cart.length === 0) {
     return (

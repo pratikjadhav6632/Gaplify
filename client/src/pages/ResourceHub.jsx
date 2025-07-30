@@ -5,8 +5,7 @@ import ChatBot from '../components/ChatBot';
 import PremiumModal from '../components/PremiumModal';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
-import { FaSearch, FaFilter, FaBook, FaCode, FaPalette, FaChartLine, FaRocket, FaStar } from 'react-icons/fa';
-import { HiLightningBolt, HiSparkles } from 'react-icons/hi';
+import { FaSearch, FaFilter, FaBook, FaCode, FaPalette, FaChartLine, FaRocket } from 'react-icons/fa';
 
 const ResourceHub = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -45,7 +44,6 @@ const ResourceHub = () => {
       const { data } = await axios.post('/api/payment/create-order', {}, {
         headers: { Authorization: `Bearer ${token}` }
       });
-      console.log('Order creation response:', data);
       if (!data.success) throw new Error('Order creation failed');
       const order = data.order;
       const options = {
@@ -56,7 +54,6 @@ const ResourceHub = () => {
         description: 'Premium Plan',
         order_id: order.id,
         handler: async function (response) {
-          console.log('Razorpay handler called', response);
           try {
             const verifyRes = await axios.post('/api/payment/verify', {
               order_id: order.id,

@@ -5,7 +5,6 @@ import axios from 'axios';
 import { FaUserTie, FaEnvelope, FaPhone, FaLinkedin, FaTwitter, FaGlobe, FaStar, FaRocket } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles, HiLightningBolt } from 'react-icons/hi';
 import { API_URL } from '../config/api';
-console.log('RAZORPAY KEY (frontend):', import.meta.env.VITE_RAZORPAY_KEY_ID);
 
 const mentors = [
   {

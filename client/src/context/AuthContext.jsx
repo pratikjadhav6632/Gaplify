@@ -10,12 +10,10 @@ export const AuthProvider = ({ children }) => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
-    console.log('AuthContext useEffect - token:', token);
     
     if (token) {
       // You could add a verify token endpoint and check token validity here
       const userData = JSON.parse(localStorage.getItem('user'));
-      console.log('AuthContext useEffect - userData:', userData);
       setUser(userData);
     } else {
       console.log('AuthContext useEffect - no token found');

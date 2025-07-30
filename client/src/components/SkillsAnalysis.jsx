@@ -6,26 +6,13 @@ import axios from 'axios';
 import { API_URL } from '../config/api';
 import { FaPlus, FaTrash, FaChartLine, FaRoad, FaClock, FaLightbulb, FaGraduationCap, FaRocket } from 'react-icons/fa';
 import { TbTargetArrow, TbBrain, TbTrendingUp } from 'react-icons/tb';
-import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
+import { HiAcademicCap } from 'react-icons/hi';
 
 const SkillsAnalysis = () => {
   const { user } = useAuth();
   const [skills, setSkills] = useState([{ name: '', proficiency: 'Beginner' }]);
 
-  // restore saved analysis/session info on mount
-  useEffect(() => {
-    const saved = localStorage.getItem('skillsAnalysisData');
-    if (saved) {
-      try {
-        const parsed = JSON.parse(saved);
-        if (parsed.skills) setSkills(parsed.skills);
-        if (parsed.targetRole) setTargetRole(parsed.targetRole);
-        if (parsed.analysis) setAnalysis(parsed.analysis);
-      } catch (e) {
-        console.error('Failed to parse saved skillsAnalysisData', e);
-      }
-    }
-  }, []);
+
 
   // Prefill existing skills
   useEffect(() => {
@@ -103,8 +90,6 @@ const SkillsAnalysis = () => {
       }, config);
 
       setAnalysis(analysisResponse.data);
-      // persist to localStorage so it survives navigation/refresh
-      localStorage.setItem('skillsAnalysisData', JSON.stringify({ skills, targetRole, analysis: analysisResponse.data }));
     } catch (err) {
       console.error('Error details:', err);
       setError(

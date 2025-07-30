@@ -21,8 +21,3 @@ export const apiConfig = config[environment] || config.development;
 
 // Export the API URL for use in components
 export const API_URL = apiConfig.apiUrl;
-
-console.log('API Configuration:', {
-  environment,
-  apiUrl: API_URL
-}); 
