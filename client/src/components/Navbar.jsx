@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { useCart } from '../context/CartContext';
-import { FaShoppingCart, FaUser, FaBars, FaTimes, FaHome,  } from 'react-icons/fa';
+import { FaShoppingCart, FaUser, FaBars, FaTimes, FaHome,FaAtlas  } from 'react-icons/fa';
 import { HiAcademicCap } from 'react-icons/hi';
 
 const Navbar = () => {
@@ -88,13 +88,13 @@ const Navbar = () => {
                   to="/cart"
                   className="relative flex items-center p-2 text-gray-600 hover:text-primary-600 hover:bg-primary-50 rounded-lg transition-all duration-200 group"
                 >
-                  <FaShoppingCart className="w-5 h-5" />
+                  <FaAtlas className="w-5 h-5" />
                   {cart.length > 0 && (
                     <span className="absolute -top-2 -right-2 bg-accent-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium animate-bounce-in">
                       {cart.length}
                     </span>
                   )}
-                  <div className="tooltip-content">Cart ({cart.length})</div>
+                  <div className="tooltip-content">Library ({cart.length})</div>
                 </Link>
 
                 {/* Profile */}
@@ -165,15 +165,7 @@ const Navbar = () => {
               {user && (
                 <>
                   <div className="border-t border-gray-100 pt-4 mt-4">
-                    <div className="flex items-center px-4 py-3 mb-2">
-                      <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white font-bold mr-3">
-                        {user.name ? user.name.charAt(0).toUpperCase() : 'U'}
-                      </div>
-                      <div>
-                        <div className="font-medium text-gray-900">{user.name || 'User'}</div>
-                        <div className="text-sm text-gray-500">{user.email}</div>
-                      </div>
-                    </div>
+                   
                     
                     <Link
                       to="/cart"
@@ -181,8 +173,8 @@ const Navbar = () => {
                       onClick={() => setIsMenuOpen(false)}
                     >
                       <div className="flex items-center">
-                        <FaShoppingCart className="w-5 h-5 mr-3" />
-                        <span>Cart</span>
+                        <FaAtlas className="w-5 h-5 mr-3" />
+                        <span>Library</span>
                       </div>
                       {cart.length > 0 && (
                         <span className="bg-accent-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-medium">

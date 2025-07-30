@@ -9,6 +9,7 @@ import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
 
   const { user, logout } = useAuth();
   const navigate = useNavigate();
@@ -36,6 +37,9 @@ const Profile = () => {
     logout();
     navigate('/login');
   };
+
+  // Helper to check if user is premium
+  const isPremium = (user?.planType || '').toLowerCase() === 'premium';
 
   if (loading) {
     return (
@@ -81,12 +85,25 @@ const Profile = () => {
                   </div>
                   <div className="flex items-center space-x-2">
                     <FaCrown className="w-5 h-5 text-accent-500" />
-                    <span className={`px-3 py-1 rounded-full text-sm font-medium ${
-                      (user?.planType || 'Free') === 'premium' 
-                        ? 'bg-accent-100 text-accent-800' 
-                        : 'bg-gray-100 text-gray-800'
-                    }`}>
+                    <button
+                      className={`px-3 py-1 rounded-full text-sm font-medium focus:outline-none ${
+                        isPremium
+                          ? 'bg-accent-100 text-accent-800 cursor-default'
+                          : 'bg-gray-100 text-gray-800 hover:bg-primary-200 hover:text-primary-900 cursor-pointer'
+                      }`}
+                      disabled={isPremium}
+                      onClick={() => {
+                        if (!isPremium) setShowUpgradeModal(true);
+                      }}
+                    >
                       {user?.planType || 'Free'}
+                    </button>
+                    <span className="text-sm text-gray-500 ">
+                      {user.premiumExpiry && new Date(user.premiumExpiry).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
                     </span>
                   </div>
                 </div>
@@ -192,8 +209,24 @@ const Profile = () => {
           </div>
         </div>
       </div>
+
+      {/* Upgrade Modal */}
+      {showUpgradeModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
+            <h2 className="text-2xl font-bold mb-4">Upgrade to Premium</h2>
+            <p className="mb-6">Unlock all features and get the most out of Gaplify!</p>
+            <button
+              className="btn btn-outline w-full"
+              onClick={() => setShowUpgradeModal(false)}
+            >
+              Cancel
+            </button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
 
-export default Profile; 
+export default Profile;

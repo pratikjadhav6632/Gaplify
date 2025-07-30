@@ -132,21 +132,15 @@ const Footer = () => {
                 <FaEnvelope className="w-5 h-5 text-accent-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-gray-300 font-medium">Email</p>
-                  <p className="text-gray-400 text-sm">hello@gaplify.com</p>
+                  <p className="text-gray-400 text-sm">gaplify@gmail.com</p>
                 </div>
               </li>
-              <li className="flex items-start">
-                <FaPhone className="w-5 h-5 text-accent-500 mr-3 mt-0.5 flex-shrink-0" />
-                <div>
-                  <p className="text-gray-300 font-medium">Phone</p>
-                  <p className="text-gray-400 text-sm">+1 (555) 123-4567</p>
-                </div>
-              </li>
+            
               <li className="flex items-start">
                 <FaMapMarkerAlt className="w-5 h-5 text-accent-500 mr-3 mt-0.5 flex-shrink-0" />
                 <div>
                   <p className="text-gray-300 font-medium">Address</p>
-                  <p className="text-gray-400 text-sm">123 Innovation Drive<br />Tech City, TC 12345</p>
+                  <p className="text-gray-400 text-sm">Pune , India</p>
                 </div>
               </li>
             </ul>

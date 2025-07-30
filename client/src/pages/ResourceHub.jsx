@@ -8,8 +8,6 @@ import axios from 'axios';
 import { FaSearch, FaFilter, FaBook, FaCode, FaPalette, FaChartLine, FaRocket, FaStar } from 'react-icons/fa';
 import { HiLightningBolt, HiSparkles } from 'react-icons/hi';
 
-console.log('RAZORPAY KEY (frontend):', import.meta.env.VITE_RAZORPAY_KEY_ID);
-
 const ResourceHub = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [searchQuery, setSearchQuery] = useState('');
