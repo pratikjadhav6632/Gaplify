@@ -146,22 +146,25 @@ const SkillsAnalysis = () => {
                 
                 <div className="space-y-4">
                   {skills.map((skill, index) => (
-                    <div key={index} className="flex items-center gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200">
+                    <div
+                      key={index}
+                      className="flex flex-col md:flex-row items-stretch md:items-center gap-3 md:gap-4 p-4 bg-gray-50 rounded-xl border border-gray-200"
+                    >
                       <div className="flex-1">
                         <input
                           type="text"
                           value={skill.name}
                           onChange={(e) => handleSkillChange(index, 'name', e.target.value)}
                           placeholder="Enter skill name (e.g., JavaScript, Project Management, Design)"
-                          className="form-input"
+                          className="form-input w-full text-base"
                           required
                         />
                       </div>
-                      <div className="w-48">
-                        <select 
-                          value={skill.proficiency} 
-                          onChange={(e) => handleSkillChange(index, 'proficiency', e.target.value)} 
-                          className="form-input"
+                      <div className="w-full md:w-48">
+                        <select
+                          value={skill.proficiency}
+                          onChange={(e) => handleSkillChange(index, 'proficiency', e.target.value)}
+                          className="form-input w-full text-base"
                         >
                           <option value="Beginner">Beginner</option>
                           <option value="Intermediate">Intermediate</option>
@@ -171,10 +174,11 @@ const SkillsAnalysis = () => {
                       <button
                         type="button"
                         onClick={() => handleRemoveSkill(index)}
-                        className="p-2 text-error-600 hover:text-error-700 hover:bg-error-50 rounded-lg transition-colors duration-200"
+                        className="p-2 text-error-600 hover:text-error-700 hover:bg-error-50 rounded-lg transition-colors duration-200 self-end md:self-auto"
                         disabled={skills.length === 1}
+                        aria-label="Remove skill"
                       >
-                        <FaTrash className="w-4 h-4" />
+                        <FaTrash className="w-5 h-5" />
                       </button>
                     </div>
                   ))}
@@ -365,4 +369,4 @@ const SkillsAnalysis = () => {
   );
 };
 
-export default SkillsAnalysis; 
+export default SkillsAnalysis;
