@@ -1,4 +1,7 @@
 import React, { useState, useRef } from 'react';
+import { useAuth } from '../context/AuthContext';
+import PremiumModal from './PremiumModal';
+import axios from 'axios';
 import { SiChatbot } from "react-icons/si";
 const initialMessages = [
   {
@@ -8,11 +11,86 @@ const initialMessages = [
 ];
 
 const ChatBot = () => {
+  const { user } = useAuth();
+  const isPremium = (user?.planType || '').toLowerCase() === 'premium';
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState(initialMessages);
   const [input, setInput] = useState('');
   const [loading, setLoading] = useState(false);
+  const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [premiumLoading, setPremiumLoading] = useState(false);
   const messagesEndRef = useRef(null);
+
+  // ----- Premium purchase helpers -----
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true);
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  const handleBuyPremium = async () => {
+    setPremiumLoading(true);
+    const res = await loadRazorpayScript();
+    if (!res) {
+      alert('Failed to load Razorpay SDK.');
+      setPremiumLoading(false);
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const { data } = await axios.post('/api/payment/create-order', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!data.success) throw new Error('Order creation failed');
+      const order = data.order;
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID,
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Gaplify',
+        description: 'Premium Plan',
+        order_id: order.id,
+        handler: async function (response) {
+          try {
+            const verifyRes = await axios.post('/api/payment/verify', {
+              order_id: order.id,
+              payment_id: response.razorpay_payment_id,
+              signature: response.razorpay_signature
+            }, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (verifyRes.data.success) {
+              const userData = JSON.parse(localStorage.getItem('user'));
+              userData.planType = 'premium';
+              localStorage.setItem('user', JSON.stringify(userData));
+              alert('Congratulations! You are now a premium user.');
+              window.location.reload();
+            } else {
+              alert('Payment verification failed.');
+            }
+          } catch (err) {
+            console.error('Verify error:', err);
+            alert('Payment verification failed.');
+          }
+          setPremiumLoading(false);
+        },
+        prefill: { email: user?.email },
+        theme: { color: '#2563eb' },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Payment flow error:', err);
+      alert('Something went wrong, please try again.');
+      setPremiumLoading(false);
+    }
+  };
+
 
   const handleSend = async (e) => {
     e.preventDefault();
@@ -49,7 +127,13 @@ const ChatBot = () => {
       {/* Floating Button */}
       <button
         className="fixed bottom-6 right-6 z-50 bg-blue-600 hover:bg-blue-700 text-white rounded-full p-4 shadow-lg focus:outline-none focus:ring-2 focus:ring-blue-400"
-        onClick={() => setOpen(true)}
+        onClick={() => {
+          if (isPremium) {
+            setOpen(true);
+          } else {
+            setShowUpgradeModal(true);
+          }
+        }}
         aria-label="Open chat bot"
       >
       <SiChatbot/>
@@ -108,8 +192,11 @@ const ChatBot = () => {
           </div>
         </div>
       )}
+      {showUpgradeModal && (
+        <PremiumModal open={showUpgradeModal} onClose={() => setShowUpgradeModal(false)} onBuyPremium={handleBuyPremium} loading={premiumLoading} />
+      )}
     </>
   );
 };
 
-export default ChatBot; 
+export default ChatBot;

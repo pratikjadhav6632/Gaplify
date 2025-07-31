@@ -20,6 +20,7 @@ mongoose.connect(process.env.MONGODB_URI)
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/users');
 const analysisRoutes = require('./routes/analysis');
+const feedbackRoutes = require('./routes/feedback');
 const roadmapRoutes = require('./routes/roadmap');
 const userInterestsRoutes = require('./routes/userInterests');
 const chatbotRoute = require('./routes/chatbot');
@@ -32,6 +33,7 @@ app.use('/api/analysis', analysisRoutes);
 app.use('/api', roadmapRoutes);
 app.use('/api/interests', userInterestsRoutes);
 app.use('/api/chatbot', chatbotRoute);
+app.use('/api/feedback', feedbackRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', emailRoutes);
 

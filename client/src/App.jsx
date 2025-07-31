@@ -5,6 +5,7 @@ import { CartProvider } from './context/CartContext';
 import axios from 'axios';
 import { API_URL } from './config/api';
 import Login from './components/Login';
+import ForgotPassword from './components/ForgotPassword';
 import Signup from './components/Signup';
 import Home from './components/Home';
 import About from './components/About';
@@ -21,6 +22,10 @@ import Mentors from './components/Mentors';
 import Profile from './pages/Profile';
 import TestComponent from './components/TestComponent';
 import initAnimations from './utils/animations';
+import PrivacyPolicy from './pages/legal/PrivacyPolicy';
+import TermsConditions from './pages/legal/TermsConditions';
+import FAQ from './pages/legal/FAQ';
+import Feedback from './pages/Feedback';
 
 // Set up axios interceptor to automatically include auth token
 axios.interceptors.request.use(
@@ -89,6 +94,7 @@ function App() {
             <main className="flex-1 relative">
               <Routes>
                 <Route path="/login" element={<Login />} />
+                <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/signup" element={<Signup />} />
                 <Route path="/test" element={<TestComponent />} />
                 <Route
@@ -163,6 +169,10 @@ function App() {
                     </PrivateRoute>
                   }
                 />
+                      <Route path="/privacy-policy" element={<PrivacyPolicy />} />
+                <Route path="/feedback" element={<Feedback />} />
+                <Route path="/terms-and-conditions" element={<TermsConditions />} />
+                <Route path="/faq" element={<FAQ />} />
               </Routes>
             </main>
             <Footer />

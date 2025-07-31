@@ -200,7 +200,7 @@ const Mentors = () => {
       rzp.open();
     } catch (err) {
       console.log('Payment flow error:', err);
-      alert('Payment failed.');
+      window.location.reload();
       setLoading(false);
     }
   };

@@ -7,13 +7,15 @@ const AuthContext = createContext(null);
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [rememberMe, setRememberMe] = useState(false);
 
   useEffect(() => {
-    const token = localStorage.getItem('token');
+    // Check token in localStorage (persistent) or sessionStorage (session)
+    const token = localStorage.getItem('token') || sessionStorage.getItem('token');
     
     if (token) {
       // You could add a verify token endpoint and check token validity here
-      const userData = JSON.parse(localStorage.getItem('user'));
+      const userData = JSON.parse(localStorage.getItem('user') || sessionStorage.getItem('user'));
       setUser(userData);
     } else {
       console.log('AuthContext useEffect - no token found');
@@ -21,7 +23,7 @@ export const AuthProvider = ({ children }) => {
     setLoading(false);
   }, []);
 
-  const login = async (email, password) => {
+  const login = async (email, password, remember = true) => {
     try {
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
@@ -63,11 +65,13 @@ export const AuthProvider = ({ children }) => {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    sessionStorage.removeItem('token');
+    sessionStorage.removeItem('user');
     setUser(null);
   };
 
   return (
-    <AuthContext.Provider value={{ user, login, signup, logout, loading }}>
+    <AuthContext.Provider value={{ user, login, signup, logout, loading, rememberMe, setRememberMe }}>
       {children}
     </AuthContext.Provider>
   );

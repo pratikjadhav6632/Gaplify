@@ -104,16 +104,16 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
+                <Link to="/privacy-policy" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
                   <span className="w-2 h-2 bg-secondary-500 rounded-full mr-3"></span>
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a href="#" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
+                <Link to="/terms-and-conditions" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
                   <span className="w-2 h-2 bg-secondary-500 rounded-full mr-3"></span>
-                  Terms of Service
-                </a>
+                  Terms &amp; Conditions
+                </Link>
               </li>
               <li>
                 <a href="#" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
@@ -150,28 +150,7 @@ const Footer = () => {
           </div>
         </div>
 
-        {/* Newsletter Signup */}
-        <div className="mt-12 pt-8 border-t border-gray-800">
-          <div className="max-w-md">
-            <h4 className="text-lg font-semibold mb-4 flex items-center">
-              <HiSparkles className="w-5 h-5 mr-2 text-primary-500" />
-              Stay Updated
-            </h4>
-            <p className="text-gray-400 mb-4 text-sm">
-              Get the latest career insights and learning resources delivered to your inbox.
-            </p>
-            <div className="flex">
-              <input
-                type="email"
-                placeholder="Enter your email"
-                className="flex-1 px-4 py-2 bg-gray-800 border border-gray-700 rounded-l-lg text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
-              />
-              <button className="px-6 py-2 bg-gradient-to-r from-primary-500 to-secondary-500 text-white rounded-r-lg hover:from-primary-600 hover:to-secondary-600 transition-all duration-200">
-                Subscribe
-              </button>
-            </div>
-          </div>
-        </div>
+        
 
         {/* Bottom Bar */}
         <div className="mt-8 pt-8 border-t border-gray-800">

@@ -3,15 +3,92 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/api';
-import { FaUser, FaEnvelope, FaBrain, FaCog, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaBrain, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory, FaFile, FaFilePdf, FaInfoCircle } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
+import PremiumModal from '../components/PremiumModal';
 
 const Profile = () => {
   const [profile, setProfile] = useState(null);
   const [loading, setLoading] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
+  const [premiumLoading, setPremiumLoading] = useState(false);
 
   const { user, logout } = useAuth();
+
+  // Load Razorpay script dynamically
+  const loadRazorpayScript = () => {
+    return new Promise((resolve) => {
+      if (window.Razorpay) return resolve(true);
+      const script = document.createElement('script');
+      script.src = 'https://checkout.razorpay.com/v1/checkout.js';
+      script.onload = () => resolve(true);
+      script.onerror = () => resolve(false);
+      document.body.appendChild(script);
+    });
+  };
+
+  // Start the premium purchase flow
+  const handleBuyPremium = async () => {
+    setPremiumLoading(true);
+    const res = await loadRazorpayScript();
+    if (!res) {
+      alert('Failed to load Razorpay SDK.');
+      setPremiumLoading(false);
+      return;
+    }
+    try {
+      const token = localStorage.getItem('token');
+      const { data } = await axios.post('/api/payment/create-order', {}, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (!data.success) throw new Error('Order creation failed');
+      const order = data.order;
+      const options = {
+        key: import.meta.env.VITE_RAZORPAY_KEY_ID, // your Razorpay key
+        amount: order.amount,
+        currency: order.currency,
+        name: 'Gaplify',
+        description: 'Premium Plan',
+        order_id: order.id,
+        handler: async function (response) {
+          try {
+            const verifyRes = await axios.post('/api/payment/verify', {
+              order_id: order.id,
+              payment_id: response.razorpay_payment_id,
+              signature: response.razorpay_signature
+            }, {
+              headers: { Authorization: `Bearer ${token}` }
+            });
+            if (verifyRes.data.success) {
+              const userData = JSON.parse(localStorage.getItem('user'));
+              userData.planType = 'premium';
+              localStorage.setItem('user', JSON.stringify(userData));
+              alert('Congratulations! You are now a premium user.');
+              window.location.reload();
+            } else {
+              alert('Payment verification failed.');
+            }
+          } catch (err) {
+            console.error('Verify error:', err);
+            alert('Payment verification failed.');
+          }
+          setPremiumLoading(false);
+        },
+        prefill: {
+          email: user?.email,
+        },
+        theme: {
+          color: '#2563eb',
+        },
+      };
+      const rzp = new window.Razorpay(options);
+      rzp.open();
+    } catch (err) {
+      console.error('Payment flow error:', err);
+      alert('Something went wrong, please try again.');
+      setPremiumLoading(false);
+    }
+  };
   const navigate = useNavigate();
   useEffect(() => {
     const fetchProfile = async () => {
@@ -168,17 +245,29 @@ const Profile = () => {
                     <FaHistory className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                     History
                   </button>
-                  <button className="w-full btn btn-outline btn-sm group">
-                    <FaFileContract className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                    Company Policy
+                  <button className="w-full btn btn-outline btn-sm group"
+                    onClick={() => navigate('/feedback')}
+                  >
+                    <FaInfoCircle className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                    Feedback
                   </button>
-                  <button className="w-full btn btn-outline btn-sm group">
+                  <button className="w-full btn btn-outline btn-sm group"
+                    onClick={() => navigate('/privacy-policy')}
+                  >
+                    <FaFileContract className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                    Privacy Policy
+                  </button>
+                  <button className="w-full btn btn-outline btn-sm group"
+                    onClick={() => navigate('/faq')}
+                  >
                     <FaQuestionCircle className="w-4 h-4 mr-2 group-hover:animate-bounce" />
                     FAQ
                   </button>
-                  <button className="w-full btn btn-outline btn-sm group">
-                    <FaCog className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-                    Settings
+                  <button className="w-full btn btn-outline btn-sm group"
+                    onClick={() => navigate('/terms-and-conditions')}
+                  >
+                    <FaFile className="w-4 h-4 mr-2 group-hover:animate-bounce" />
+                    Terms & Conditions
                   </button>
                   <button 
                     onClick={handleLogout} 
@@ -214,20 +303,12 @@ const Profile = () => {
       </div>
 
       {/* Upgrade Modal */}
-      {showUpgradeModal && (
-        <div className="fixed inset-0 bg-black bg-opacity-40 flex items-center justify-center z-50">
-          <div className="bg-white rounded-lg shadow-lg p-8 max-w-sm w-full text-center">
-            <h2 className="text-2xl font-bold mb-4">Upgrade to Premium</h2>
-            <p className="mb-6">Unlock all features and get the most out of Gaplify!</p>
-            <button
-              className="btn btn-outline w-full"
-              onClick={() => setShowUpgradeModal(false)}
-            >
-              Cancel
-            </button>
-          </div>
-        </div>
-      )}
+      <PremiumModal 
+        open={showUpgradeModal}
+        onClose={() => setShowUpgradeModal(false)}
+        onBuyPremium={handleBuyPremium}
+        loading={premiumLoading}
+      />
     </div>
   );
 };
