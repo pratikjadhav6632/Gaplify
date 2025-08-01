@@ -3,7 +3,13 @@ import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import axios from 'axios';
+
+
 import { API_URL } from './config/api';
+
+// Configure axios to use the backend base URL for every request
+axios.defaults.baseURL = API_URL;
+
 import Login from './components/Login';
 import ForgotPassword from './components/ForgotPassword';
 import Signup from './components/Signup';
@@ -30,12 +36,9 @@ import Feedback from './pages/Feedback';
 // Set up axios interceptor to automatically include auth token
 axios.interceptors.request.use(
   (config) => {
-    // Only add token for requests to our backend API
-    if (config.url && config.url.startsWith(API_URL)) {
-      const token = localStorage.getItem('token');
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = localStorage.getItem('token');
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
