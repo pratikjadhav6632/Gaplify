@@ -4,7 +4,7 @@
 const config = {
   // Development environment
   development: {
-    apiUrl: 'http://localhost:5000'
+    apiUrl: 'gaplify-y3vj-m8i6whwxp-pratik-jadhavs-projects-8572233a.vercel.app'
   },
   
   // Production environment

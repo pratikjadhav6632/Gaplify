@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: gaplify-server
+    env: node
+    plan: free
+    rootDir: server
+    buildCommand: "npm install"
+    startCommand: "npm start"
+    autoDeploy: true
+    healthCheckPath: /
+    envVars:
+      - key: MONGODB_URI
+        sync: false  # set this manually in Render dashboard
+      - key: JWT_SECRET
+        sync: false
+      - key: EMAIL_USER
+        sync: false
+      - key: EMAIL_PASS
+        sync: false
