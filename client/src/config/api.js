@@ -4,12 +4,12 @@
 const config = {
   // Development environment
   development: {
-    apiUrl: 'gaplify-y3vj-m8i6whwxp-pratik-jadhavs-projects-8572233a.vercel.app'
+    apiUrl: 'https://gaplify-y3vj-m8i6whwxp-pratik-jadhavs-projects-8572233a.vercel.app'
   },
   
   // Production environment
   production: {
-    apiUrl: 'https://<your-render-backend-service>.onrender.com' // Change this to your Render backend URL
+    apiUrl: 'https://gaplify.onrender.com' // Change this to your Render backend URL
   }
 };
 
