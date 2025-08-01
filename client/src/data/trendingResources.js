@@ -90,7 +90,7 @@ export const trendingResources = [
     "rating": 4.5
   },
   {
-    "id": "1",
+    "id": "11",
     "title": "CS50: Introduction to Computer Science",
     "description": "Harvard's free introduction to computer science and programming. C algorithms, data structures, web development, and more.",
     "category": "programming",
@@ -99,7 +99,7 @@ export const trendingResources = [
     "rating": 4.9
   },
   {
-    "id": "2",
+    "id": "12",
     "title": "Machine Learning by Andrew Ng",
     "description": "Stanford's famous machine learning course covering supervised learning, neural networks, and best practices in AI.",
     "category": "programming",
@@ -108,7 +108,7 @@ export const trendingResources = [
     "rating": 4.8
   },
   {
-    "id": "3",
+    "id": "13",
     "title": "Google UX Design Professional Certificate",
     "description": "Learn UX design fundamentals and build portfolio projects with this free Google-certified program.",
     "category": "design",
@@ -117,7 +117,7 @@ export const trendingResources = [
     "rating": 4.7
   },
   {
-    "id": "4",
+    "id": "14",
     "title": "Introduction to Python Programming",
     "description": "University of Michigan's beginner Python course covering fundamentals through real-world applications.",
     "category": "programming",
@@ -126,7 +126,7 @@ export const trendingResources = [
     "rating": 4.6
   },
   {
-    "id": "5",
+    "id": "15",
     "title": "Digital Marketing Fundamentals",
     "description": "Google's free course covering SEO, SEM, social media, email marketing, and analytics.",
     "category": "marketing",
@@ -135,7 +135,7 @@ export const trendingResources = [
     "rating": 4.5
   },
   {
-    "id": "6",
+    "id": "16",
     "title": "AWS Cloud Practitioner Essentials",
     "description": "Amazon's free foundational course covering cloud concepts and AWS services.",
     "category": "programming",
@@ -144,7 +144,7 @@ export const trendingResources = [
     "rating": 4.7
   },
   {
-    "id": "7",
+    "id": "17",
     "title": "Financial Markets by Yale University",
     "description": "Nobel laureate Robert Shiller teaches about risk management, behavioral finance, and market efficiency.",
     "category": "business",
@@ -153,7 +153,7 @@ export const trendingResources = [
     "rating": 4.8
   },
   {
-    "id": "8",
+    "id": "18",
     "title": "Android Basics in Kotlin",
     "description": "Google's free course for beginners to learn Android app development with Kotlin.",
     "category": "programming",
@@ -162,7 +162,7 @@ export const trendingResources = [
     "rating": 4.6
   },
   {
-    "id": "9",
+    "id": "19",
     "title": "Introduction to Psychology",
     "description": "Yale's popular introduction to psychology covering behavior, cognition, and mental processes.",
     "category": "psychology",
@@ -171,7 +171,7 @@ export const trendingResources = [
     "rating": 4.9
   },
   {
-    "id": "10",
+    "id": "20",
     "title": "HTML and CSS Fundamentals",
     "description": "Microsoft's free course on building responsive websites with HTML5 and CSS3.",
     "category": "programming",
@@ -180,7 +180,7 @@ export const trendingResources = [
     "rating": 4.5
   },
   {
-    "id": "11",
+    "id": "21",
     "title": "Creative Writing Specialization",
     "description": "Wesleyan University's course series covering short stories, narrative essays, and memoir writing.",
     "category": "writing",
@@ -189,7 +189,7 @@ export const trendingResources = [
     "rating": 4.7
   },
   {
-    "id": "12",
+    "id": "22",
     "title": "Introduction to Git and GitHub",
     "description": "Google's free course on version control and collaborative coding with Git/GitHub.",
     "category": "programming",
@@ -198,7 +198,7 @@ export const trendingResources = [
     "rating": 4.6
   },
   {
-    "id": "13",
+    "id": "23",
     "title": "Learning How to Learn",
     "description": "Powerful mental tools to help you master tough subjects from UC San Diego.",
     "category": "personal-development",
@@ -207,7 +207,7 @@ export const trendingResources = [
     "rating": 4.8
   },
   {
-    "id": "14",
+    "id": "24",
     "title": "Introduction to Data Science",
     "description": "IBM's foundational course covering Python, SQL, and data visualization for beginners.",
     "category": "programming",
@@ -216,7 +216,7 @@ export const trendingResources = [
     "rating": 4.5
   },
   {
-    "id": "15",
+    "id": "25",
     "title": "The Science of Well-Being",
     "description": "Yale's popular course on the psychology of happiness and strategies for well-being.",
     "category": "psychology",
@@ -225,7 +225,7 @@ export const trendingResources = [
     "rating": 4.9
   },
   {
-    "id": "16",
+    "id": "26",
     "title": "Introduction to TensorFlow for AI",
     "description": "Google's free course on machine learning fundamentals using TensorFlow framework.",
     "category": "programming",
@@ -234,7 +234,7 @@ export const trendingResources = [
     "rating": 4.7
   },
   {
-    "id": "17",
+    "id": "27",
     "title": "Startup School by Y Combinator",
     "description": "Free online course covering how to start, grow, and fund a startup company.",
     "category": "business",
@@ -243,7 +243,7 @@ export const trendingResources = [
     "rating": 4.8
   },
   {
-    "id": "18",
+    "id": "28",
     "title": "Introduction to Linux",
     "description": "Linux Foundation's free course on Linux command line, filesystems, and administration.",
     "category": "programming",
@@ -252,7 +252,7 @@ export const trendingResources = [
     "rating": 4.6
   },
   {
-    "id": "19",
+    "id": "29",
     "title": "Photography Basics and Beyond",
     "description": "Michigan State University's course covering composition, lighting, and digital photography techniques.",
     "category": "photography",
@@ -261,7 +261,7 @@ export const trendingResources = [
     "rating": 4.5
   },
   {
-    "id": "20",
+    "id": "30",
     "title": "First Step Korean",
     "description": "Yonsei University's beginner course covering Korean alphabet, grammar, and basic conversations.",
     "category": "language",

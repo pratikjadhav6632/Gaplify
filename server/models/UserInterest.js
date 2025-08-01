@@ -19,7 +19,6 @@ const userInterestSchema = new mongoose.Schema({
     category: String,
     image: String,
     link: String,
-    price: Number,
     rating: Number,
     savedAt: {
       type: Date,
