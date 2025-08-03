@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/api';
-import { FaUser, FaEnvelope, FaBrain, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory, FaFile, FaFilePdf, FaInfoCircle } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaBrain, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory, FaFile, FaInfoCircle } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
 import PremiumModal from '../components/PremiumModal';
 
