@@ -49,7 +49,6 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Mentors from './components/Mentors';
 import Profile from './pages/Profile';
-import TestComponent from './components/TestComponent';
 import initAnimations from './utils/animations';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsConditions from './pages/legal/TermsConditions';
@@ -129,7 +128,6 @@ function App() {
                 <Route path="/login" element={<Login />} />
                 <Route path="/forgot-password" element={<ForgotPassword />} />
                 <Route path="/signup" element={<Signup />} />
-                <Route path="/test" element={<TestComponent />} />
                 <Route
                   path="/"
                   element={

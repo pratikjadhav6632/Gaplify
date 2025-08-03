@@ -49,7 +49,7 @@ const Cart = () => {
             }}
             className="btn btn-error btn-sm group bg-red-500 hover:bg-red-600 text-white flex items-center space-x-2"
           >
-            <FaTrash className="w-4 h-2 mr-2 group-hover:animate-bounce" />
+            <FaTrash className="w-4 h-4 mr-2 group-hover:animate-bounce" />
             Clear Library
           </button>
         </div>
