@@ -56,7 +56,6 @@ const userSchema = new mongoose.Schema({
     {
       skills: [skillSchema],
       targetRole: String,
-      result: Object,
       createdAt: {
         type: Date,
         default: Date.now
@@ -68,7 +67,6 @@ const userSchema = new mongoose.Schema({
       topic: String,
       level: String,
       duration: String,
-      roadmap: String,
       createdAt: {
         type: Date,
         default: Date.now

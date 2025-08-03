@@ -184,7 +184,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
             throw new Error(`Roadmap step ${index} is missing required properties (title, description, resources).`);
         }
         step.resources.forEach((resource, resIndex) => {
-            if (!resource.name ||  !resource.description) {
+            if (!resource.name || !resource.description) {
                 console.error(`Resource ${resIndex} in roadmap step ${index} has invalid structure:`, resource);
                 throw new Error(`Resource ${resIndex} in roadmap step ${index} is missing required properties (name, url, description).`);
             }
@@ -206,7 +206,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
       req.userDoc.analysisHistory.push({
         skills,
         targetRole,
-        result: analysis
+        analysis
       });
     } catch (persistErr) {
       console.error('Failed to update user analysis history:', persistErr);

@@ -79,12 +79,10 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 - **Practice & Activities:**
   - [ ] Task 1
   - [ ] Task 2
-- **Resources:**
-  - Resource Name - Brief description
+
 - **Reflection & Notes:**
   - What did I learn?
   - What will I improve next week?
-  - Resource Name - Brief description
 
 **Week 2: [Topic]**
 *Same structure as Week 1*
@@ -102,13 +100,6 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
   - Criterion 1
   - Criterion 2
 
-**📚 Recommended Resources**
-- **📖 Books:**
-  - Book Title - Brief description
-- **🎥 Videos:**
-  - Video Title - Brief description
-- **📄 Articles:**
-  - Article Title - Brief description
 
 ### Repeat the same structure for each remaining month
 
@@ -171,9 +162,6 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 - [ ] Requirement 2
 - [ ] Requirement 3
 
-**Resources**
-- Resource 1
-- Resource 2
 
 ## 📋 Self-Assessment Checklist
 
@@ -214,8 +202,6 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
   *Types of exercises and challenges available*
 
 Guidelines:
-- Prefer authoritative, ideally free resources.
-- Avoid external links; mention resource names only.
 - Keep tone motivating and actionable.
 - Avoid unnecessary fluff.`
 
@@ -251,7 +237,7 @@ Guidelines:
         topic,
         level,
         duration,
-        roadmap
+       
       });
       await req.userDoc.save();
     } catch (persistErr) {

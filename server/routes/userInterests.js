@@ -22,7 +22,7 @@ router.get('/', auth, planAndUsageGuard('premium'), async (req, res) => {
 router.post('/', auth, planAndUsageGuard('premium'), async (req, res) => {
   try {
 
-    const { resourceId, title, description, category, image, link, price, rating } = req.body;
+    const { resourceId, title, description, category, image, link,rating } = req.body;
 
     // Enhanced validation with detailed logging
     if (!resourceId || !title) {
@@ -77,7 +77,6 @@ router.post('/', auth, planAndUsageGuard('premium'), async (req, res) => {
       category,
       image,
       link,
-      price,
       rating,
       savedAt: new Date()
     };
