@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
@@ -13,7 +13,8 @@ import {
   FaTasks,
   FaGraduationCap,
   FaLightbulb,
-  FaChartLine
+  FaChartLine,
+  FaCheckCircle
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import ChatBot from './ChatBot';
@@ -29,8 +30,37 @@ const RoadmapPage = () => {
 
 
   const [loading, setLoading] = useState(false);
+  const loadingMessages = [
+    'Contacting AI engine...',
+    'Fetching learning resources...',
+    'Analyzing skill requirements...',
+    'Crafting personalized roadmap...',
+    'Almost there...'
+  ];
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
+
+  // Split roadmap markdown into sections (each starts with ## ) so we can render them as separate cards
+  const roadmapSections = useMemo(() => {
+    if (!roadmap) return [];
+    // Ensure each section keeps its heading by re-adding the delimiter
+    const parts = roadmap.split(/\n(?=## )/g);
+    return parts.filter(Boolean);
+  }, [roadmap]);
   const [error, setError] = useState(null);
   const roadmapRef = useRef(null);
+
+  // Rotate loader messages
+  useEffect(() => {
+    let intervalId;
+    if (loading) {
+      intervalId = setInterval(() => {
+        setLoadingMessageIndex(prev => (prev + 1) % loadingMessages.length);
+      }, 2000); // change message every 2s
+    } else {
+      setLoadingMessageIndex(0);
+    }
+    return () => clearInterval(intervalId);
+  }, [loading]);
 
   // Reset form
   const handleClear = () => {
@@ -195,13 +225,13 @@ const RoadmapPage = () => {
                 className="w-full py-4 px-6 bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white font-medium rounded-lg shadow-lg transition-all duration-300 flex items-center justify-center disabled:opacity-70"
               >
                 {loading ? (
-                  <>
+                  <div className="flex items-center gap-3">
                     <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                       <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
                       <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                     </svg>
-                    Generating...
-                  </>
+                    {loadingMessages[loadingMessageIndex]}
+                  </div>
                 ) : (
                   'Generate My Roadmap'
                 )}
@@ -271,64 +301,103 @@ const RoadmapPage = () => {
               </div>
 
               {/* Roadmap Content */}
-              <div className="p-8">
-                <ReactMarkdown
-                  remarkPlugins={[remarkGfm]}
-                  components={{
-                    h1: ({node, ...props}) => (
-                      <h1 className="text-2xl font-bold text-gray-800 mb-6" {...props} />
-                    ),
-                    h2: ({node, ...props}) => (
-                      <div className="mt-12 mb-6 flex items-center gap-4">
-                        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-indigo-50 flex items-center justify-center text-indigo-600">
-                          {getIconForHeading(props.children)}
+              <div className="p-8 space-y-12">
+                {roadmapSections.map((section, idx) => {
+                  const titleMatch = section.match(/^##\s+(.+)/m);
+                  const title = titleMatch ? titleMatch[1].trim() : `Section ${idx + 1}`;
+                  const body = titleMatch ? section.replace(/^##\s+.+\n?/, '') : section;
+                  return (
+                    <div key={idx} className="grid sm:grid-cols-[auto,1fr] gap-6">
+                      {/* Timeline Rail */}
+                      <div className="flex flex-col items-center">
+                        <div className="w-9 h-9 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white flex items-center justify-center font-semibold">
+                          {idx + 1}
                         </div>
-                        <h2 className="text-xl font-bold text-gray-800" {...props} />
+                        {idx < roadmapSections.length - 1 && (
+                          <div className="flex-1 w-px bg-purple-200"></div>
+                        )}
                       </div>
-                    ),
-                    h3: ({node, ...props}) => (
-                      <h3 className="text-lg font-semibold text-gray-800 mt-8 mb-4 flex items-center gap-3">
-                        <span className="w-2 h-2 bg-indigo-400 rounded-full"></span>
-                        {props.children}
-                      </h3>
-                    ),
-                    p: ({node, ...props}) => (
-                      <p className="text-gray-700 mb-6 leading-relaxed" {...props} />
-                    ),
-                    ul: ({node, ...props}) => (
-                      <ul className="space-y-3 mb-6 pl-5" {...props} />
-                    ),
-                    li: ({node, ...props}) => (
-                      <li className="text-gray-700 relative pl-5">
-                        <span className="absolute left-0 top-2 w-2 h-2 bg-indigo-300 rounded-full"></span>
-                        {props.children}
-                      </li>
-                    ),
-                    a: ({node, ...props}) => (
-                      <a 
-                        href={props.href} 
-                        target="_blank" 
-                        rel="noopener noreferrer"
-                        className="text-indigo-600 hover:text-indigo-800 font-medium hover:underline"
-                      >
-                        {props.children}
-                      </a>
-                    ),
-                    strong: ({node, ...props}) => (
-                      <strong className="font-semibold text-gray-800" {...props} />
-                    ),
-                    hr: ({node, ...props}) => (
-                      <hr className="my-8 border-t border-gray-200" {...props} />
-                    )
-                  }}
-                >
-                  {roadmap}
-                </ReactMarkdown>
+
+                      {/* Card */}
+                      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow duration-300">
+                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                          {title}
+                        </h3>
+                        <ReactMarkdown
+                          remarkPlugins={[remarkGfm]}
+                          components={{
+                            h1: ({ node, ...props }) => (
+                              <h1
+                                className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
+                              {...props}
+                              />
+                            ),
+                            h2: ({ node, ...props }) => (
+                              <div className="group mt-16 mb-8 flex items-center gap-4">
+                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                                  {getIconForHeading(props.children)}
+                                </div>
+                                <h2 className="text-2xl font-bold text-gray-900" {...props} />
+                              </div>
+                            ),
+                            h3: ({ node, ...props }) => (
+                              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mt-10 mb-5 flex items-center gap-3">
+                                <span className="w-2 h-2 bg-indigo-400 rounded-full"></span>
+                                {props.children}
+                              </h3>
+                            ),
+                            p: ({ node, ...props }) => (
+                              <p className="text-gray-600 mb-6 leading-relaxed" {...props} />
+                            ),
+                            ul: ({ node, ...props }) => (
+                              <ul className="space-y-3 mb-6 pl-6 border-l-2 border-indigo-100" {...props} />
+                            ),
+                            li: ({ node, ...props }) => (
+                              <li className="flex items-start gap-3 text-gray-700">
+                                {/* <FaCheckCircle className="text-purple-500 mt-1 flex-shrink-0" /> */}
+                                <span>{props.children}</span>
+                              </li>
+                            ),
+                            blockquote: ({ node, ...props }) => (
+                              <blockquote className="pl-4 border-l-4 border-purple-300 italic text-gray-600 my-6" {...props} />
+                            ),
+                            strong: ({ node, ...props }) => (
+                              <strong className="font-semibold text-gray-800" {...props} />
+                            ),
+                            code: ({ node, ...props }) => (
+                              <code className="inline-block bg-gray-100 px-1.5 py-1 rounded-md text-sm font-mono text-purple-600" {...props} />
+                            ),
+                            pre: ({ node, ...props }) => (
+                              <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm" {...props} />
+                            ),
+                            hr: ({ node, ...props }) => (
+                              <hr className="my-12 border-t-2 border-dotted border-indigo-200" {...props} />
+                            )
+                          }}
+                        >
+                          {body}
+                        </ReactMarkdown>
+                      </div>
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </motion.div>
         )}
         <ChatBot />
+
+          {loading && (
+            <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-md">
+              <svg className="animate-spin h-12 w-12 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+              </svg>
+              <p className="mt-6 text-lg font-medium text-indigo-700 animate-pulse">
+                {loadingMessages[loadingMessageIndex]}
+              </p>
+            </div>
+          )}
       </div>
     </div>
   );

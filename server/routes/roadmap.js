@@ -7,7 +7,7 @@ router.post('/generate-roadmap', auth, planAndUsageGuard('roadmap'), async (req,
   try {
     const { topic, level, duration } = req.body;
 
-    const prompt = `You are an expert career mentor and curriculum architect. Craft a **concise yet comprehensive** learning roadmap for **${topic}** tailored to a **${level}** learner that can be completed in **${duration} months**.
+    const prompt = `You are an award-winning curriculum designer and student success coach. Create a **concise yet comprehensive** outcome-based learning roadmap for **${topic}** aimed at a **${level}** learner. The roadmap must be realistically achievable within **${duration} months**, optimizing engagement, knowledge retention, and hands-on skill application.
 
 IMPORTANT FORMATTING RULES:
 - Use clear section headers with emojis
@@ -18,13 +18,14 @@ IMPORTANT FORMATTING RULES:
 - Include relevant emojis for visual appeal
 
 GUIDELINES:
-1. Structure content with clear hierarchy
-2. Use consistent formatting throughout
-3. Keep language simple and actionable
-4. Focus on practical, achievable goals
-5. Include relevant resources and tools
+1. Follow a progressive Bloom's Taxonomy sequence (Remember → Understand → Apply → Analyze → Evaluate → Create)
+2. Emphasize active learning via projects, peer discussion, and spaced repetition
+3. Keep language concise, motivating, and student-friendly
+4. Define measurable weekly outcomes and "definition of done" check-boxes
+5. Reference high-quality resources by name only (no external links) and essential tools
 
-Here's the structured format to follow:
+6. End every month with a mini-capstone project and self-assessment
+7. Present the monthly overview as a compact markdown table with columns **Month**, **Theme & Focus**, **Key Outcomes**\n\nHere's the structured format to follow:
 
 FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 
@@ -37,7 +38,10 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 **Duration:** ${duration} months  
 **Level:** ${level.charAt(0).toUpperCase() + level.slice(1)}
 
-### 📅 Monthly Breakdown
+### 📅 Monthly Summary Table (Overview)
+
+| Month | Theme & Focus | Key Outcomes |
+|-------|---------------|--------------|
 
 **Month 1: [Theme Name]**  
 ✨ *Brief theme description*
@@ -66,17 +70,21 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 **🎯 Theme Overview**  
 *Brief description of what this month focuses on and why it's important*
 
-**📝 Weekly Breakdown**
+**📝 Weekly Breakdown (Weeks 1-4)**
 
 **Week 1: [Topic]**
-- **Key Concepts:**
+- **Learning Objectives:**
   - Concept 1
   - Concept 2
-- **Tasks:**
+- **Practice & Activities:**
   - [ ] Task 1
   - [ ] Task 2
 - **Resources:**
-  - [Resource Name](https://example.com) - Brief description
+  - Resource Name - Brief description
+- **Reflection & Notes:**
+  - What did I learn?
+  - What will I improve next week?
+  - Resource Name - Brief description
 
 **Week 2: [Topic]**
 *Same structure as Week 1*
@@ -96,11 +104,11 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 
 **📚 Recommended Resources**
 - **📖 Books:**
-  - [Book Title](https://example.com) - Brief description
+  - Book Title - Brief description
 - **🎥 Videos:**
-  - [Video Title](https://youtube.com) - Brief description
+  - Video Title - Brief description
 - **📄 Articles:**
-  - [Article Title](https://example.com) - Brief description
+  - Article Title - Brief description
 
 ### Repeat the same structure for each remaining month
 
@@ -164,8 +172,8 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 - [ ] Requirement 3
 
 **Resources**
-- [Resource 1](https://example.com)
-- [Resource 2](https://example.com)
+- Resource 1
+- Resource 2
 
 ## 📋 Self-Assessment Checklist
 
@@ -190,24 +198,24 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 ## 📚 Additional Learning Resources
 
 ### Free Resources
-- [Resource Name](https://example.com)  
+- Resource Name  
   *Brief description and why it's valuable*
 
 ### Paid Courses
-- [Course Name](https://example.com)  
+- Course Name  
   *Key benefits and what you'll learn*
 
 ### Communities & Forums
-- [Community Name](https://example.com)  
+- Community Name  
   *How to get involved and benefits*
 
 ### Practice Platforms
-- [Platform Name](https://example.com)  
+- Platform Name  
   *Types of exercises and challenges available*
 
 Guidelines:
 - Prefer authoritative, ideally free resources.
-- Ensure all links are real and working.
+- Avoid external links; mention resource names only.
 - Keep tone motivating and actionable.
 - Avoid unnecessary fluff.`
 

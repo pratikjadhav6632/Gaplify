@@ -36,6 +36,14 @@ const SkillsAnalysis = () => {
   const [targetRole, setTargetRole] = useState('');
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
+  const loadingMessages = [
+    'Evaluating your skills...',
+    'Identifying gaps...',
+    'Mapping to career roles...',
+    'Fetching growth resources...',
+    'Almost done...'
+  ];
+  const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [error, setError] = useState('');
 
   const handleAddSkill = () => {
@@ -52,6 +60,19 @@ const SkillsAnalysis = () => {
     const newSkills = skills.filter((_, i) => i !== index);
     setSkills(newSkills);
   };
+
+  // Rotate loader messages
+  useEffect(() => {
+    let intervalId;
+    if (loading) {
+      intervalId = setInterval(() => {
+        setLoadingMessageIndex(prev => (prev + 1) % loadingMessages.length);
+      }, 2000);
+    } else {
+      setLoadingMessageIndex(0);
+    }
+    return () => clearInterval(intervalId);
+  }, [loading]);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -74,22 +95,30 @@ const SkillsAnalysis = () => {
         }
       };
 
-      // First, save skills to user profile
-      const skillsResponse = await axios.post(`${API_URL}/api/users/skills`, {
-        skills: skills
+      // Fire both requests in parallel to cut total waiting time
+      const skillsPromise = axios.post(`${API_URL}/api/users/skills`, {
+        skills
       }, config);
 
-      if (!skillsResponse.data.success) {
-        throw new Error(skillsResponse.data.message || 'Failed to update skills');
-      }
-
-      // Then, get career analysis from Gemini API
-      const analysisResponse = await axios.post(`${API_URL}/api/analysis/career`, {
-        skills: skills,
-        targetRole: targetRole
+      const analysisPromise = axios.post(`${API_URL}/api/analysis/career`, {
+        skills,
+        targetRole
       }, config);
 
+      // Wait primarily for analysis – this is what the user cares about
+      const analysisResponse = await analysisPromise;
       setAnalysis(analysisResponse.data);
+
+      // Handle skill-persistence result without blocking UI
+      skillsPromise
+        .then(res => {
+          if (!res.data.success) {
+            console.warn('Skill update failed:', res.data.message);
+          }
+        })
+        .catch(err => {
+          console.warn('Error updating skills:', err);
+        });
     } catch (err) {
       console.error('Error details:', err);
       setError(
@@ -233,8 +262,11 @@ const SkillsAnalysis = () => {
                 >
                   {loading ? (
                     <div className="flex items-center">
-                      <div className="loading-spinner w-5 h-5 mr-3"></div>
-                      Analyzing Your Career Path...
+                      <svg className="animate-spin h-5 w-5 mr-3 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                      </svg>
+                      {loadingMessages[loadingMessageIndex]}
                     </div>
                   ) : (
                     <div className="flex items-center">
@@ -365,6 +397,17 @@ const SkillsAnalysis = () => {
         </div>
       </div>
       <ChatBot />
+      {loading && (
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-md">
+          <svg className="animate-spin h-12 w-12 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
+            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+          </svg>
+          <p className="mt-6 text-lg font-medium text-indigo-700 animate-pulse">
+            {loadingMessages[loadingMessageIndex]}
+          </p>
+        </div>
+      )}
     </div>
   );
 };
