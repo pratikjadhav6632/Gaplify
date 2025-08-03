@@ -83,7 +83,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
 
     // Create the prompt for Gemini - **SIGNIFICANTLY IMPROVED PROMPT**
     const prompt = `
-      You are a career development expert. Analyze the following skills and provide a detailed career path analysis for becoming a ${targetRole}.
+      You are a career development expert with 10+ years of experience. Analyze the following skills and provide a detailed career path analysis for becoming a ${targetRole}.
 
       Current Skills:
       ${skillsList}
@@ -106,7 +106,6 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
                 "resources": [
                   {
                     "name": "resource name",
-                    "url": "https://resource-url.com",
                     "description": "brief description of the resource"
                   }
                 ]
@@ -118,14 +117,12 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
       5.  All string values **MUST** be enclosed in double quotes.
       6.  Use commas to separate array elements and object properties.
       7.  **DO NOT** include trailing commas (e.g., {"key": "value", } is invalid).
-      8.  Ensure all URLs are valid and complete (start with http:// or https://).
-      9.  Include at least 2-3 resources per roadmap step.
+      8.  Include at least 2-3 resources per roadmap step.
 
       Focus on:
       - Analyze the specific requirements for the role "${targetRole}"
       - Identify missing or underdeveloped skills needed for this exact role
       - Provide a structured learning path with specific steps
-      - Include practical resources with clickable URLs
       - Give a realistic timeline estimate based on current skill levels
     `;
 
@@ -187,16 +184,11 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
             throw new Error(`Roadmap step ${index} is missing required properties (title, description, resources).`);
         }
         step.resources.forEach((resource, resIndex) => {
-            if (!resource.name || !resource.url || !resource.description) {
+            if (!resource.name ||  !resource.description) {
                 console.error(`Resource ${resIndex} in roadmap step ${index} has invalid structure:`, resource);
                 throw new Error(`Resource ${resIndex} in roadmap step ${index} is missing required properties (name, url, description).`);
             }
-            try {
-                new URL(resource.url); // Validate URL format
-            } catch (e) {
-                console.error(`Resource ${resIndex} in roadmap step ${index} has an invalid URL: ${resource.url}`);
-                throw new Error(`Resource ${resIndex} in roadmap step ${index} has an invalid URL: ${resource.url}`);
-            }
+           
         });
     });
 

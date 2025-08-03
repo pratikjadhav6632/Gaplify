@@ -7,7 +7,7 @@ router.post('/generate-roadmap', auth, planAndUsageGuard('roadmap'), async (req,
   try {
     const { topic, level, duration } = req.body;
 
-    const prompt = `You are an award-winning curriculum designer and student success coach. Create a **concise yet comprehensive** outcome-based learning roadmap for **${topic}** aimed at a **${level}** learner. The roadmap must be realistically achievable within **${duration} months**, optimizing engagement, knowledge retention, and hands-on skill application.
+    const prompt = `You are an award-winning curriculum designer with 10+ years of experience and student success coach. Create a **concise yet comprehensive** outcome-based learning roadmap for **${topic}** atudent at **${level}** and want to go on advanced level. The roadmap must be realistically achievable within **${duration} months**, optimizing engagement, knowledge retention, and hands-on skill application.
 
 IMPORTANT FORMATTING RULES:
 - Use clear section headers with emojis
