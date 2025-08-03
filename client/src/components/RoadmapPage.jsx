@@ -3,7 +3,6 @@ import axios from 'axios';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 import html2pdf from 'html2pdf.js';
-import { marked } from 'marked';
 import { 
   FaDownload, 
   FaTrash,
@@ -13,8 +12,7 @@ import {
   FaTasks,
   FaGraduationCap,
   FaLightbulb,
-  FaChartLine,
-  FaCheckCircle
+  FaChartLine
 } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import ChatBot from './ChatBot';
