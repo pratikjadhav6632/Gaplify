@@ -5,20 +5,66 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, user-scalable=yes">
-    <title>Gaplify - AI-Powered Learning Platform | Bridge the Gap Between Education and Employment</title>
+    <title>Gaplify AI | Personalized Learning Paths & Career Guidance | Bridge to Your Dream Career</title>
     
     <!-- Essential Meta Tags -->
-    <meta name="description" content="Gaplify is an AI-powered learning platform that helps students bridge the gap between education and employment by providing personalized learning paths and career guidance. Our platform uses advanced AI algorithms to create customized learning experiences and career development plans.">
-    <meta name="keywords" content="AI learning, education technology, career development, skill development, personalized learning, employment gap, education gap, online education, career guidance, skill assessment, professional development">
+    <meta name="description" content="Discover Gaplify AI - Your personalized career bridge with AI-powered learning paths. Get started with customized career guidance and transform your professional future with our intelligent learning platform.">
+    <meta name="keywords" content="Gaplify AI, career guidance, personalized learning, learning paths, AI career, career bridge, get started, professional development, skill building, career transition, AI-powered education">
     <meta name="author" content="Gaplify">
     <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1">
     <meta name="revisit-after" content="7 days">
     <meta name="rating" content="general">
-    <meta name="copyright" content="© 2025 Gaplify">
+    <meta name="copyright" content=" 2025 Gaplify">
     <meta name="distribution" content="global">
     
+    <!-- Google Analytics (GA4) - Load without blocking -->
+    <script>
+      // Load GA asynchronously
+      (function() {
+        var ga = document.createElement('script');
+        ga.src = 'https://www.googletagmanager.com/gtag/js?id=YOUR_GA_MEASUREMENT_ID';
+        ga.async = true;
+        ga.defer = true;
+        document.head.appendChild(ga);
+        
+        // Initialize GA
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', 'YOUR_GA_MEASUREMENT_ID', { 'send_page_view': false });
+      })();
+    </script>
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://gaplify-y3vj.vercel.app" />
+    
+    <!-- Hreflang Tags for International SEO -->
+    <link rel="alternate" hreflang="en" href="https://gaplify-y3vj.vercel.app" />
+    <link rel="alternate" hreflang="en-us" href="https://gaplify-y3vj.vercel.app/en-us" />
+    <link rel="alternate" hreflang="en-gb" href="https://gaplify-y3vj.vercel.app/en-gb" />
+    <link rel="alternate" hreflang="es" href="https://gaplify-y3vj.vercel.app/es" />
+    <link rel="alternate" hreflang="fr" href="https://gaplify-y3vj.vercel.app/fr" />
+    <link rel="alternate" hreflang="de" href="https://gaplify-y3vj.vercel.app/de" />
+    <link rel="alternate" hreflang="x-default" href="https://gaplify-y3vj.vercel.app" />
+    
     <!-- Open Graph Meta Tags -->
-    <meta property="og:title" content="Gaplify - AI-Powered Learning Platform">
+    <meta property="og:site_name" content="Gaplify AI">
+    <meta property="og:title" content="Gaplify AI | Personalized Learning Paths & Career Guidance">
+    <meta property="og:description" content="Get started with Gaplify AI - Your personalized career bridge with AI-powered learning paths and expert career guidance to transform your professional future.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://gaplify-y3vj.vercel.app">
+    <meta property="og:image" content="https://gaplify-y3vj.vercel.app/og-image.jpg">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:image:alt" content="Gaplify - AI-Powered Learning Platform">
+    <meta property="og:locale" content="en_US">
+    
+    <!-- Twitter Card Meta Tags -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Gaplify AI | Personalized Learning Paths & Career Guidance">
+    <meta name="twitter:description" content="Get started with Gaplify AI - Your personalized career bridge with AI-powered learning paths and expert career guidance.">
+    <meta name="twitter:image" content="https://gaplify-y3vj.vercel.app/og-image.jpg">
+    <meta name="twitter:image:alt" content="Gaplify - AI-Powered Learning Platform">
     <meta property="og:description" content="Transform your learning journey with Gaplify - the AI-powered platform that bridges the gap between education and employment. Our platform uses advanced AI algorithms to create customized learning experiences and career development plans.">
     <meta property="og:type" content="website">
     <meta property="og:url" content="https://www.gaplify.com/">
@@ -58,12 +104,20 @@
     }
     </script>
     
+    <!-- Preload critical resources -->
+    <link rel="preload" href="/src/main.jsx" as="script" fetchpriority="high">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
+    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
+    
+    <!-- Preload critical CSS -->
+    <link rel="preload" href="/assets/styles.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="/assets/styles.css"></noscript>
+    
     <!-- Performance Optimization -->
     <meta http-equiv="Cache-Control" content="max-age=31536000">
     <meta http-equiv="Pragma" content="public">
-    <link rel="preload" href="/src/main.jsx" as="script">
-    <link rel="dns-prefetch" href="https://fonts.googleapis.com">
-    <link rel="dns-prefetch" href="https://fonts.gstatic.com">
     
     <!-- Additional SEO Meta Tags -->
     <meta name="application-name" content="Gaplify">
@@ -98,10 +152,6 @@
     <link rel="prefetch" href="/courses">
     <link rel="prefetch" href="/blog">
     
-    <!-- Preload -->
-    <link rel="preload" href="/assets/styles.css" as="style">
-    <link rel="preload" href="/assets/main.js" as="script">
-    
     <!-- AMP -->
     <link rel="amphtml" href="https://www.gaplify.com/amp/">
     
@@ -134,18 +184,19 @@
     
     <!-- Facebook Pixel -->
     <meta name="fb:app_id" content="YOUR_FACEBOOK_APP_ID">
-    
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=YOUR_GA_ID"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'YOUR_GA_ID');
-    </script>
   </head>
   <body>
     <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <!-- Load main script with defer -->
+    <script type="module" src="/src/main.jsx" defer></script>
+    
+    <!-- Load non-critical CSS -->
+    <link rel="preload" href="/assets/main.js" as="script" fetchpriority="low">
+    
+    <!-- Load fonts after critical content -->
+    <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    </noscript>
   </body>
 </html>
