@@ -181,31 +181,33 @@ const ResourceHub = () => {
             <FaFilter className="w-5 h-5 text-primary-600" />
             <h2 className="text-xl font-semibold text-gray-900">Filter by Category</h2>
           </div>
-          <div className="flex flex-wrap gap-4">
-            {categories.map((category) => {
-              const Icon = category.icon;
-              return (
-                <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id)}
-                  className={`flex items-center space-x-2 px-6 py-3 rounded-xl transition-all duration-200 group ${
-                    selectedCategory === category.id
-                      ? 'bg-primary-600 text-white shadow-medium'
-                      : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-700 border border-gray-200'
-                  }`}
-                >
-                  <Icon className={`w-4 h-4 group-hover:scale-110 transition-transform ${
-                    selectedCategory === category.id ? 'text-white' : 'text-gray-400'
-                  }`} />
-                  <span className="font-medium">{category.name}</span>
-                </button>
-              );
-            })}
+          <div className="mobile-scroll">
+            <div className="flex gap-3 sm:gap-4 pb-2">
+              {categories.map((category) => {
+                const Icon = category.icon;
+                return (
+                  <button
+                    key={category.id}
+                    onClick={() => setSelectedCategory(category.id)}
+                    className={`flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-200 group whitespace-nowrap mobile-safe ${
+                      selectedCategory === category.id
+                        ? 'bg-primary-600 text-white shadow-medium'
+                        : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-700 border border-gray-200'
+                    }`}
+                  >
+                    <Icon className={`w-4 h-4 group-hover:scale-110 transition-transform ${
+                      selectedCategory === category.id ? 'text-white' : 'text-gray-400'
+                    }`} />
+                    <span className="font-medium mobile-text">{category.name}</span>
+                  </button>
+                );
+              })}
+            </div>
           </div>
         </div>
 
         {/* Resources Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-12" style={{ animationDelay: '0.3s' }}>
+        <div className="mobile-grid gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12" style={{ animationDelay: '0.3s' }}>
           {filteredResources.map((resource, index) => (
             <div key={resource.id} style={{ animationDelay: `${index * 0.1}s` }}>
               <ResourceCard resource={resource} />
@@ -236,12 +238,12 @@ const ResourceHub = () => {
         )}
 
         {/* Stats Section */}
-        <div className="card p-8" style={{ animationDelay: '0.5s' }}>
-          <div className="text-center mb-8">
-            <h3 className="text-2xl font-bold text-gray-900 mb-2">Resource Hub Stats</h3>
-            <p className="text-gray-600">Your learning journey at a glance</p>
+        <div className="card mobile-padding" style={{ animationDelay: '0.5s' }}>
+          <div className="text-center mb-6 sm:mb-8">
+            <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Resource Hub Stats</h3>
+            <p className="text-gray-600 mobile-text">Your learning journey at a glance</p>
           </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="mobile-grid gap-6 sm:gap-8">
             <div className="text-center">
               <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-2xl font-bold mx-auto mb-4">
                 {trendingResources.length}

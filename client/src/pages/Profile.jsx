@@ -127,9 +127,9 @@ const Profile = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8" style={{ backgroundColor: '#f9fafb', minHeight: '100vh', padding: '2rem 0' }}>
-      <div className="container-responsive">
-        <div className="max-w-4xl mx-auto">
+    <div className="min-h-screen bg-gray-50" style={{ backgroundColor: '#f9fafb' }}>
+      <div className="container-responsive py-4 sm:py-6 lg:py-8">
+        <div className="max-w-4xl mx-auto mobile-safe">
           {/* Header Section */}
           <div className="text-center mb-8">
             <div className="inline-flex items-center px-4 py-2 bg-primary-100 text-primary-700 rounded-full text-sm font-medium mb-6">
@@ -143,56 +143,60 @@ const Profile = () => {
             <div className="w-24 h-1 bg-gradient-to-r from-primary-500 to-secondary-500 mx-auto mb-6 rounded-full"></div>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
             {/* Profile Card */}
             <div className="lg:col-span-2">
-              <div className="card p-8" style={{ animationDelay: '0.1s' }}>
+              <div className="card mobile-padding" style={{ animationDelay: '0.1s' }}>
                 <div className="flex items-center justify-between mb-8">
                   <div className="flex items-center space-x-4">
-                    <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-2xl font-bold">
+                    <div className="w-14 h-14 sm:w-16 sm:h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold">
                       {profile?.username ? profile.username.charAt(0).toUpperCase() : 'U'}
                     </div>
                     <div>
-                      <h2 className="text-2xl font-bold text-gray-900">{profile?.username || user?.name || 'User'}</h2>
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{profile?.username || user?.name || 'User'}</h2>
                       <p className="text-gray-600">{profile?.email || user?.email}</p>
                     </div>
                   </div>
                   <div className="flex items-center space-x-2">
                     <FaCrown className="w-5 h-5 text-accent-500" />
-                    <button
-                      className={`px-3 py-1 rounded-full text-sm font-medium focus:outline-none ${
-                        isPremium
-                          ? 'bg-accent-100 text-accent-800 cursor-default'
-                          : 'bg-gray-100 text-gray-800 hover:bg-primary-200 hover:text-primary-900 cursor-pointer'
-                      }`}
-                      disabled={isPremium}
-                      onClick={() => {
-                        if (!isPremium) setShowUpgradeModal(true);
-                      }}
-                    >
-                      {user?.planType || 'Free'}
-                    </button>
-                    <span className="text-sm text-gray-500 ">
-                      {user.premiumExpiry && new Date(user.premiumExpiry).toLocaleDateString('en-US', {
-                        year: 'numeric',
-                        month: 'short',
-                        day: 'numeric'
-                      })}
-                    </span>
+                    <div className="relative group">
+                      <button
+                        className={`px-2 sm:px-3 py-1 rounded-full text-sm font-medium focus:outline-none ${
+                          isPremium
+                            ? 'bg-accent-100 text-accent-800 cursor-default'
+                            : 'bg-gray-100 text-gray-800 hover:bg-primary-200 hover:text-primary-900 cursor-pointer'
+                        }`}
+                        disabled={isPremium}
+                        onClick={() => {
+                          if (!isPremium) setShowUpgradeModal(true);
+                        }}
+                      >
+                        {user?.planType || 'Free'}
+                      </button>
+                      {isPremium && (
+                        <div className="absolute -top-6 -right-6 p-2 bg-white rounded-lg shadow-md border border-gray-200 text-sm text-gray-600 whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity duration-200 z-10">
+                          Premium until: {new Date(user.premiumExpiry).toLocaleDateString('en-US', {
+                            year: 'numeric',
+                            month: 'short',
+                            day: 'numeric'
+                          })}
+                        </div>
+                      )}
+                    </div>
                   </div>
                 </div>
 
                 {/* Profile Details */}
-                <div className="space-y-6">
-                  <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                <div className="space-y-4 sm:space-y-6">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <FaUser className="w-5 h-5 text-primary-600" />
                     <div>
-                      <p className="text-sm text-gray-600">Username</p>
-                      <p className="font-semibold text-gray-900">{profile?.username || 'Not set'}</p>
+                      <p className="text-xs sm:text-sm text-gray-600">Username</p>
+                      <p className="font-semibold text-sm sm:text-base text-gray-900">{profile?.username || 'Not set'}</p>
                     </div>
                   </div>
 
-                  <div className="flex items-center space-x-4 p-4 bg-gray-50 rounded-lg">
+                  <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
                     <FaEnvelope className="w-5 h-5 text-primary-600" />
                     <div>
                       <p className="text-sm text-gray-600">Email</p>
@@ -207,10 +211,10 @@ const Profile = () => {
                       <h3 className="text-lg font-semibold text-gray-900">Your Skills</h3>
                     </div>
                     {profile?.skills && profile.skills.length > 0 ? (
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                      <div className="mobile-grid gap-3">
                         {profile.skills.map((skill, idx) => (
-                          <div key={idx} className="skill-tag">
-                            <span className="font-medium">{skill.name}</span>
+                          <div key={idx} className="skill-tag mobile-safe">
+                            <span className="font-medium mobile-text">{skill.name}</span>
                             <span className="ml-2 px-2 py-0.5 bg-primary-200 text-primary-800 rounded-full text-xs">
                               {skill.proficiency}
                             </span>
@@ -236,7 +240,7 @@ const Profile = () => {
 
             {/* Actions Sidebar */}
             <div className="lg:col-span-1">
-              <div className="card p-6" style={{ animationDelay: '0.2s' }}>
+              <div className="card mobile-padding" style={{ animationDelay: '0.2s' }}>
                 <h3 className="text-lg font-semibold text-gray-900 mb-6">Quick Actions</h3>
                 <div className="space-y-4">
                   <button className="w-full btn btn-outline btn-sm group"

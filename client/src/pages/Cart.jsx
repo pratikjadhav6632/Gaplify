@@ -28,10 +28,10 @@ const Cart = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-4 sm:py-6 lg:py-8">
       <div className="container-responsive">
         {/* Header Section */}
-        <div className="flex flex-col md:flex-row md:justify-between md:items-center mb-8">
+        <div className="mobile-stack mb-6 sm:mb-8">
           <div className="mb-4 md:mb-0">
             <div className="flex items-center space-x-3 mb-2">
               <div className="w-10 h-10 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white">
