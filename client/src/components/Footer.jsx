@@ -76,6 +76,12 @@ const Footer = () => {
                 </Link>
               </li>
               <li>
+                <Link to="/blog" className="text-gray-300 hover:text-primary-400 transition-colors duration-200 flex items-center">
+                  <span className="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
+                  Blog
+                </Link>
+              </li>
+              <li>
                 <Link to="/mentors" className="text-gray-300 hover:text-primary-400 transition-colors duration-200 flex items-center">
                   <span className="w-2 h-2 bg-primary-500 rounded-full mr-3"></span>
                   Mentors

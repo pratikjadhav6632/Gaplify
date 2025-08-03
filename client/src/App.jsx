@@ -3,6 +3,28 @@ import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import axios from 'axios';
+import FacebookPixel from './components/FacebookPixel';
+
+// Structured Data Markup
+const structuredData = {
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Gaplify",
+  "description": "AI-powered career development platform bridging the gap between ambition and achievement",
+  "url": "https://www.gaplify.com",
+  "logo": "https://www.gaplify.com/logo.png",
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+1-555-0123",
+    "contactType": "customer service"
+  },
+  "sameAs": [
+    "https://www.linkedin.com/company/gaplify",
+    "https://twitter.com/gaplify",
+    "https://www.instagram.com/gaplify/",
+    "https://www.facebook.com/gaplify"
+  ]
+};
 
 
 import { API_URL } from './config/api';
@@ -22,6 +44,7 @@ import TrendingSkills from './components/TrendingSkills';
 import History from './components/History';
 import ResourceHub from './pages/ResourceHub';
 import Cart from './pages/Cart';
+import Blog from './components/Blog';
 import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import Mentors from './components/Mentors';
@@ -86,11 +109,18 @@ function App() {
   useEffect(() => {
     // Initialize animations when the app loads
     initAnimations();
+    
+    // Add structured data to the document
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
   }, []);
 
   return (
     <AuthProvider>
       <CartProvider>
+        <FacebookPixel />
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-50">
             <Navbar />
@@ -137,6 +167,22 @@ function App() {
                   element={
                     <PrivateRoute>
                       <ResourceHub />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/blog"
+                  element={
+                    <PrivateRoute>
+                      <Blog />
+                    </PrivateRoute>
+                  }
+                />
+                <Route
+                  path="/blog/:slug"
+                  element={
+                    <PrivateRoute>
+                      <Blog />
                     </PrivateRoute>
                   }
                 />
