@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useAuth } from './AuthContext';
+import { API_URL } from '../config/api';
 
 const CartContext = createContext();
 
@@ -21,7 +22,7 @@ export const CartProvider = ({ children }) => {
     const fetchUserCart = async () => {
       if (user) {
         try {
-          const response = await fetch('/api/interests', {
+          const response = await fetch(`${API_URL}/api/interests`, {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`
             }
@@ -76,7 +77,7 @@ export const CartProvider = ({ children }) => {
       // Log the request being made
       console.log('Adding to cart:', { resource });
       
-      const response = await fetch('/api/interests', {
+      const response = await fetch(`${API_URL}/api/interests`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +131,7 @@ export const CartProvider = ({ children }) => {
     if (!user) return;
 
     try {
-      const response = await fetch(`/api/interests/${resourceId}`, {
+const response = await fetch(`${API_URL}/api/interests/${resourceId}`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
@@ -160,7 +161,7 @@ export const CartProvider = ({ children }) => {
     if (!user) return;
 
     try {
-      const response = await fetch('/api/interests/clear', {
+const response = await fetch(`${API_URL}/api/interests/clear`, {
         method: 'DELETE',
         headers: {
           'Authorization': `Bearer ${localStorage.getItem('token')}`
