@@ -65,7 +65,6 @@ export const CartProvider = ({ children }) => {
     }
 
     try {
-     
       const token = localStorage.getItem('token');
       
       if (!token) {
@@ -74,7 +73,9 @@ export const CartProvider = ({ children }) => {
         return;
       }
 
-     
+      // Log the request being made
+      console.log('Adding to cart:', { resource });
+      
       const response = await fetch('/api/interests', {
         method: 'POST',
         headers: {
@@ -84,20 +85,36 @@ export const CartProvider = ({ children }) => {
         body: JSON.stringify(resource)
       });
 
-     
-      const data = await response.json();
-  
+      // First, get the response text
+      const responseText = await response.text();
+      let data;
+      
+      try {
+        // Try to parse the response as JSON
+        data = responseText ? JSON.parse(responseText) : {};
+      } catch (parseError) {
+        console.error('Failed to parse response as JSON:', {
+          status: response.status,
+          statusText: response.statusText,
+          responseText,
+          error: parseError
+        });
+        throw new Error('Invalid response from server. Please try again.');
+      }
 
       if (response.ok) {
-      
         setCart(data);
+        return { success: true, data };
       } else {
         console.error('Failed to add to cart:', {
           status: response.status,
           statusText: response.statusText,
-          data: data
+          data: data || 'No data in response'
         });
-        alert(data.message || `Failed to add resource to cart (${response.status})`);
+        
+        const errorMessage = data?.message || 
+                           (data?.error || `Failed to add resource (${response.status})`);
+        throw new Error(errorMessage);
       }
     } catch (error) {
       console.error('Error adding to cart:', {
