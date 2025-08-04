@@ -13,7 +13,7 @@ function cleanAndParseJson(text) {
   // Attempt standard JSON.parse first (most efficient if valid)
   try {
     const parsedJson = JSON.parse(text);
-    console.log('cleanAndParseJson: Standard JSON.parse successful.');
+
     return parsedJson;
   } catch (initialError) {
     

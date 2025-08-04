@@ -3,7 +3,7 @@ import axios from 'axios';
 import { useAuth } from '../context/AuthContext';
 import { useNavigate } from 'react-router-dom';
 import { API_URL } from '../config/api';
-import { FaUser, FaEnvelope, FaBrain, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory, FaFile, FaInfoCircle } from 'react-icons/fa';
+import { FaUser, FaEnvelope, FaBrain, FaQuestionCircle, FaFileContract, FaSignOutAlt, FaCrown, FaHistory, FaFile, FaInfoCircle, FaTimes } from 'react-icons/fa';
 import { HiAcademicCap, HiSparkles } from 'react-icons/hi';
 import PremiumModal from '../components/PremiumModal';
 
@@ -12,6 +12,7 @@ const Profile = () => {
   const [loading, setLoading] = useState(true);
   const [showUpgradeModal, setShowUpgradeModal] = useState(false);
   const [premiumLoading, setPremiumLoading] = useState(false);
+  const [isRemoving, setIsRemoving] = useState(false);
 
   const { user, logout } = useAuth();
 
@@ -112,8 +113,51 @@ const Profile = () => {
     navigate('/login');
   };
 
+  const handleRemoveSkill = async (skillId) => {
+    if (!skillId || isRemoving) return;
+    
+    try {
+      setIsRemoving(true);
+      const token = localStorage.getItem('token');
+      const { data } = await axios.delete(
+        `${API_URL}/api/users/skills/${skillId}`, 
+        { headers: { Authorization: `Bearer ${token}` } }
+      );
+      
+      if (data.success) {
+        // Update local state to remove the skill
+        setProfile(prev => ({
+          ...prev,
+          skills: prev.skills.filter(skill => skill._id !== skillId)
+        }));
+      }
+    } catch (err) {
+      console.error('Error removing skill:', err);
+      alert('Failed to remove skill. Please try again.');
+    } finally {
+      setIsRemoving(false);
+    }
+  };
+
   // Helper to check if user is premium
   const isPremium = (user?.planType || '').toLowerCase() === 'premium';
+  
+  // Helper to get unique skills by name (case-insensitive)
+  const getUniqueSkills = (skills) => {
+    const uniqueSkills = new Map();
+    skills?.forEach(skill => {
+      if (skill?.name) {
+        const key = skill.name.trim().toLowerCase();
+        if (!uniqueSkills.has(key)) {
+          uniqueSkills.set(key, skill);
+        }
+      }
+    });
+    return Array.from(uniqueSkills.values());
+  };
+  
+  // Get unique skills for display
+  const uniqueSkills = getUniqueSkills(profile?.skills);
 
   if (loading) {
     return (
@@ -210,14 +254,25 @@ const Profile = () => {
                       <FaBrain className="w-5 h-5 text-primary-600" />
                       <h3 className="text-lg font-semibold text-gray-900">Your Skills</h3>
                     </div>
-                    {profile?.skills && profile.skills.length > 0 ? (
+                    {uniqueSkills && uniqueSkills.length > 0 ? (
                       <div className="mobile-grid gap-3">
-                        {profile.skills.map((skill, idx) => (
-                          <div key={idx} className="skill-tag mobile-safe">
+                        {uniqueSkills.map((skill, idx) => (
+                          <div key={skill._id || idx} className="skill-tag mobile-safe group relative pr-8">
                             <span className="font-medium mobile-text">{skill.name}</span>
                             <span className="ml-2 px-2 py-0.5 bg-primary-200 text-primary-800 rounded-full text-xs">
                               {skill.proficiency}
                             </span>
+                            <button
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleRemoveSkill(skill._id);
+                              }}
+                              className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-red-500 transition-colors p-1"
+                              disabled={isRemoving}
+                              title="Remove skill"
+                            >
+                              <FaTimes className="w-3 h-3" />
+                            </button>
                           </div>
                         ))}
                       </div>

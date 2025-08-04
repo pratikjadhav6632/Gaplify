@@ -14,28 +14,53 @@ const SkillsAnalysis = () => {
 
 
 
-  // Prefill existing skills
+  // Prefill existing skills with deduplication
   useEffect(() => {
     const fetchSkills = async () => {
       try {
         const token = localStorage.getItem('token');
         if (!token) return;
+        
         const { data } = await axios.get(`${API_URL}/api/users/skills`, {
           headers: { Authorization: `Bearer ${token}` }
         });
+        
         if (data.skills && Array.isArray(data.skills) && data.skills.length) {
-          setSkills(data.skills);
+          // Deduplicate skills by name (case-insensitive)
+          const uniqueSkillsMap = new Map();
+          data.skills.forEach(skill => {
+            if (skill?.name) {
+              const key = skill.name.trim().toLowerCase();
+              if (!uniqueSkillsMap.has(key)) {
+                uniqueSkillsMap.set(key, skill);
+              }
+            }
+          });
+          
+          const uniqueSkills = Array.from(uniqueSkillsMap.values());
+          
+          // Only update state if we have skills to display
+          if (uniqueSkills.length > 0) {
+            setSkills(uniqueSkills);
+          } else {
+            // If no skills, ensure we have at least one empty field
+            setSkills([{ name: '', proficiency: 'Beginner' }]);
+          }
         }
       } catch (err) {
         console.error('Error fetching saved skills', err);
+        // Ensure we always have at least one skill field
+        setSkills([{ name: '', proficiency: 'Beginner' }]);
       }
     };
+    
     fetchSkills();
   }, []);
   
   const [targetRole, setTargetRole] = useState('');
   const [analysis, setAnalysis] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [duplicateError, setDuplicateError] = useState('');
   const loadingMessages = [
     'Evaluating your skills...',
     'Identifying gaps...',
@@ -47,12 +72,57 @@ const SkillsAnalysis = () => {
   const [error, setError] = useState('');
 
   const handleAddSkill = () => {
+    // Check if the last skill is empty before adding a new one
+    if (skills.length > 0 && !skills[skills.length - 1].name.trim()) {
+      setDuplicateError('Please fill in the current skill before adding a new one');
+      return;
+    }
+    
+    // Check if the last skill is a duplicate
+    if (skills.length > 0) {
+      const lastSkill = skills[skills.length - 1];
+      const isDuplicate = skills.slice(0, -1).some(skill => 
+        skill.name.trim().toLowerCase() === lastSkill.name.trim().toLowerCase()
+      );
+      
+      if (isDuplicate) {
+        setDuplicateError('This skill has already been added');
+        return;
+      }
+    }
+    
     setSkills([...skills, { name: '', proficiency: 'Beginner' }]);
+    setDuplicateError('');
   };
 
   const handleSkillChange = (index, field, value) => {
     const newSkills = [...skills];
-    newSkills[index][field] = value;
+    
+    // If changing the skill name, check for duplicates
+    if (field === 'name') {
+      const trimmedValue = value.trim();
+      const normalizedValue = trimmedValue.toLowerCase();
+      
+      // Check for duplicates in other fields
+      const isDuplicate = newSkills.some((skill, i) => 
+        i !== index && 
+        skill.name.trim().toLowerCase() === normalizedValue &&
+        normalizedValue !== ''
+      );
+      
+      if (isDuplicate) {
+        setDuplicateError('This skill has already been added');
+        return;
+      } else {
+        setDuplicateError('');
+      }
+      
+      // Update the value
+      newSkills[index][field] = value;
+    } else {
+      newSkills[index][field] = value;
+    }
+    
     setSkills(newSkills);
   };
 
@@ -177,9 +247,13 @@ const SkillsAnalysis = () => {
                           value={skill.name}
                           onChange={(e) => handleSkillChange(index, 'name', e.target.value)}
                           placeholder="Enter skill name (e.g., JavaScript, Project Management, Design)"
-                          className="form-input w-full text-base"
+                          className={`form-input w-full text-base ${duplicateError ? 'border-error-500' : ''}`}
                           required
+                          onFocus={() => setDuplicateError('')}
                         />
+                        {duplicateError && (
+                          <p className="mt-1 text-sm text-error-600">{duplicateError}</p>
+                        )}
                       </div>
                       <div className="w-full md:w-48">
                         <select
@@ -191,6 +265,12 @@ const SkillsAnalysis = () => {
                           <option value="Intermediate">Intermediate</option>
                           <option value="Advanced">Advanced</option>
                         </select>
+                      </div>
+                      <div className="space-y-2">
+                       
+                        {duplicateError && (
+                          <p className="text-sm text-error-600 text-center">{duplicateError}</p>
+                        )}
                       </div>
                       <button
                         type="button"
