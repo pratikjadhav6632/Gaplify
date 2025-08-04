@@ -4,6 +4,7 @@ import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
 import axios from 'axios';
 import FacebookPixel from './components/FacebookPixel';
+import { HelmetProvider } from 'react-helmet-async';
 
 // Structured Data Markup
 const structuredData = {
@@ -120,6 +121,7 @@ function App() {
     <AuthProvider>
       <CartProvider>
         <FacebookPixel />
+        <HelmetProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-50">
             <Navbar />
@@ -225,6 +227,7 @@ function App() {
             <Footer />
           </div>
         </Router>
+        </HelmetProvider>
       </CartProvider>
     </AuthProvider>
   );
