@@ -13,12 +13,21 @@ const mentors = [
     expertise: "Web Development, UI/UX Design, Entrepreneurship, IT Field, Mentorship & Community Building",
     email: "Pratikjadhav6632@gmail.com",
     mobile: "+91 8408868107",
-    bio: "Full-stack web developer and CTO at Foundrr, where I led the development of a scalable platform connecting entrepreneurs, mentors, and investors across India. I specialize in building modern, responsive web applications using technologies like React, Node.js, Express.js, MongoDB, Firebase, Appwrite, and Tailwind CSS. With hands-on experience in deploying production-ready platforms, managing end-to-end tech architecture, and integrating real-time features such as authentication, chat, and co-founder matching, I bring a deep understanding of startup-centric product development. I'm passionate about mentoring aspiring developers, especially from Tier 1 and Tier 2 cities, and helping them translate their ideas into impactful digital solutions.",
-    rating: 4.9,
-    students: 150,
-    experience: "5+ years",
-    avatar: "PJ",
-    linkedin: "https://www.linkedin.com/in/pratik-jadhav--/"
+    bio: `Full-stack web developer and CTO at Foundrr, where I led the development of a scalable platform connecting entrepreneurs, mentors, and investors across India.
+
+I specialize in building modern, responsive web applications using technologies like React, Node.js, Express.js, MongoDB, Firebase, Appwrite, and Tailwind CSS.
+
+With hands-on experience in deploying production-ready platforms, managing end-to-end tech architecture, and integrating real-time features such as authentication, chat, and co-founder matching, I bring a deep understanding of startup-centric product development.
+
+I'm also the Founder of Gaplify, an initiative focused on bridging skill and opportunity gaps for students and early-stage founders, helping them overcome challenges that are often normalized or overlooked.
+
+I'm passionate about mentoring aspiring developers, especially from Tier 1 and Tier 2 cities, and helping them translate their ideas into impactful digital solutions.`
+  ,
+  rating: 4.9,
+  students: 10,
+  experience: "1+ years",
+  avatar: "PJ",
+  linkedin: "https://www.linkedin.com/in/pratik-jadhav--/"
   }
 ];
 
@@ -124,7 +133,7 @@ const Mentors = () => {
       };
 
       const response = await axios.post(`${API_URL}/api/send-email`, emailData);
-      
+
       if (response.data.success) {
         alert('Message sent successfully! The mentor will contact you soon.');
         handleCloseMessageModal();
@@ -177,8 +186,8 @@ const Mentors = () => {
               localStorage.setItem('user', JSON.stringify(userData));
               setUser(userData);
               alert('Congratulations! You are now a premium user.');
-               // Reload page to reflect premium status
-               window.location.reload();
+              // Reload page to reflect premium status
+              window.location.reload();
               setModalOpen(false);
             } else {
               alert('Payment verification failed.');
@@ -338,7 +347,7 @@ const Mentors = () => {
             >
               &times;
             </button>
-            
+
             <div className="flex items-center space-x-4 mb-6">
               <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
                 {selectedMentor.avatar}
@@ -384,7 +393,7 @@ const Mentors = () => {
               </div>
 
               <div className="flex space-x-4">
-                <button 
+                <button
                   className="btn btn-primary btn-lg group flex-1"
                   onClick={handleOpenMessageModal}
                 >
@@ -414,7 +423,7 @@ const Mentors = () => {
             >
               &times;
             </button>
-            
+
             <div className="mb-6">
               <h2 className="text-2xl font-bold text-gray-900 mb-2">Send Message to {selectedMentor?.name}</h2>
               <p className="text-gray-600">Fill out the form below to schedule a meeting with your mentor.</p>
@@ -581,7 +590,7 @@ const Mentors = () => {
                 </button>
               </div>
             </form>
-          
+
           </div>
         </div>
       )}

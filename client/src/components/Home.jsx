@@ -1,6 +1,5 @@
 import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
-import ChatBot from './ChatBot';
 import { FaMap, FaStar, FaQuoteLeft, FaChevronLeft, FaChevronRight, FaRocket, FaGraduationCap, FaUsers, FaChartLine } from "react-icons/fa";
 import { SiChatbot } from "react-icons/si";
 import { TbReportAnalytics, TbTargetArrow, TbBulb, TbRocket, TbBrain, TbTrendingUp } from "react-icons/tb";
@@ -15,37 +14,37 @@ const Home = () => {
   
   // Sample testimonials data
   const testimonials = [
+     {
+      name: 'Smita Kulkarni',
+      role: 'UX Designer',
+      content: 'Mentor support was exceptional. My mentor helped me build a strong portfolio that got me multiple job offers.',
+      rating: 5,
+      avatar: 'SK',
+      company: ''
+    },
     {
-      name: 'Sarah Johnson',
+      name: 'Samarth Jadhav',
       role: 'Software Engineer',
       content: 'Gaplify helped me identify the exact skills I needed to transition into tech. The personalized roadmap made all the difference in my career change journey.',
       rating: 5,
       avatar: 'SJ',
-      company: 'Google'
+      company: ''
     },
     {
-      name: 'Michael Chen',
+      name: 'Rohan Shrivastava',
       role: 'Product Manager',
       content: 'The AI career assistant provided insights I never would have considered. It helped me position myself for a promotion within just 6 months!',
       rating: 5,
-      avatar: 'MC',
-      company: 'Microsoft'
+      avatar: 'RS',
+      company: 'InfoTech.co'
     },
     {
-      name: 'Emily Rodriguez',
+      name: 'Anjali Patil',
       role: 'Data Scientist',
       content: 'The skill gap analysis was eye-opening. I was able to focus my learning on high-impact areas that directly contributed to landing my dream job.',
       rating: 5,
-      avatar: 'ER',
-      company: 'Netflix'
-    },
-    {
-      name: 'David Kim',
-      role: 'UX Designer',
-      content: 'Mentor support was exceptional. My mentor helped me build a strong portfolio that got me multiple job offers.',
-      rating: 5,
-      avatar: 'DK',
-      company: 'Apple'
+      avatar: 'AP',
+      company: 'A2Z Analytics'
     }
   ];
 
@@ -292,28 +291,31 @@ const Home = () => {
 
             <div className="card card-interactive p-8 flex flex-col items-center text-center h-full animate-on-scroll" style={{ animationDelay: '0.3s' }}>
               <div className="w-20 h-20 bg-gradient-to-br from-accent-500 to-primary-500 rounded-2xl flex items-center justify-center text-white text-3xl mb-6 group-hover:scale-110 transition-transform duration-300">
-                <SiChatbot/>
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                </svg>
               </div>
-              <h3 className="text-2xl font-semibold text-gray-900 mb-3">AI Assistant</h3>
-              <p className="text-gray-600 mb-6">24/7 career guidance and support from our AI-powered assistant.</p>
+              <h3 className="text-2xl font-semibold text-gray-900 mb-3">Expert Mentors</h3>
+              <p className="text-gray-600 mb-6">Connect with industry professionals for personalized career guidance and growth.</p>
               <ul className="text-left text-gray-600 space-y-2 mb-6 w-full">
                 <li className="flex items-start">
                   <span className="text-success-500 mr-2 text-lg">✓</span>
-                  <span>Instant career advice</span>
+                  <span>1:1 mentorship sessions</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-success-500 mr-2 text-lg">✓</span>
-                  <span>Interview preparation</span>
+                  <span>Industry-specific advice</span>
                 </li>
                 <li className="flex items-start">
                   <span className="text-success-500 mr-2 text-lg">✓</span>
-                  <span>Question answering</span>
+                  <span>Career path planning</span>
                 </li>
               </ul>
               <button 
                 className="mt-auto btn btn-accent btn-sm"
+                onClick={() => navigateTo('/mentors')}
               >
-                Try AI Assistant →
+                Find a Mentor →
               </button>
             </div>
           </div>
@@ -406,12 +408,7 @@ const Home = () => {
             </div>
           </div>
           
-          <div className="mt-12 text-center animate-on-scroll">
-            <button className="btn btn-primary btn-lg group">
-              Read More Success Stories
-              <TbTrendingUp className="w-5 h-5 ml-2 group-hover:animate-bounce" />
-            </button>
-          </div>
+    
         </div>
       </section>
 
@@ -446,8 +443,6 @@ const Home = () => {
         <div className="absolute top-10 left-10 w-16 h-16 bg-white/10 rounded-full float"></div>
         <div className="absolute bottom-10 right-10 w-24 h-24 bg-white/5 rounded-full float" style={{ animationDelay: '1s' }}></div>
       </section>
-
-      {user && <ChatBot />}
     </div>
   );
 };
