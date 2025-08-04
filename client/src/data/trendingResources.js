@@ -108,7 +108,7 @@ export const trendingResources = [
     link: "https://www.youtube.com/watch?v=vStJoetOxJg&list=PLkDaE6sCZn6FNC6YRfRQc_FbeQrF8BwGI",
     rating: 4.8
   }, 
-    {
+  {
       id: "13",
       title: "Google Digital Garage: Fundamentals of Digital Marketing",
       description: "Complete 40-hour course covering all digital marketing fundamentals with certificate.",
