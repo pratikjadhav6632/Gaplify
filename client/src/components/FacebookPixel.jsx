@@ -12,15 +12,15 @@ const FacebookPixel = () => {
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
 
-    // Get Facebook Pixel ID from environment variable
-    const pixelId = process.env.REACT_APP_FACEBOOK_PIXEL_ID;
+    // Get Facebook Pixel ID from Vite environment variable
+    const pixelId = import.meta.env.VITE_FACEBOOK_PIXEL_ID;
     
     // Only initialize if pixelId is set
     if (pixelId && pixelId !== 'YOUR_PIXEL_ID_HERE') {
       fbq('init', pixelId);
       fbq('track', 'PageView');
     } else {
-      console.warn('Facebook Pixel ID not configured. Please set REACT_APP_FACEBOOK_PIXEL_ID in your .env file');
+      console.warn('Facebook Pixel ID not configured. Please set VITE_FACEBOOK_PIXEL_ID in your .env file');
     }
 
     // Track page events

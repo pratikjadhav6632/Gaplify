@@ -266,38 +266,40 @@ const Mentors = () => {
               className="card p-8"
               style={{ animationDelay: `${index * 0.1}s` }}
             >
-              <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between">
-                <div className="flex items-start space-x-6 mb-6 lg:mb-0">
-                  <div className="w-20 h-20 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-2xl font-bold flex-shrink-0">
+              <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-4">
+                <div className="flex items-start space-x-4 sm:space-x-6 w-full sm:w-auto">
+                  <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold flex-shrink-0">
                     {mentor.avatar}
                   </div>
-                  <div className="flex-1">
-                    <div className="flex items-center space-x-3 mb-2">
-                      <h2 className="text-2xl font-bold text-gray-900">{mentor.name}</h2>
-                      <div className="flex items-center space-x-1">
-                        <FaStar className="w-4 h-4 text-warning-400" />
-                        <span className="text-sm font-medium text-gray-600">{mentor.rating}</span>
+                  <div className="flex-1 min-w-0">
+                    <div className="flex flex-wrap items-center gap-2 mb-1 sm:mb-2">
+                      <h2 className="text-xl sm:text-2xl font-bold text-gray-900 truncate">{mentor.name}</h2>
+                      <div className="flex items-center space-x-1 bg-gray-100 px-2 py-0.5 rounded-full">
+                        <FaStar className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-warning-400" />
+                        <span className="text-xs sm:text-sm font-medium text-gray-600">{mentor.rating}</span>
                       </div>
                     </div>
-                    <p className="text-primary-600 font-semibold mb-3">{mentor.expertise}</p>
-                    <div className="flex items-center space-x-6 text-sm text-gray-600">
+                    <p className="text-sm sm:text-base text-primary-600 font-semibold mb-2 sm:mb-3 line-clamp-2">
+                      {mentor.expertise}
+                    </p>
+                    <div className="flex flex-wrap gap-3 sm:gap-6 text-xs sm:text-sm text-gray-600">
                       <div className="flex items-center space-x-1">
-                        <HiAcademicCap className="w-4 h-4" />
-                        <span>{mentor.experience} experience</span>
+                        <HiAcademicCap className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="whitespace-nowrap">{mentor.experience} experience</span>
                       </div>
                       <div className="flex items-center space-x-1">
-                        <HiLightningBolt className="w-4 h-4" />
-                        <span>{mentor.students} students mentored</span>
+                        <HiLightningBolt className="w-3.5 h-3.5 sm:w-4 sm:h-4 flex-shrink-0" />
+                        <span className="whitespace-nowrap">{mentor.students} students mentored</span>
                       </div>
                     </div>
                   </div>
                 </div>
                 <button
-                  className="btn btn-primary btn-lg group"
+                  className="btn btn-primary btn-lg group w-full sm:w-auto mt-4 sm:mt-0"
                   onClick={() => handleOpenCard(mentor)}
                 >
-                  <FaUserTie className="w-5 h-5 mr-2 group-hover:animate-bounce" />
-                  Connect with Mentor
+                  <FaUserTie className="w-4 h-4 sm:w-5 sm:h-5 mr-1.5 sm:mr-2 group-hover:animate-bounce flex-shrink-0" />
+                  <span className="truncate">Connect with Mentor</span>
                 </button>
               </div>
             </div>
@@ -338,8 +340,8 @@ const Mentors = () => {
 
       {/* Mentor Info Modal */}
       {selectedMentor && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-4">
-          <div className="card p-8 max-w-2xl w-full max-h-[90vh] overflow-y-auto relative">
+        <div className="fixed inset-0 flex items-start sm:items-center justify-center bg-black/50 backdrop-blur-sm z-50 p-2 sm:p-4 overflow-y-auto">
+          <div className="card p-4 sm:p-6 md:p-8 max-w-2xl w-full max-h-[calc(100vh-1rem)] sm:max-h-[90vh] overflow-y-auto relative my-4 sm:my-8">
             <button
               className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 text-2xl w-8 h-8 flex items-center justify-center rounded-full hover:bg-gray-100 transition-colors"
               onClick={handleCloseCard}
@@ -348,14 +350,14 @@ const Mentors = () => {
               &times;
             </button>
 
-            <div className="flex items-center space-x-4 mb-6">
-              <div className="w-16 h-16 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl font-bold">
+            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-6">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-full flex items-center justify-center text-white text-xl sm:text-2xl font-bold flex-shrink-0">
                 {selectedMentor.avatar}
               </div>
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">{selectedMentor.name}</h2>
-                <div className="flex items-center space-x-2">
-                  <FaStar className="w-4 h-4 text-warning-400" />
+              <div className="min-w-0">
+                <h2 className="text-xl sm:text-2xl font-bold text-gray-900 break-words">{selectedMentor.name}</h2>
+                <div className="flex items-center space-x-2 mt-1">
+                  <FaStar className="w-4 h-4 text-warning-400 flex-shrink-0" />
                   <span className="text-sm font-medium text-gray-600">{selectedMentor.rating} rating</span>
                 </div>
               </div>
@@ -363,38 +365,38 @@ const Mentors = () => {
 
             <div className="space-y-6">
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2 flex items-center">
-                  <FaUserTie className="w-4 h-4 mr-2 text-primary-600" />
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2 flex items-center">
+                  <FaUserTie className="w-3.5 h-3.5 sm:w-4 sm:h-4 mr-2 text-primary-600 flex-shrink-0" />
                   Expertise
                 </h3>
-                <p className="text-primary-600 font-medium">{selectedMentor.expertise}</p>
+                <p className="text-sm sm:text-base text-primary-600 font-medium break-words">{selectedMentor.expertise}</p>
               </div>
 
               <div>
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">About</h3>
-                <p className="text-gray-600 leading-relaxed">{selectedMentor.bio}</p>
+                <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">About</h3>
+                <p className="text-sm sm:text-base text-gray-600 leading-relaxed whitespace-pre-line">{selectedMentor.bio}</p>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-4">
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <FaEnvelope className="w-4 h-4 text-primary-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Email</p>
-                    <p className="font-medium text-gray-900">{selectedMentor.email}</p>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
+                <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                  <FaEnvelope className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-gray-600">Email</p>
+                    <p className="text-sm sm:text-base font-medium text-gray-900 break-all">{selectedMentor.email}</p>
                   </div>
                 </div>
-                <div className="flex items-center space-x-3 p-3 bg-gray-50 rounded-lg">
-                  <FaPhone className="w-4 h-4 text-primary-600" />
-                  <div>
-                    <p className="text-sm text-gray-600">Mobile</p>
-                    <p className="font-medium text-gray-900">{selectedMentor.mobile}</p>
+                <div className="flex items-start space-x-3 p-3 bg-gray-50 rounded-lg">
+                  <FaPhone className="w-4 h-4 text-primary-600 mt-0.5 flex-shrink-0" />
+                  <div className="min-w-0">
+                    <p className="text-xs sm:text-sm text-gray-600">Mobile</p>
+                    <p className="text-sm sm:text-base font-medium text-gray-900 break-all">{selectedMentor.mobile}</p>
                   </div>
                 </div>
               </div>
 
-              <div className="flex space-x-4">
+              <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 mt-6">
                 <button
-                  className="btn btn-primary btn-lg group flex-1"
+                  className="btn btn-primary btn-lg group w-full sm:flex-1"
                   onClick={handleOpenMessageModal}
                 >
                   <FaEnvelope className="w-4 h-4 mr-2 group-hover:animate-bounce" />
