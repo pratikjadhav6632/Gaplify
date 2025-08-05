@@ -6,6 +6,7 @@ import PremiumModal from '../components/PremiumModal';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
 import { FaSearch, FaFilter, FaBook, FaCode, FaPalette, FaChartLine, FaRocket } from 'react-icons/fa';
+import { HiSparkles } from 'react-icons/hi2';
 
 const ResourceHub = () => {
   const [selectedCategory, setSelectedCategory] = useState('all');
@@ -176,35 +177,39 @@ const ResourceHub = () => {
         </div>
         
         {/* Category Filter */}
-        <div className="mb-8" style={{ animationDelay: '0.2s' }}>
-          <div className="flex items-center space-x-3 mb-6">
-            <FaFilter className="w-5 h-5 text-primary-600" />
-            <h2 className="text-xl font-semibold text-gray-900">Filter by Category</h2>
+        <div className="mb-8 px-2 sm:px-0" style={{ animationDelay: '0.2s' }}>
+          <div className="flex items-center space-x-3 mb-4 sm:mb-6 px-2">
+            <FaFilter className="w-5 h-5 text-primary-600 flex-shrink-0" />
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900">Filter by Category</h2>
           </div>
-          <div className="mobile-scroll">
-            <div className="flex gap-3 sm:gap-4 pb-2">
-              {categories.map((category) => {
-                const Icon = category.icon;
-                return (
-                  <button
-                    key={category.id}
-                    onClick={() => setSelectedCategory(category.id)}
-                    className={`flex items-center space-x-2 px-4 sm:px-6 py-2 sm:py-3 rounded-xl transition-all duration-200 group whitespace-nowrap mobile-safe ${
-                      selectedCategory === category.id
-                        ? 'bg-primary-600 text-white shadow-medium'
-                        : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-700 border border-gray-200'
-                    }`}
-                  >
-                    <Icon className={`w-4 h-4 group-hover:scale-110 transition-transform ${
-                      selectedCategory === category.id ? 'text-white' : 'text-gray-400'
-                    }`} />
-                    <span className="font-medium mobile-text">{category.name}</span>
-                  </button>
-                );
-              })}
+          <div className="relative">
+            <div className="absolute inset-y-0 left-0 w-6 bg-gradient-to-r from-gray-50 to-transparent z-10 pointer-events-none"></div>
+            <div className="absolute inset-y-0 right-0 w-6 bg-gradient-to-l from-gray-50 to-transparent z-10 pointer-events-none"></div>
+            <div className="overflow-x-auto pb-4 -mx-2 px-2 scrollbar-hide">
+              <div className="flex gap-2 sm:gap-3 w-max min-w-full">
+                {categories.map((category) => {
+                  const Icon = category.icon;
+                  return (
+                    <button
+                      key={category.id}
+                      onClick={() => setSelectedCategory(category.id)}
+                      className={`flex items-center justify-center space-x-2 px-4 py-3 sm:px-5 sm:py-3 rounded-xl transition-all duration-200 whitespace-nowrap flex-shrink-0
+                        ${selectedCategory === category.id
+                          ? 'bg-primary-600 text-white shadow-md shadow-primary-100'
+                          : 'bg-white text-gray-700 hover:bg-primary-50 hover:text-primary-700 border border-gray-200 active:scale-95'
+                        }`}
+                      aria-label={`Filter by ${category.name}`}
+                    >
+                      <Icon className={`w-4 h-4 sm:w-5 sm:h-5 flex-shrink-0 transition-transform ${
+                        selectedCategory === category.id ? 'text-white' : 'text-gray-500'
+                      }`} />
+                      <span className="font-medium text-sm sm:text-base">{category.name}</span>
+                    </button>
+                  );
+                })}
+              </div>
             </div>
           </div>
-        </div>
 
         {/* Resources Grid */}
         <div className="mobile-grid gap-4 sm:gap-6 lg:gap-8 mb-8 sm:mb-12" style={{ animationDelay: '0.3s' }}>
@@ -266,6 +271,7 @@ const ResourceHub = () => {
               <p className="text-gray-600">Community verified quality</p>
             </div>
           </div>
+        </div>
         </div>
       </div>
       <ChatBot />
