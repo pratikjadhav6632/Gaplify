@@ -157,6 +157,8 @@
     
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
+    <!-- Standard mobile web app meta tags -->
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gaplify">
@@ -190,8 +192,13 @@
     <!-- Load main script with defer -->
     <script type="module" src="/src/main.jsx" defer></script>
     
-    <!-- Load non-critical CSS -->
-    <link rel="preload" href="/assets/main.js" as="script" fetchpriority="low">
+    <!-- Load non-critical JS with proper preload -->
+    <link rel="preload" href="/assets/main.js" as="script" fetchpriority="low" onload="this.onload=null;this.rel='modulepreload'">
+    <script>window.addEventListener('load', function() {
+      var el = document.createElement('script');
+      el.src = '/assets/main.js';
+      document.body.appendChild(el);
+    });</script>
     
     <!-- Load fonts after critical content -->
     <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'">

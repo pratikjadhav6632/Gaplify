@@ -12,9 +12,16 @@ const FacebookPixel = () => {
     s.parentNode.insertBefore(t,s)}(window, document,'script',
     'https://connect.facebook.net/en_US/fbevents.js');
 
-    // Replace 'YOUR_PIXEL_ID' with your actual Facebook Pixel ID
-    fbq('init', 'YOUR_PIXEL_ID');
-    fbq('track', 'PageView');
+    // Get Facebook Pixel ID from environment variable
+    const pixelId = process.env.REACT_APP_FACEBOOK_PIXEL_ID;
+    
+    // Only initialize if pixelId is set
+    if (pixelId && pixelId !== 'YOUR_PIXEL_ID_HERE') {
+      fbq('init', pixelId);
+      fbq('track', 'PageView');
+    } else {
+      console.warn('Facebook Pixel ID not configured. Please set REACT_APP_FACEBOOK_PIXEL_ID in your .env file');
+    }
 
     // Track page events
     const trackEvent = (eventName, eventData) => {
