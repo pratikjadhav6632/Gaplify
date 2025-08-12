@@ -51,6 +51,8 @@ const chatbotRoute = require('./routes/chatbot');
 const paymentRoutes = require('./routes/payment');
 const emailRoutes = require('./routes/email');
 
+app.options('*', cors(corsOptions));
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/analysis', analysisRoutes);
