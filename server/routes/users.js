@@ -148,4 +148,19 @@ router.delete('/skills/:skillId', auth, async (req, res) => {
   }
 });
 
+// Clear user history (analysis & roadmap)
+router.delete('/history/clear', auth, async (req, res) => {
+  try {
+    const user = await User.findById(req.user.userId);
+    if (!user) return res.status(404).json({ success: false, message: 'User not found' });
+    user.analysisHistory = [];
+    user.roadmapHistory = [];
+    await user.save();
+    res.json({ success: true, message: 'History cleared successfully' });
+  } catch (error) {
+    console.error('Error clearing history:', error);
+    res.status(500).json({ success: false, message: 'Error clearing history', error: error.message });
+  }
+});
+
 module.exports = router; 

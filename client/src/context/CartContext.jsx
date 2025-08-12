@@ -157,35 +157,7 @@ const response = await fetch(`${API_URL}/api/interests/${resourceId}`, {
     }
   };
 
-  const clearCart = async () => {
-    if (!user) return;
 
-    try {
-const response = await fetch(`${API_URL}/api/interests/clear`, {
-        method: 'DELETE',
-        headers: {
-          'Authorization': `Bearer ${localStorage.getItem('token')}`
-        }
-      });
-
-      if (response.ok) {
-        const updatedCart = await response.json();
-        setCart(updatedCart);
-      } else {
-        let errorMsg = 'Failed to clear cart';
-        try {
-          const error = await response.json();
-          errorMsg = error.message || errorMsg;
-        } catch (e) {
-          errorMsg = `Server error: ${response.status}`;
-        }
-        alert(errorMsg);
-      }
-    } catch (error) {
-      console.error('Error clearing cart:', error);
-      alert('Failed to clear cart');
-    }
-  };
 
   const isInCart = (resourceId) => {
     return cart.some((item) => item.resourceId === resourceId);
@@ -197,7 +169,6 @@ const response = await fetch(`${API_URL}/api/interests/clear`, {
     addToCart,
     removeFromCart,
     isInCart,
-    clearCart,
   };
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

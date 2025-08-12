@@ -36,7 +36,7 @@ function cleanAndParseJson(text) {
       const lastBraceIndex = cleanedText.lastIndexOf('}');
 
       if (firstBraceIndex === -1 || lastBraceIndex === -1 || lastBraceIndex < firstBraceIndex) {
-        throw new Error('No valid JSON object (enclosed in {}) found in response after initial cleaning.');
+        throw new Error('We’re getting too many requests right now. Please try again in a while.');
       }
 
       // Extract only the content within the outermost curly braces
@@ -45,7 +45,7 @@ function cleanAndParseJson(text) {
 
       // Add this check:
       if (!cleanedText || cleanedText.length < 10) {
-        throw new Error('AI response is empty or too short to be valid JSON.');
+        throw new Error('We’re getting too many requests right now. Please try again in a while.');
       }
 
       // --- Apply json5 for more forgiving parsing ---
@@ -59,7 +59,7 @@ function cleanAndParseJson(text) {
       console.error('cleanAndParseJson: Error during comprehensive JSON cleaning and parsing with json5 fallback:', cleaningAndParseError);
       console.error('cleanAndParseJson: Original text (before any cleaning):', text);
       console.error('cleanAndParseJson: Cleaned text before json5 failure:', cleanedText); // Log the last state of cleanedText
-      throw new Error('Failed to parse JSON response even after comprehensive cleaning and json5 fallback.');
+      throw new Error('We’re getting too many requests right now. Please try again in a while.');
     }
   }
 }
@@ -161,7 +161,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
         attempt++;
 
         if (attempt > MAX_RETRIES) {
-          throw new Error('All retries failed to get a valid JSON response from Gemini.');
+          throw new Error('We’re getting too many requests right now. Please try again in a while.');
         }
         // Add a small delay before retrying to avoid hammering the API
         await new Promise(resolve => setTimeout(resolve, 1000 * attempt)); // 1s, 2s delay
@@ -174,7 +174,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
         !analysis.roadmap || !Array.isArray(analysis.roadmap) ||
         !analysis.timeline || typeof analysis.timeline !== 'string') {
       console.error('Parsed analysis has invalid top-level structure:', analysis);
-      throw new Error('AI response is missing required top-level properties (skillsGap, roadmap, timeline) or they are not in the correct format.');
+      throw new Error('We’re getting too many requests right now. Please try again in a while.');
     }
 
     // Deeper validation (optional, but recommended for robustness)
@@ -233,7 +233,7 @@ router.post('/career', auth, planAndUsageGuard('analysis'), async (req, res) => 
 
     if (error.message.includes('404') || error.message.includes('not found')) {
       errorMessage = 'AI model not available. Please try again later.';
-    } else if (error.message.includes('Failed to parse JSON response')) {
+    } else if (error.message.includes('We’re getting too many requests right now. Please try again in a while.')) {
       statusCode = 500; // Still a server-side parsing issue
       errorMessage = error.message; // Use the specific error message from parsing
     } else if (error.message.includes('Invalid analysis structure') || error.message.includes('AI response is missing required top-level properties')) {

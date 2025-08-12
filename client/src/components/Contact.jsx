@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa';
-import ChatBot from './ChatBot';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 
@@ -166,10 +165,6 @@ const Contact = () => {
           </div>
         </div>
       </div>
-      
-      <PrivateRoute>
-        <ChatBot />
-      </PrivateRoute>
     </section>
   );
 };

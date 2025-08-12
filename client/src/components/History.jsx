@@ -89,6 +89,25 @@ const History = () => {
             <FaHistory className="w-4 h-4 mr-2" />
             Activity History
           </div>
+          <button
+            className="btn btn-dangern bg-red-500 btn-sm mt-2 ml-8 text-white"
+            onClick={async () => {
+              if (window.confirm('Are you sure you want to clear all your history? This action cannot be undone.')) {
+                try {
+                  const token = localStorage.getItem('token');
+                  await axios.delete(`${API_URL}/api/users/history/clear`, {
+                    headers: { Authorization: `Bearer ${token}` },
+                  });
+                  setAnalysisHistory([]);
+                  setRoadmapHistory([]);
+                } catch (err) {
+                  alert('Failed to clear history. Please try again.');
+                }
+              }
+            }}
+          >
+            Clear History
+          </button>
           <h1 className="text-4xl md:text-5xl font-bold mb-6 text-balance">
             Your Learning
             <span className="gradient-text block">Journey</span>

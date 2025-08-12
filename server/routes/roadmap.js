@@ -42,26 +42,13 @@ FORMAT USING MARKDOWN (avoid code blocks, use lists and headers instead):
 
 | Month | Theme & Focus | Key Outcomes |
 |-------|---------------|--------------|
+| 1 | Foundations: HTML, CSS & JavaScript Fundamentals | Build static web pages, understand DOM manipulation, and write basic JavaScript logic. |
+| 2 | Interactive Development: JavaScript Frameworks (React) | Develop interactive UIs with React, manage component state, and understand data flow. |
+| 3 | [Theme Name] | [Key Outcomes] |
+| 4 | [Theme Name] | [Key Outcomes] |
+<!-- Continue rows for each month as needed -->
 
-**Month 1: [Theme Name]**  
-✨ *Brief theme description*
-- **Focus Areas:** 
-  - Area 1
-  - Area 2
-- **Key Outcomes:**
-  - Outcome 1
-  - Outcome 2
-
-**Month 2: [Theme Name]**  
-✨ *Brief theme description*
-- **Focus Areas:** 
-  - Area 1
-  - Area 2
-- **Key Outcomes:**
-  - Outcome 1
-  - Outcome 2
-
-*Continue this pattern for each month*
+<!-- The table above must be filled for all months. Do NOT add any bullet lists, text, or extra formatting below the table for this section. Only the table is allowed in this section. -->
 
 ## 📅 Monthly Planner
 
@@ -222,13 +209,13 @@ Guidelines:
     );
 
     if (!response.data || !response.data.candidates || !response.data.candidates[0] || !response.data.candidates[0].content) {
-      throw new Error('Invalid response structure from Gemini API');
+      throw new Error('We’re getting too many requests right now. Please try again in a while.');
     }
 
     const roadmap = response.data.candidates[0].content.parts[0].text;
     
     if (!roadmap || typeof roadmap !== 'string') {
-      throw new Error('Invalid roadmap data received');
+      throw new Error('We’re getting too many requests right now. Please try again in a while.');
     }
 
     // --- Persist roadmap history ---
@@ -259,7 +246,7 @@ Guidelines:
     console.error('Error generating roadmap:', error);
     res.status(500).json({
       success: false,
-      error: 'Failed to generate roadmap',
+      error: 'We’re getting too many requests right now. Please try again in a while.',
       details: error.message || 'Unknown error occurred'
     });
   }

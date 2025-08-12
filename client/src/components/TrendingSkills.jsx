@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import { Line } from 'react-chartjs-2';
-import ChatBot from './ChatBot';
 import { FaChartLine, FaFilter, FaArrowUp, FaIndustry, FaGraduationCap, FaRocket } from 'react-icons/fa';
 import { HiLightningBolt, HiSparkles } from 'react-icons/hi';
 import {
@@ -390,7 +389,6 @@ const TrendingSkills = () => {
           </div>
         </div>
       </div>
-      <ChatBot />
     </div>
   );
 };

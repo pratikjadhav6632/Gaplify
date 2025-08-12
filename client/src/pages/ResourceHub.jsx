@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import ResourceCard from '../components/ResourceCard';
 import { trendingResources } from '../data/trendingResources';
-import ChatBot from '../components/ChatBot';
 import PremiumModal from '../components/PremiumModal';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
@@ -274,7 +273,6 @@ const ResourceHub = () => {
         </div>
         </div>
       </div>
-      <ChatBot />
     </div>
   );
 };

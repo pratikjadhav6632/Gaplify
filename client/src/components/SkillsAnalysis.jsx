@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import ChatBot from './ChatBot';
 import axios from 'axios';
 import { API_URL } from '../config/api';
 import { FaPlus, FaTrash, FaChartLine, FaRoad, FaClock, FaLightbulb, FaGraduationCap, FaRocket } from 'react-icons/fa';
@@ -468,7 +467,6 @@ const SkillsAnalysis = () => {
           )}
         </div>
       </div>
-      <ChatBot />
       {loading && (
         <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-white/70 backdrop-blur-md">
           <svg className="animate-spin h-12 w-12 text-indigo-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">

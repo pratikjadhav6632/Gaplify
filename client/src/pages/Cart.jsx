@@ -1,6 +1,5 @@
 import React from 'react';
 import { useCart } from '../context/CartContext';
-import ChatBot from '../components/ChatBot';
 import { FaShoppingCart, FaTrash, FaEye, FaArrowLeft, FaAtlas, FaCheck } from 'react-icons/fa';
 
 const Cart = () => {
@@ -41,17 +40,7 @@ const Cart = () => {
             </div>
             <p className="text-gray-600">{cart.length} item{cart.length !== 1 ? 's' : ''} in your library</p>
           </div>
-          <button
-            onClick={() => {
-              if (window.confirm('Are you sure you want to clear your library?')) {
-                clearCart();
-              }
-            }}
-            className="btn btn-error btn-sm group bg-red-500 hover:bg-red-600 text-white flex items-center space-x-2"
-          >
-            <FaTrash className="w-4 h-4 mr-2 group-hover:animate-bounce" />
-            Clear Library
-          </button>
+          
         </div>
 
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
@@ -116,7 +105,7 @@ const Cart = () => {
 
         </div>
       </div>
-      <ChatBot />
+    
     </div>
   );
 };

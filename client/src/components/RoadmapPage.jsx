@@ -37,13 +37,80 @@ const RoadmapPage = () => {
   ];
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
 
+  // --- Custom Table Extraction Logic ---
+  // Extract the Monthly Summary Table section and parse it into rows/columns
+  const extractMonthlySummaryTable = (markdown) => {
+    if (!markdown) return null;
+    const tableStart = markdown.indexOf('### Monthly Summary Table');
+    if (tableStart === -1) return null;
+    // Find the next header (## or ###) after the table
+    const rest = markdown.slice(tableStart);
+    const nextHeader = rest.search(/\n#{2,3} /);
+    const tableSection = nextHeader === -1 ? rest : rest.slice(0, nextHeader);
+    // Find the first markdown table in this section
+    const tableMatch = tableSection.match(/\|(.|\n)*?\|\s*\n/);
+    if (!tableMatch) return null;
+    const tableText = tableMatch[0];
+    // Parse markdown table to array of rows
+    const rows = tableText.trim().split('\n').filter(Boolean).map(row => row.split('|').map(cell => cell.trim()).filter(Boolean));
+    // Remove header separator row (---)
+    if (rows.length > 1 && rows[1].every(cell => /^-+$/.test(cell))) rows.splice(1, 1);
+    return rows;
+  };
+
+  // Remove the Monthly Summary Table section from the markdown
+  const removeMonthlySummaryTable = (markdown) => {
+    if (!markdown) return markdown;
+    const tableStart = markdown.indexOf('### Monthly Summary Table');
+    if (tableStart === -1) return markdown;
+    const rest = markdown.slice(tableStart);
+    const nextHeader = rest.search(/\n#{2,3} /);
+    const before = markdown.slice(0, tableStart);
+    const after = nextHeader === -1 ? '' : rest.slice(nextHeader);
+    return before + after;
+  };
+
+  const monthlySummaryRows = useMemo(() => extractMonthlySummaryTable(roadmap), [roadmap]);
+  const roadmapWithoutTable = useMemo(() => removeMonthlySummaryTable(roadmap), [roadmap]);
+
   // Split roadmap markdown into sections (each starts with ## ) so we can render them as separate cards
   const roadmapSections = useMemo(() => {
-    if (!roadmap) return [];
+    if (!roadmapWithoutTable) return [];
     // Ensure each section keeps its heading by re-adding the delimiter
-    const parts = roadmap.split(/\n(?=## )/g);
+    const parts = roadmapWithoutTable.split(/\n(?=## )/g);
     return parts.filter(Boolean);
-  }, [roadmap]);
+  }, [roadmapWithoutTable]);
+
+  // --- End Custom Table Extraction Logic ---
+
+  // MonthlySummaryTable component
+  const MonthlySummaryTable = ({ rows }) => {
+    if (!rows || rows.length < 2) return null;
+    const headers = rows[0];
+    const dataRows = rows.slice(1);
+    return (
+      <div className="overflow-x-auto my-6 rounded-lg border border-gray-400">
+        <table className="min-w-full bg-white text-xs xs:text-sm sm:text-base border-collapse">
+          <thead className="bg-indigo-50">
+            <tr>
+              {headers.map((header, i) => (
+                <th key={i} className="px-3 py-2 font-semibold text-gray-700 text-left border border-gray-400 whitespace-nowrap">{header}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {dataRows.map((row, i) => (
+              <tr key={i} className="odd:bg-white even:bg-indigo-50">
+                {row.map((cell, j) => (
+                  <td key={j} className="px-3 py-2 align-top border border-gray-400 whitespace-pre-line break-words">{cell}</td>
+                ))}
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
+    );
+  };
   const [error, setError] = useState(null);
   const roadmapRef = useRef(null);
 
@@ -128,22 +195,22 @@ const RoadmapPage = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-5xl mx-auto">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-indigo-50 py-6 px-2 sm:px-4 md:px-6 lg:px-8">
+      <div className="w-full max-w-5xl mx-auto">
         {/* Animated Header */}
         <motion.div 
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
-          className="text-center mb-16"
+          className="text-center mb-10 sm:mb-14 md:mb-16"
         >
-          <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4 bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
+          <h1 className="text-2xl xs:text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-2 sm:mb-4 bg-clip-text bg-gradient-to-r from-indigo-600 to-purple-600">
             Build Your Learning Path
           </h1>
-          <p className="text-xl text-gray-600 max-w-2xl mx-auto">
+          <p className="text-base xs:text-lg sm:text-xl text-gray-600 max-w-xs xs:max-w-md sm:max-w-2xl mx-auto">
             AI-powered roadmap to master any skill efficiently
           </p>
-          <div className="mt-6 h-1 w-20 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mx-auto"></div>
+          <div className="mt-4 sm:mt-6 h-1 w-16 sm:w-20 bg-gradient-to-r from-indigo-400 to-purple-400 rounded-full mx-auto"></div>
         </motion.div>
 
         {/* Glowing Form Card */}
@@ -151,12 +218,12 @@ const RoadmapPage = () => {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.5 }}
-          className="relative bg-white rounded-xl shadow-xl overflow-hidden mb-12"
+          className="relative bg-white rounded-xl shadow-xl overflow-hidden mb-8 sm:mb-10 md:mb-12"
         >
-          <div className="absolute -top-20 -right-20 w-64 h-64 bg-purple-200 rounded-full filter blur-3xl opacity-30"></div>
-          <div className="absolute -bottom-20 -left-20 w-64 h-64 bg-indigo-200 rounded-full filter blur-3xl opacity-30"></div>
+          <div className="absolute -top-20 -right-20 w-40 h-40 xs:w-56 xs:h-56 sm:w-64 sm:h-64 bg-purple-200 rounded-full filter blur-3xl opacity-30"></div>
+          <div className="absolute -bottom-20 -left-20 w-40 h-40 xs:w-56 xs:h-56 sm:w-64 sm:h-64 bg-indigo-200 rounded-full filter blur-3xl opacity-30"></div>
           
-          <div className="relative z-10 p-8">
+          <div className="relative z-10 p-4 xs:p-6 sm:p-8">
             <h2 className="text-2xl font-bold text-gray-800 mb-6">
               Generate Your Roadmap
             </h2>
@@ -178,7 +245,7 @@ const RoadmapPage = () => {
                 />
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 gap-4 sm:gap-6 md:grid-cols-2">
                 <div>
                   <label htmlFor="level" className="block text-sm font-medium text-gray-700 mb-2">
                     Current Skill Level
@@ -259,7 +326,11 @@ const RoadmapPage = () => {
             transition={{ duration: 0.5 }}
             className="space-y-8"
           >
-            <div className="flex justify-end gap-3">
+            {/* Render Monthly Summary Table if present */}
+            {monthlySummaryRows && (
+              <MonthlySummaryTable rows={monthlySummaryRows} />
+            )}
+            <div className="flex flex-col xs:flex-row justify-end gap-2 xs:gap-3 items-end xs:items-center w-full mt-2 mb-4 xs:mb-0">
               <motion.button
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
@@ -282,30 +353,30 @@ const RoadmapPage = () => {
 
             <div 
               ref={roadmapRef} 
-              className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100"
+              className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100 w-full"
             >
               {/* Roadmap Header */}
-              <div className="p-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-                <h1 className="text-3xl font-bold mb-2">{formData.topic} Roadmap</h1>
-                <div className="flex flex-wrap gap-3 mb-4">
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
+              <div className="p-4 xs:p-6 sm:p-8 bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
+                <h1 className="text-xl xs:text-2xl sm:text-3xl font-bold mb-1 xs:mb-2">{formData.topic} Roadmap</h1>
+                <div className="flex flex-wrap gap-2 xs:gap-3 mb-2 xs:mb-4">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
                     {formData.level.charAt(0).toUpperCase() + formData.level.slice(1)} Level
                   </span>
-                  <span className="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
+                  <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-medium bg-white/20 backdrop-blur-sm">
                     {formData.duration} Month{formData.duration !== '1' ? 's' : ''} Plan
                   </span>
                 </div>
-                <p className="opacity-90">Your personalized learning journey to mastery</p>
+                <p className="opacity-90 text-xs xs:text-sm sm:text-base">Your personalized learning journey to mastery</p>
               </div>
 
               {/* Roadmap Content */}
-              <div className="p-8 space-y-12">
+              <div className="p-4 xs:p-6 sm:p-8 space-y-8 xs:space-y-10 sm:space-y-12 overflow-x-auto">
                 {roadmapSections.map((section, idx) => {
                   const titleMatch = section.match(/^##\s+(.+)/m);
                   const title = titleMatch ? titleMatch[1].trim() : `Section ${idx + 1}`;
                   const body = titleMatch ? section.replace(/^##\s+.+\n?/, '') : section;
                   return (
-                    <div key={idx} className="grid sm:grid-cols-[auto,1fr] gap-6">
+                    <div key={idx} className="flex flex-col sm:grid sm:grid-cols-[auto,1fr] gap-4 xs:gap-6">
                       {/* Timeline Rail */}
                       <div className="flex flex-col items-center">
                         <div className="w-9 h-9 rounded-full bg-gradient-to-r from-indigo-500 to-purple-500 text-white flex items-center justify-center font-semibold">
@@ -317,8 +388,8 @@ const RoadmapPage = () => {
                       </div>
 
                       {/* Card */}
-                      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-6 sm:p-8 hover:shadow-xl transition-shadow duration-300">
-                        <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4">
+                      <div className="bg-white border border-gray-200 rounded-2xl shadow-lg p-4 xs:p-6 sm:p-8 hover:shadow-xl transition-shadow duration-300 w-full">
+                        <h3 className="text-lg xs:text-xl sm:text-2xl font-bold text-gray-900 mb-2 xs:mb-4">
                           {title}
                         </h3>
                         <ReactMarkdown
@@ -326,50 +397,49 @@ const RoadmapPage = () => {
                           components={{
                             h1: ({ node, ...props }) => (
                               <h1
-                                className="text-3xl sm:text-4xl font-extrabold tracking-tight mb-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent"
-                              {...props}
+                                className="text-2xl xs:text-3xl sm:text-4xl font-extrabold tracking-tight mb-4 xs:mb-6 sm:mb-8 bg-gradient-to-r from-indigo-600 via-purple-600 to-indigo-600 bg-clip-text text-transparent break-words"
+                                {...props}
                               />
                             ),
                             h2: ({ node, ...props }) => (
-                              <div className="group mt-16 mb-8 flex items-center gap-4">
-                                <div className="flex-shrink-0 w-12 h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
+                              <div className="group mt-8 xs:mt-12 sm:mt-16 mb-4 xs:mb-6 sm:mb-8 flex flex-col xs:flex-row items-start xs:items-center gap-3 xs:gap-4">
+                                <div className="flex-shrink-0 w-8 h-8 xs:w-10 xs:h-10 sm:w-12 sm:h-12 rounded-xl bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-lg flex items-center justify-center group-hover:scale-105 transition-transform duration-300">
                                   {getIconForHeading(props.children)}
                                 </div>
-                                <h2 className="text-2xl font-bold text-gray-900" {...props} />
+                                <h2 className="text-lg xs:text-xl sm:text-2xl font-bold text-gray-900 break-words" {...props} />
                               </div>
                             ),
                             h3: ({ node, ...props }) => (
-                              <h3 className="text-lg sm:text-xl font-semibold text-gray-800 mt-10 mb-5 flex items-center gap-3">
+                              <h3 className="text-base xs:text-lg sm:text-xl font-semibold text-gray-800 mt-6 xs:mt-8 sm:mt-10 mb-2 xs:mb-4 flex items-center gap-2 xs:gap-3">
                                 <span className="w-2 h-2 bg-indigo-400 rounded-full"></span>
                                 {props.children}
                               </h3>
                             ),
                             p: ({ node, ...props }) => (
-                              <p className="text-gray-600 mb-6 leading-relaxed" {...props} />
+                              <p className="text-gray-600 mb-4 xs:mb-5 sm:mb-6 leading-relaxed text-sm xs:text-base" {...props} />
                             ),
                             ul: ({ node, ...props }) => (
-                              <ul className="space-y-3 mb-6 pl-6 border-l-2 border-indigo-100" {...props} />
+                              <ul className="space-y-2 xs:space-y-3 mb-4 xs:mb-6 pl-4 xs:pl-6 border-l-2 border-indigo-100" {...props} />
                             ),
                             li: ({ node, ...props }) => (
-                              <li className="flex items-start gap-3 text-gray-700">
-                                {/* <FaCheckCircle className="text-purple-500 mt-1 flex-shrink-0" /> */}
+                              <li className="flex items-start gap-2 xs:gap-3 text-gray-700 text-sm xs:text-base">
                                 <span>{props.children}</span>
                               </li>
                             ),
                             blockquote: ({ node, ...props }) => (
-                              <blockquote className="pl-4 border-l-4 border-purple-300 italic text-gray-600 my-6" {...props} />
+                              <blockquote className="pl-2 xs:pl-4 border-l-4 border-purple-300 italic text-gray-600 my-4 xs:my-6" {...props} />
                             ),
                             strong: ({ node, ...props }) => (
                               <strong className="font-semibold text-gray-800" {...props} />
                             ),
                             code: ({ node, ...props }) => (
-                              <code className="inline-block bg-gray-100 px-1.5 py-1 rounded-md text-sm font-mono text-purple-600" {...props} />
+                              <code className="inline-block bg-gray-100 px-1 py-0.5 xs:px-1.5 xs:py-1 rounded-md text-xs xs:text-sm font-mono text-purple-600 break-words" {...props} />
                             ),
                             pre: ({ node, ...props }) => (
-                              <pre className="bg-gray-900 text-gray-100 p-4 rounded-lg overflow-x-auto text-sm" {...props} />
+                              <pre className="bg-gray-900 text-gray-100 p-2 xs:p-4 rounded-lg overflow-x-auto text-xs xs:text-sm" {...props} />
                             ),
                             hr: ({ node, ...props }) => (
-                              <hr className="my-12 border-t-2 border-dotted border-indigo-200" {...props} />
+                              <hr className="my-6 xs:my-8 sm:my-12 border-t-2 border-dotted border-indigo-200" {...props} />
                             )
                           }}
                         >

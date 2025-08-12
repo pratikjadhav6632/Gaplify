@@ -1,4 +1,3 @@
-import ChatBot from "./ChatBot";
 import { FaLightbulb, FaBullseye, FaUsers } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from "react-router-dom";
@@ -56,10 +55,6 @@ const About = () => {
           </div>
         </div>
       </div>
-      <PrivateRoute>
-
-      <ChatBot />
-      </PrivateRoute>
     </div>
   );
 };
