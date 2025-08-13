@@ -1,5 +1,8 @@
 import { Link, useParams } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import { FaCalendar, FaUser, FaClock, FaTag, FaShareAlt } from 'react-icons/fa';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
 import { Helmet } from 'react-helmet-async';
 import { blogPosts } from '../data/blogPosts';
 
@@ -33,10 +36,31 @@ const Blog = () => {
   const { slug } = useParams();
   const selectedPost = blogPosts.find((p) => p.slug === slug);
 
+  // local state for markdown content when not embedded in blogPosts data
+  const [mdContent, setMdContent] = useState(selectedPost?.content || '');
+  // fetch markdown when navigating to detail view and content not preloaded
+  useEffect(() => {
+    if (slug && selectedPost && !mdContent) {
+      fetch(`/posts/${selectedPost.file}`)
+        .then((res) => res.text())
+        .then((text) => setMdContent(text))
+        .catch((err) => console.error('Failed to load blog markdown:', err));
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [slug, selectedPost]);
   // Detailed view
   if (slug && selectedPost) {
+    if (!mdContent) {
+      return (
+        <main className="container mx-auto px-4 py-12 text-center">
+          <p className="text-gray-600">Loading article...</p>
+        </main>
+      );
+    }
+
     const postStructuredData = generateBlogStructuredData([selectedPost]);
-    const paragraphs = selectedPost.content.split('\n\n');
+    
+    
 
     return (
       <>
@@ -71,11 +95,11 @@ const Blog = () => {
             </span>
           </div>
 
-          {paragraphs.map((para, idx) => (
-            <p key={idx} className="text-gray-800 leading-relaxed mb-4 whitespace-pre-line">
-              {para}
-            </p>
-          ))}
+          <div className="prose lg:prose-xl text-gray-800 max-w-none">
+            <ReactMarkdown remarkPlugins={[remarkGfm]}>
+              {mdContent}
+            </ReactMarkdown>
+          </div>
 
           <div className="mt-10">
             <Link to="/blog" className="text-blue-600 hover:text-blue-800 underline">

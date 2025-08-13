@@ -11,7 +11,7 @@ export const blogPosts = [
     readingTime: "10 min",
     excerpt:
       "Explore how artificial intelligence is revolutionizing career development and how SkillBridgeAI is leading the way in personalized career growth solutions.",
-    content: `Artificial Intelligence is transforming how professionals approach career development. From personalized learning paths to AI-powered skill assessments, the future of career growth is here. In this comprehensive guide, we'll explore the key ways AI is reshaping professional development and how you can leverage these advancements to stay ahead in your career.\n\n### Key Benefits of AI in Career Development\n- Personalized learning experiences\n- Real-time skill gap analysis\n- Predictive career pathing\n- Automated resume optimization\n- Intelligent job matching\n\nAt SkillBridgeAI, we're at the forefront of this revolution, helping professionals like you navigate the future of work with confidence.`,
+    file: "future-of-ai-in-career-development.md",
     tags: ["AI", "Career Development", "Technology", "Future of Work"],
     image:
       "https://images.unsplash.com/photo-1454165804606-c3d57bc86b40?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
@@ -25,7 +25,7 @@ export const blogPosts = [
     readingTime: "15 min",
     excerpt:
       "Discover the essential skills that will ensure your career remains relevant and in-demand in the rapidly evolving job market of 2025 and beyond.",
-    content: `The job market is evolving at an unprecedented pace, and staying relevant requires continuous skill development. Based on our research and industry trends, here are the top 10 skills that will be most valuable in 2025 and beyond.\n\n### The Essential Skills\n1. **AI and Machine Learning Literacy**\n2. **Emotional Intelligence**\n3. **Cybersecurity Awareness**\n4. **Data Analysis & Visualization**\n5. **Blockchain Fundamentals**\n6. **Cloud Computing**\n7. **Sustainability Management**\n8. **Remote Collaboration**\n9. **Critical Thinking**\n10. **Adaptability**\n\nEach of these skills represents a critical area of growth for professionals looking to future-proof their careers.`,
+    file: "top-10-skills-for-future-proof-careers.md",
     tags: [
       "Skills Development",
       "Career Growth",
@@ -44,7 +44,7 @@ export const blogPosts = [
     readingTime: "12 min",
     excerpt:
       "Learn how to create a powerful personal brand that makes you stand out to employers and accelerates your career growth.",
-    content: `In today's competitive job market, a strong personal brand is no longer optional—it's essential. Your personal brand is what sets you apart from other candidates and establishes your professional identity.\n\n### Steps to Build Your Personal Brand\n1. **Define Your Unique Value Proposition**\n2. **Optimize Your Online Presence**\n3. **Create Valuable Content**\n4. **Network Strategically**\n5. **Showcase Your Expertise**\n\nBy following these steps, you can create a personal brand that attracts the right opportunities and helps you achieve your career goals.`,
+    file: "personal-branding-for-career-success.md",
     tags: [
       "Personal Branding",
       "Career Growth",
@@ -53,5 +53,62 @@ export const blogPosts = [
     ],
     image:
       "https://images.unsplash.com/photo-1521737711867-0a8c9c0e9d0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1471&q=80",
+  },
+  {
+    id: 4,
+    title: "Mastering Remote Work: Strategies for Peak Productivity",
+    slug: "mastering-remote-work-strategies-productivity",
+    date: "2025-07-20",
+    author: "Priya Kapoor",
+    readingTime: "18 min",
+    excerpt:
+      "A comprehensive blueprint for excelling in remote and hybrid workplaces—covering time-blocking, asynchronous communication, and mental-health best practices.",
+     file: "mastering-remote-work-strategies-productivity.md",
+    tags: [
+      "Remote Work",
+      "Productivity",
+      "Work From Home",
+      "Career Tips"
+    ],
+    image:
+      "https://images.unsplash.com/photo-1587614382346-4ec2df0f4ef9?auto=format&fit=crop&w=1470&q=80",
+  },
+  {
+    id: 5,
+    title: "Demystifying Blockchain Careers: Roles, Skills, and Salaries",
+    slug: "demystifying-blockchain-careers",
+    date: "2025-07-15",
+    author: "Miguel Santos",
+    readingTime: "20 min",
+    excerpt:
+      "From smart-contract developers to DeFi analysts—discover the full spectrum of blockchain career paths, required proficiencies, and earning potential.",
+    file: "demystifying-blockchain-careers.md",
+    tags: [
+      "Blockchain",
+      "Career Paths",
+      "Technology Trends",
+      "Skill Development"
+    ],
+    image:
+      "https://images.unsplash.com/photo-1518544888057-ef7d3ff3f1c8?auto=format&fit=crop&w=1470&q=80",
+  },
+  {
+    id: 6,
+    title: "AI Ethics 101: Building Responsible Algorithms for HR Tech",
+    slug: "ai-ethics-responsible-algorithms-hr-tech",
+    date: "2025-07-10",
+    author: "Sara Lee",
+    readingTime: "16 min",
+    excerpt:
+      "A beginner-friendly yet rigorous overview of fairness, accountability, and transparency principles every HR-tech professional must know.",
+    file: "ai-ethics-responsible-algorithms-hr-tech.md",
+    tags: [
+      "AI Ethics",
+      "Human Resources",
+      "Responsible AI",
+      "Compliance"
+    ],
+    image:
+      "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=1470&q=80",
   },
 ];
