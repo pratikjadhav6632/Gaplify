@@ -46,89 +46,76 @@ const domainIcons = {
 };
 
 const mockData = {
-  Technology: {
-    'Artificial Intelligence': [30, 45, 65, 85, 95],
-    'Cloud Computing': [40, 55, 70, 85, 90],
-    'Cybersecurity': [35, 50, 65, 80, 85],
-    'Data Science': [25, 40, 60, 75, 85],
-    'DevOps': [30, 45, 60, 75, 85],
-    'Blockchain': [20, 35, 50, 65, 80],
-    'IoT Development': [25, 40, 55, 70, 80],
-    'Quantum Computing': [15, 25, 40, 55, 70],
-  },
-  Healthcare: {
-    'Digital Health': [20, 35, 50, 65, 80],
-    'Telemedicine': [15, 30, 45, 60, 75],
-    'Health Analytics': [25, 40, 55, 70, 85],
-    'Medical AI': [10, 25, 40, 55, 70],
-    'Genomics': [20, 35, 50, 65, 80],
-    'Healthcare IoT': [15, 30, 45, 60, 75],
-    'Medical Robotics': [10, 25, 40, 55, 70],
-    'Precision Medicine': [15, 30, 45, 60, 75],
-  },
-  Finance: {
-    'FinTech Development': [25, 40, 55, 70, 85],
-    'Blockchain Finance': [20, 35, 50, 65, 80],
-    'AI in Trading': [15, 30, 45, 60, 75],
-    'Risk Analytics': [30, 45, 60, 75, 85],
-    'Digital Banking': [25, 40, 55, 70, 85],
-    'Cryptocurrency': [20, 35, 50, 65, 80],
-    'RegTech': [15, 30, 45, 60, 75],
-    'Financial Data Science': [25, 40, 55, 70, 85],
-  },
-  Education: {
-    'EdTech Development': [25, 40, 55, 70, 85],
-    'Learning Analytics': [20, 35, 50, 65, 80],
-    'AI in Education': [15, 30, 45, 60, 75],
-    'Virtual Reality Learning': [10, 25, 40, 55, 70],
-    'Adaptive Learning': [20, 35, 50, 65, 80],
-    'Educational Data Mining': [15, 30, 45, 60, 75],
-    'Digital Assessment': [25, 40, 55, 70, 85],
-    'Learning Experience Design': [20, 35, 50, 65, 80],
-  },
-  Manufacturing: {
-    'Industrial IoT': [20, 35, 50, 65, 80],
-    'Smart Manufacturing': [25, 40, 55, 70, 85],
-    'Robotics Process Automation': [15, 30, 45, 60, 75],
-    'Predictive Maintenance': [20, 35, 50, 65, 80],
-    'Digital Twin Technology': [10, 25, 40, 55, 70],
-    'Additive Manufacturing': [15, 30, 45, 60, 75],
-    'Supply Chain Analytics': [25, 40, 55, 70, 85],
-    'Quality Control AI': [20, 35, 50, 65, 80],
-  },
-  Marketing: {
-    'Digital Marketing': [30, 45, 60, 75, 85],
-    'Marketing Analytics': [25, 40, 55, 70, 85],
-    'AI in Marketing': [15, 30, 45, 60, 75],
-    'Social Media Marketing': [35, 50, 65, 80, 90],
-    'Content Marketing': [30, 45, 60, 75, 85],
-    'Marketing Automation': [25, 40, 55, 70, 85],
-    'SEO/SEM': [30, 45, 60, 75, 85],
-    'Marketing Data Science': [20, 35, 50, 65, 80],
-  },
-  Energy: {
-    'Renewable Energy Tech': [25, 40, 55, 70, 85],
-    'Smart Grid Technology': [20, 35, 50, 65, 80],
-    'Energy Analytics': [15, 30, 45, 60, 75],
-    'Energy Storage': [20, 35, 50, 65, 80],
-    'Carbon Capture': [15, 30, 45, 60, 75],
-    'Energy IoT': [20, 35, 50, 65, 80],
-    'Smart Metering': [25, 40, 55, 70, 85],
-    'Energy Management Systems': [20, 35, 50, 65, 80],
-  },
-  Transportation: {
-    'Autonomous Vehicles': [15, 30, 45, 60, 75],
-    'Smart Transportation': [20, 35, 50, 65, 80],
-    'Fleet Management': [25, 40, 55, 70, 85],
-    'Transportation Analytics': [20, 35, 50, 65, 80],
-    'Electric Vehicle Tech': [25, 40, 55, 70, 85],
-    'Logistics Optimization': [30, 45, 60, 75, 85],
-    'Transportation IoT': [20, 35, 50, 65, 80],
-    'Smart City Mobility': [15, 30, 45, 60, 75],
-  }
+  
+    "Technology": {
+      "Artificial Intelligence": [30, 45, 65, 85, 95, 100],
+      "Generative AI / LLMs": [15, 25, 40, 60, 80, 100],
+      "Cloud Computing & Cloud-Native": [40, 55, 70, 85, 90, 95],
+      "Cybersecurity & DevSecOps": [35, 50, 65, 80, 85, 95],
+      "Edge Computing / IoT Integration": [25, 35, 50, 65, 80, 90],
+      "DevOps & Infrastructure as Code": [30, 45, 60, 75, 85, 90],
+      "Data Science & Big Data Analytics": [25, 40, 60, 75, 85, 90],
+      "Blockchain & DApp Development": [20, 35, 50, 65, 80, 85],
+      "Quantum Computing": [15, 25, 40, 55, 70, 80],
+      "Immersive Tech (AR/VR/XR)": [10, 25, 40, 55, 70, 80]
+    },
+    "Healthcare": {
+      "Medical AI & Health Analytics": [10, 25, 40, 55, 70, 85],
+      "Telemedicine / Virtual Health": [15, 30, 45, 60, 75, 85],
+      "Digital Health / Healthcare IoT": [20, 35, 50, 65, 80, 90],
+      "Genomics & Precision Medicine": [20, 35, 50, 65, 80, 85],
+      "Medical Robotics": [10, 25, 40, 55, 70, 80],
+      "Health Data Science": [25, 40, 55, 70, 85, 90]
+    },
+    "Finance": {
+      "FinTech / Digital Banking": [25, 40, 55, 70, 85, 90],
+      "Risk Analytics & AI in Trading": [15, 30, 45, 60, 75, 85],
+      "Blockchain Finance / DeFi": [20, 35, 50, 65, 80, 85],
+      "Cryptocurrency Tech": [20, 35, 50, 65, 80, 85],
+      "RegTech / Compliance Automation": [15, 30, 45, 60, 75, 85],
+      "Financial Data Science": [25, 40, 55, 70, 85, 90]
+    },
+    "Education": {
+      "EdTech Development / Digital Learning": [25, 40, 55, 70, 85, 90],
+      "Learning Analytics & Adaptive Learning": [20, 35, 50, 65, 80, 90],
+      "AI in Education / Prompting Tools": [15, 30, 45, 60, 75, 90],
+      "VR / Immersive Learning": [10, 25, 40, 55, 70, 80],
+      "Digital Assessment & Experience Design": [25, 40, 55, 70, 85, 90]
+    },
+    "Manufacturing": {
+      "Industrial IoT & Smart Manufacturing": [20, 35, 50, 65, 80, 90],
+      "Predictive Maintenance & Digital Twins": [20, 35, 50, 65, 80, 90],
+      "Robotic Process Automation": [15, 30, 45, 60, 75, 85],
+      "Supply Chain Analytics": [25, 40, 55, 70, 85, 90],
+      "Quality Control AI": [20, 35, 50, 65, 80, 85],
+      "Sustainability Tech (Green Manufacturing)": [15, 30, 45, 60, 75, 90]
+    },
+    "Marketing": {
+      "Digital & Content Marketing": [30, 45, 60, 75, 85, 90],
+      "Social Media Marketing & Automation": [35, 50, 65, 80, 90, 95],
+      "Marketing Analytics & Data Science": [25, 40, 55, 70, 85, 90],
+      "AI in Marketing / GenAI Content Creation": [15, 30, 45, 60, 75, 90],
+      "SEO / SEM & Customer Engagement": [30, 45, 60, 75, 85, 90],
+      "Creativity & Innovation, Prompt Design": [25, 40, 60, 80, 95, 100]
+    },
+    "Energy": {
+      "Renewable Energy Tech & Clean Energy": [25, 40, 55, 70, 85, 95],
+      "Smart Grid & Energy IoT": [20, 35, 50, 65, 80, 90],
+      "Energy Analytics & Storage Tech": [15, 30, 45, 60, 75, 85],
+      "Carbon Capture & ESG Monitoring": [15, 30, 45, 60, 75, 90],
+      "Energy Management Systems": [20, 35, 50, 65, 80, 90]
+    },
+    "Transportation": {
+      "Autonomous & Electric Vehicle Tech": [15, 30, 45, 60, 75, 90],
+      "Smart Transportation & Logistics Optimization": [20, 35, 50, 65, 80, 90],
+      "Fleet Management & Mobility Analytics": [25, 40, 55, 70, 85, 90],
+      "Transportation IoT & Smart City Mobility": [20, 35, 50, 65, 80, 90]
+    }
+  
+  
 };
 
-const years = ['2019', '2020', '2021', '2022', '2023'];
+const years = ['2021', '2022', '2023', '2024', '2025','2026'];
 
 const TrendingSkills = () => {
   const [selectedDomain, setSelectedDomain] = useState('Technology');
