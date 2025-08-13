@@ -1,10 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import PremiumModal from './PremiumModal';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import axios from 'axios';
+import html2pdf from 'html2pdf.js';
 import { API_URL } from '../config/api';
-import { FaPlus, FaTrash, FaChartLine, FaRoad, FaClock, FaLightbulb, FaGraduationCap, FaRocket } from 'react-icons/fa';
+import { FaPlus, FaTrash, FaChartLine, FaRoad, FaClock, FaLightbulb, FaGraduationCap, FaRocket, FaDownload } from 'react-icons/fa';
 import { TbTargetArrow, TbBrain, TbTrendingUp } from 'react-icons/tb';
 import { HiAcademicCap } from 'react-icons/hi';
 
@@ -71,6 +72,30 @@ const SkillsAnalysis = () => {
   const [loadingMessageIndex, setLoadingMessageIndex] = useState(0);
   const [error, setError] = useState('');
   const [premiumModalOpen, setPremiumModalOpen] = useState(false);
+  const reportRef = useRef(null);
+
+  const downloadPDF = () => {
+    if (!reportRef.current) return;
+
+    const element = reportRef.current;
+    // Temporarily set exact width to match A4 portrait so content fits nicely
+    const prevWidth = element.style.width;
+    element.style.width = '210mm';
+
+    const opt = {
+      margin:       10,
+      filename:     `${targetRole ? targetRole.toLowerCase().replace(/\s+/g, '-') : 'skill-gap'}-analysis-report.pdf`,
+      image:        { type: 'jpeg', quality: 0.98 },
+      html2canvas:  { scale: 2, useCORS: true, logging: false, backgroundColor: '#ffffff' },
+      jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' },
+      pagebreak:    { mode: ['css', 'legacy'] }
+    };
+
+    html2pdf().set(opt).from(element).save().finally(() => {
+      // Restore original width after export
+      element.style.width = prevWidth;
+    });
+  };
   const [premiumLoading, setPremiumLoading] = useState(false);
 
   const handleAddSkill = () => {
@@ -456,10 +481,16 @@ const SkillsAnalysis = () => {
 
           {/* Analysis Results */}
           {analysis && (
-            <div className="mt-8 space-y-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
+            <div ref={reportRef} className="mt-8 space-y-8 animate-fade-in-up" style={{ animationDelay: '0.2s' }}>
               <div className="text-center">
                 <h2 className="text-3xl font-bold mb-2">Your Career Analysis</h2>
                 <p className="text-gray-600">Here's your personalized career roadmap</p>
+                <div className="flex justify-end my-4">
+                  <button onClick={downloadPDF} className="btn btn-outline btn-sm flex items-center">
+                    <FaDownload className="w-4 h-4 mr-2" />
+                    Download PDF
+                  </button>
+                </div>
               </div>
               
               {/* Skills Gap Analysis */}
