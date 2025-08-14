@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaLinkedin } from 'react-icons/fa';
+import { FaEnvelope, FaPhone, FaMapMarkerAlt, FaFacebook, FaTwitter, FaLinkedin, FaInstagram } from 'react-icons/fa';
 import { useAuth } from '../context/AuthContext';
 import { Navigate } from 'react-router-dom';
 
@@ -74,20 +74,21 @@ const Contact = () => {
                 <FaMapMarkerAlt className="text-sky-500 text-xl mt-1" />
                 <div>
                   <h3 className="font-semibold text-gray-800">Address</h3>
-                  <p className="text-gray-600">123 Web Dev Street<br />Tech City, TC 12345</p>
+                  <p className="text-gray-600">Pune,India</p>
                 </div>
               </div>
 
               <div className="flex gap-5 pt-2 text-2xl">
-                <a href="#" aria-label="Facebook" className="hover:text-sky-500 transition-colors text-gray-500"><FaFacebook /></a>
-                <a href="#" aria-label="Twitter" className="hover:text-sky-400 transition-colors text-gray-500"><FaTwitter /></a>
-                <a href="#" aria-label="LinkedIn" className="hover:text-sky-600 transition-colors text-gray-500"><FaLinkedin /></a>
+                <a href="https://www.instagram.com/gaplify/" aria-label="Instagram" className="hover:text-sky-500 transition-colors text-gray-500"><FaInstagram /></a>
+                <a href="https://www.facebook.com/search/top?q=gaplify" aria-label="Facebook" className="hover:text-sky-500 transition-colors text-gray-500"><FaFacebook /></a>
+                <a href="https://x.com/gaplify" aria-label="Twitter" className="hover:text-sky-400 transition-colors text-gray-500"><FaTwitter /></a>
+                <a href="https://www.linkedin.com/company/gaplify/" aria-label="LinkedIn" className="hover:text-sky-600 transition-colors text-gray-500"><FaLinkedin /></a>
               </div>
 
               <div className="h-56 w-full overflow-hidden rounded-lg shadow-md mt-4 border border-sky-100">
                 <iframe
                   title="Gaplify location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3151.835434509814!2d144.95373531560326!3d-37.816279742610515!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x6ad65d43fb0e6f35%3A0xb25a31c1193c5e13!2sFederation%20Square!5e0!3m2!1sen!2sus!4v1614312394390!5m2!1sen!2sus"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d242117.70906969727!2d73.69815309340439!3d18.524870610788835!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3bc2bf2e67461101%3A0x828d43bf9d9ee343!2sPune%2C%20Maharashtra!5e0!3m2!1sen!2sin!4v1755193231714!5m2!1sen!2sin"
                   width="100%"
                   height="100%"
                   allowFullScreen=""
