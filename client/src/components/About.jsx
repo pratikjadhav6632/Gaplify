@@ -41,19 +41,7 @@ const About = () => {
           </div>
         </div>
 
-        {/* Team Section */}
-        <div className="my-16">
-          <h2 className="text-2xl font-bold text-center mb-8">Meet the Team</h2>
-          <div className="grid sm:grid-cols-2 md:grid-cols-3 gap-8">
-            {[1,2,3,4,5,6].map((n)=>(
-              <div key={n} className="bg-white rounded-lg p-4 text-center shadow hover:shadow-lg transition">
-                <img src={`https://i.pravatar.cc/150?img=${n}`} alt="team" className="w-24 h-24 mx-auto rounded-full mb-3 object-cover"/>
-                <h4 className="font-semibold">Member {n}</h4>
-                <p className="text-sm text-gray-500">Role {n}</p>
-              </div>
-            ))}
-          </div>
-        </div>
+
       </div>
     </div>
   );

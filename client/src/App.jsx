@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import ScrollToTop from './components/ScrollToTop';
 import { useEffect } from 'react';
 import { AuthProvider, useAuth } from './context/AuthContext';
 import { CartProvider } from './context/CartContext';
@@ -124,6 +125,7 @@ function App() {
         <HelmetProvider>
         <Router>
           <div className="flex flex-col min-h-screen bg-gray-50">
+            <ScrollToTop />
             <Navbar />
             <main className="flex-1 relative">
               <Routes>

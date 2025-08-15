@@ -121,12 +121,7 @@ const Footer = () => {
                   Terms &amp; Conditions
                 </Link>
               </li>
-              <li>
-                <a href="#" className="text-gray-300 hover:text-secondary-400 transition-colors duration-200 flex items-center">
-                  <span className="w-2 h-2 bg-secondary-500 rounded-full mr-3"></span>
-                  Careers
-                </a>
-              </li>
+             
             </ul>
           </div>
 
