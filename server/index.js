@@ -9,8 +9,10 @@ const app = express();
 
 // CORS Configuration
 const whitelist = process.env.NODE_ENV === 'production' 
-  ? ['https://www.gaplify.in/']
+  ? ['https://www.gaplify.in']
   : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174'];
+
+console.log('CORS Whitelist:', whitelist);
 
 const corsOptions = {
   origin: function (origin, callback) {
