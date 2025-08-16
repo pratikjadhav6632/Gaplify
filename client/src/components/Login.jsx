@@ -19,13 +19,33 @@ const Login = () => {
     setError('');
     setLoading(true);
 
-    const result = await login(email, password, rememberMe);
-    if (result.success) {
-      navigate('/');
-    } else {
-      setError(result.error);
+    try {
+      const result = await login(email, password, rememberMe);
+      if (result.success) {
+        navigate('/');
+      } else {
+        // Handle specific error messages
+        if (result.error && result.error.includes('user-not-found')) {
+          setError('No account found with this email. Please check your email or sign up.');
+        } else if (result.error && result.error.includes('wrong-password')) {
+          setError('Incorrect password. Please try again or reset your password.');
+        } else if (result.error && result.error.includes('too-many-requests')) {
+          setError('Too many failed attempts. Please try again later or reset your password.');
+        } else if (result.error && result.error.includes('user-disabled')) {
+          setError('This account has been disabled. Please contact support.');
+        } else if (result.error) {
+          // Fallback for other errors
+          setError(`Login failed: ${result.error}`);
+        } else {
+          setError('An unknown error occurred. Please try again.');
+        }
+      }
+    } catch (err) {
+      console.error('Login error:', err);
+      setError('An unexpected error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
     }
-    setLoading(false);
   };
 
   return (
