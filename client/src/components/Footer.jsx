@@ -12,10 +12,11 @@ const Footer = () => {
           {/* Brand Section */}
           <div className="lg:col-span-1">
             <div className="flex items-center mb-6">
-              <div className="w-12 h-12 bg-gradient-to-br from-primary-500 to-secondary-500 rounded-xl flex items-center justify-center text-white text-xl font-bold mr-4">
-                <HiAcademicCap />
+              <div className="w-12 h-12 bg-gradient-to-br from-white to-secondary-500 rounded-xl flex items-center justify-center text-white text-xl  font-bold mr-4">
+                 <img src="./public/brand_logo.png" alt="Gaplify Logo" />
               </div>
               <div>
+               
                 <h3 className="text-2xl font-bold gradient-text">Gaplify</h3>
                 <p className="text-sm text-gray-400">AI Career Bridge</p>
               </div>
