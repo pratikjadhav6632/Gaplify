@@ -55,6 +55,7 @@ import initAnimations from './utils/animations';
 import PrivacyPolicy from './pages/legal/PrivacyPolicy';
 import TermsConditions from './pages/legal/TermsConditions';
 import FAQ from './pages/legal/FAQ';
+import CookiePolicy from './pages/legal/CookiePolicy';
 import Feedback from './pages/Feedback';
 
 // Set up axios interceptor to automatically include auth token
@@ -224,6 +225,7 @@ function App() {
                 <Route path="/feedback" element={<Feedback />} />
                 <Route path="/terms-and-conditions" element={<TermsConditions />} />
                 <Route path="/faq" element={<FAQ />} />
+                <Route path="/cookie-policy" element={<CookiePolicy />} />
               </Routes>
             </main>
             <Footer />
