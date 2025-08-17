@@ -1,98 +1,140 @@
-# Gaplify
+# Gaplify - Internal Development Repository
 
-## Type:
-EdTech / Career Development Platform
+## Project Overview
 
-## Mission:
-To empower students and freshers by identifying the gap between their current skill set and industry demands, and bridging it through tailored learning and mentorship.
+**Gaplify** is an enterprise-grade EdTech platform designed to bridge the gap between academic learning and industry requirements. The platform provides personalized career development solutions through AI-driven skill analysis, mentorship matching, and comprehensive learning pathways.
 
-## Features
+## Business Mission
 
-- User authentication (Signup/Login)
-- Protected routes
-- JWT token-based authentication
-- Responsive UI with Tailwind CSS
-- MongoDB integration
+To revolutionize career development by leveraging artificial intelligence to identify skill gaps and provide targeted learning solutions that align with current market demands, ultimately reducing the time-to-employment for students and career transitioners.
 
-## Prerequisites
+## Core Features
 
-- Node.js (v14 or higher)
-- MongoDB (local installation or MongoDB Atlas account)
-- npm or yarn
+### User Management & Authentication
+- Secure JWT-based authentication system
+- Role-based access control (Student, Mentor, Admin)
+- Profile management with skill assessment integration
 
-## Setup
+### AI-Powered Skill Analysis
+- Automated skill gap identification
+- Industry trend analysis and recommendations
+- Personalized learning roadmap generation
 
-1. Clone the repository
-2. Install dependencies for both frontend and backend:
+### Learning & Mentorship Platform
+- Interactive skill assessment tools
+- Mentor-student matching algorithm
+- Progress tracking and analytics dashboard
 
-```bash
-# Install backend dependencies
-cd server
-npm install
+### Content Management
+- Dynamic resource hub with curated learning materials
+- Blog system for industry insights and career guidance
+- Premium content access management
 
-# Install frontend dependencies
-cd ../client
-npm install
-```
+## Technical Architecture
 
-3. Create a `.env` file in the server directory with the following variables:
+### Frontend Architecture
+- **Framework**: React 18+ with Vite build system
+- **Styling**: Tailwind CSS for responsive design
+- **State Management**: React Context API
+- **Routing**: React Router v6
+- **HTTP Client**: Axios for API communication
 
-```
-MONGODB_URI=mongodb://localhost:27017/mern-auth
-JWT_SECRET=your_jwt_secret_key
-PORT=5000
-```
+### Backend Architecture
+- **Runtime**: Node.js with Express.js framework
+- **Database**: MongoDB with Mongoose ODM
+- **Authentication**: JWT tokens with bcrypt password hashing
+- **API Design**: RESTful architecture with middleware support
 
-## Running the Application
-
-1. Start the backend server:
-
-```bash
-cd server
-npm run dev
-```
-
-2. Start the frontend development server:
-
-```bash
-cd client
-npm run dev
-```
-
-The application will be available at:
-- Frontend: http://localhost:5173
-- Backend: http://localhost:5000
+### Infrastructure
+- **Development**: Local development environment
+- **Deployment**: Vercel for frontend, Render for backend
+- **Database**: MongoDB Atlas (cloud-hosted)
 
 ## Project Structure
 
 ```
-├── client/                 # Frontend React application
+Gaplify-Final/
+├── client/                    # Frontend React application
 │   ├── src/
-│   │   ├── components/    # React components
-│   │   ├── context/      # React context
-│   │   └── App.jsx       # Main application component
+│   │   ├── components/       # Reusable UI components
+│   │   ├── pages/           # Page-level components
+│   │   ├── context/         # React context providers
+│   │   ├── config/          # Configuration files
+│   │   ├── data/            # Static data and content
+│   │   └── utils/           # Utility functions
+│   ├── public/              # Static assets
 │   └── package.json
-│
-└── server/                # Backend Express application
-    ├── models/           # MongoDB models
-    ├── routes/           # API routes
-    ├── index.js         # Server entry point
-    └── package.json
+├── server/                   # Backend Express application
+│   ├── models/              # MongoDB schema definitions
+│   ├── routes/              # API endpoint definitions
+│   ├── middleware/          # Custom middleware functions
+│   └── package.json
+└── api/                     # Additional API services
 ```
 
-## Technologies Used
+## Development Guidelines
 
-- Frontend:
-  - React
-  - Vite
-  - React Router
-  - Tailwind CSS
-  - Axios
+### Code Standards
+- Follow ESLint configuration for code consistency
+- Use meaningful component and function names
+- Implement proper error handling and validation
+- Maintain responsive design principles
 
-- Backend:
-  - Node.js
-  - Express.js
-  - MongoDB
-  - Mongoose
-  - JWT
-  - bcryptjs 
+### Security Considerations
+- All sensitive data must be stored in environment variables
+- Implement proper input validation and sanitization
+- Use HTTPS in production environments
+- Regular security audits and dependency updates
+
+### Performance Optimization
+- Implement lazy loading for components
+- Optimize images and static assets
+- Use proper caching strategies
+- Monitor API response times
+
+## Environment Configuration
+
+### Required Environment Variables
+- Database connection strings
+- JWT secret keys
+- API service credentials
+- Payment gateway configurations
+
+### Development Setup
+- Node.js 16+ required
+- MongoDB instance (local or cloud)
+- Package managers: npm or yarn
+
+## Deployment Information
+
+### Frontend Deployment
+- Platform: Vercel
+- Build command: `npm run build`
+- Output directory: `dist`
+
+### Backend Deployment
+- Platform: Render
+- Build command: `npm install`
+- Start command: `npm start`
+
+## Monitoring & Analytics
+
+- Application performance monitoring
+- User behavior analytics
+- Error tracking and logging
+- Database performance metrics
+
+## Support & Maintenance
+
+For technical support or questions regarding this repository:
+- Contact the development team
+- Refer to internal documentation
+- Submit issues through the organization's project management system
+
+---
+
+**Confidentiality Notice**: This repository contains proprietary code and business logic. Access is restricted to authorized personnel only. Do not share, distribute, or use this code outside of the organization without proper authorization.
+
+**Last Updated**: 17-Aug-2025
+**Version**: 1.0.0
+**Maintained By**: Development Team 
