@@ -9,6 +9,8 @@ services:
     autoDeploy: true
     healthCheckPath: /
     envVars:
+      - key: NODE_ENV
+        value: production
       - key: MONGODB_URI
         sync: false  # set this manually in Render dashboard
       - key: JWT_SECRET

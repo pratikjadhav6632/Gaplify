@@ -9,7 +9,7 @@ const app = express();
 
 // CORS Configuration
 const whitelist = process.env.NODE_ENV === 'production' 
-  ? ['https://www.gaplify.in', 'https://gaplify.in', 'https://gaplify.onrender.com']
+  ? ['https://www.gaplify.in', 'https://gaplify.in', 'https://gaplify.onrender.com', 'https://skillbridge-ai.vercel.app', 'https://skillbridge-ai-git-main.vercel.app', 'https://skillbridge-ai-git-develop.vercel.app', '*.vercel.app']
   : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174'];
 
 console.log('CORS Whitelist:', whitelist);
@@ -19,7 +19,19 @@ const corsOptions = {
     // Allow requests with no origin (mobile apps, curl, etc.)
     if (!origin) return callback(null, true);
 
-    if (whitelist.includes(origin)) {
+    // Check if origin matches any whitelist entry
+    const isAllowed = whitelist.some(allowedOrigin => {
+      // Exact match
+      if (origin === allowedOrigin) return true;
+      // Wildcard subdomain match (e.g., *.vercel.app)
+      if (allowedOrigin.startsWith('*.')) {
+        const domain = allowedOrigin.slice(2);
+        return origin.endsWith(domain);
+      }
+      return false;
+    });
+
+    if (isAllowed) {
       console.log("CORS allowed for:", origin);
       callback(null, true);
     } else {
@@ -45,6 +57,15 @@ app.options('*', cors(corsOptions));
 mongoose.connect(process.env.MONGODB_URI)
   .then(() => console.log('Connected to MongoDB'))
   .catch((err) => console.error('MongoDB connection error:', err));
+
+// Health check endpoint
+app.get('/', (req, res) => {
+  res.json({ 
+    message: 'SkillBridge AI API is running',
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV || 'development'
+  });
+});
 
 // Routes
 const authRoutes = require('./routes/auth');

@@ -19,7 +19,7 @@ const config = {
 };
 
 // Get current environment
-const environment = import.meta.env.MODE || 'development';
+const environment = import.meta.env.PROD ? 'production' : (import.meta.env.MODE || 'development');
 
 // Export the appropriate configuration
 export const apiConfig = config[environment] || config.development;

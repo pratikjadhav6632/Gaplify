@@ -2,6 +2,10 @@ import { createContext, useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { API_URL } from '../config/api';
 
+// Configure axios defaults
+axios.defaults.timeout = 10000; // 10 seconds timeout
+axios.defaults.headers.common['Content-Type'] = 'application/json';
+
 const AuthContext = createContext(null);
 
 export const AuthProvider = ({ children }) => {
@@ -25,6 +29,7 @@ export const AuthProvider = ({ children }) => {
 
   const login = async (email, password, remember = true) => {
     try {
+      console.log('Attempting login to:', `${API_URL}/api/auth/login`);
       const response = await axios.post(`${API_URL}/api/auth/login`, {
         email,
         password,
@@ -35,15 +40,22 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       return { success: true };
     } catch (error) {
+      console.error('Login error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
       return {
         success: false,
-        error: error.response?.data?.message || 'An error occurred',
+        error: error.response?.data?.message || error.message || 'An error occurred',
       };
     }
   };
 
   const signup = async (username, email, password) => {
     try {
+      console.log('Attempting signup to:', `${API_URL}/api/auth/signup`);
       const response = await axios.post(`${API_URL}/api/auth/signup`, {
         username,
         email,
@@ -55,9 +67,15 @@ export const AuthProvider = ({ children }) => {
       setUser(user);
       return { success: true };
     } catch (error) {
+      console.error('Signup error details:', {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status,
+        url: error.config?.url
+      });
       return {
         success: false,
-        error: error.response?.data?.message || 'An error occurred',
+        error: error.response?.data?.message || error.message || 'An error occurred',
       };
     }
   };

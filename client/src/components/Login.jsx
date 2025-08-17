@@ -20,19 +20,26 @@ const Login = () => {
     setLoading(true);
 
     try {
+      console.log('Login attempt started...');
       const result = await login(email, password, rememberMe);
+      console.log('Login result:', result);
+      
       if (result.success) {
         navigate('/');
       } else {
         // Handle specific error messages
-        if (result.error && result.error.includes('user-not-found')) {
+        if (result.error && result.error.includes('User not found')) {
           setError('No account found with this email. Please check your email or sign up.');
-        } else if (result.error && result.error.includes('wrong-password')) {
+        } else if (result.error && result.error.includes('Invalid credentials')) {
           setError('Incorrect password. Please try again or reset your password.');
         } else if (result.error && result.error.includes('too-many-requests')) {
           setError('Too many failed attempts. Please try again later or reset your password.');
         } else if (result.error && result.error.includes('user-disabled')) {
           setError('This account has been disabled. Please contact support.');
+        } else if (result.error && result.error.includes('Network Error')) {
+          setError('Unable to connect to server. Please check your internet connection and try again.');
+        } else if (result.error && result.error.includes('timeout')) {
+          setError('Request timed out. Please try again.');
         } else if (result.error) {
           // Fallback for other errors
           setError(`Login failed: ${result.error}`);
