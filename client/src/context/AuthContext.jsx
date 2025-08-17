@@ -3,7 +3,7 @@ import axios from 'axios';
 import { API_URL } from '../config/api';
 
 // Configure axios defaults
-axios.defaults.timeout = 10000; // 10 seconds timeout
+axios.defaults.timeout = 300000; // 5 minutes timeout
 axios.defaults.headers.common['Content-Type'] = 'application/json';
 
 const AuthContext = createContext(null);
