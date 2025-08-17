@@ -438,7 +438,7 @@ export const trendingResources = [
     title: "Intro to JavaScript – LearnVern (YouTube Hindi)",
     description: "YouTube video introducing JavaScript basics in Hindi via LearnVern",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/RupU3d6JG40/0.jpg",
     link: "https://www.youtube.com/watch?v=RupU3d6JG40",
     rating: 4.6
   },
@@ -447,7 +447,7 @@ export const trendingResources = [
     title: "JavaScript for Beginners – Great Learning (YouTube Hindi)",
     description: "YouTube tutorial introducing JS fundamentals in Hindi from Great Learning",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/zVzNwtvjwyA/0.jpg",
     link: "https://www.youtube.com/watch?v=zVzNwtvjwyA",
     rating: 4.5
   },
@@ -456,7 +456,7 @@ export const trendingResources = [
     title: "JavaScript Introduction for Beginners (Hindi)",
     description: "YouTube video explaining 'What is JavaScript?' and basic concepts in Hindi",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/awi5UpRZkcw/0.jpg",
     link: "https://www.youtube.com/watch?v=awi5UpRZkcw",
     rating: 4.5
   },
@@ -465,7 +465,7 @@ export const trendingResources = [
     title: "JavaScript Projects for Beginners in Hindi – YouTube",
     description: "YouTube video showcasing JS beginner projects explained in Hindi",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/dg_S8EV_TxQ/0.jpg",
     link: "https://www.youtube.com/watch?v=dg_S8EV_TxQ",
     rating: 4.7
   },
@@ -520,7 +520,7 @@ export const trendingResources = [
     title: "C# Tutorial for Beginners in Hindi – YouTube",
     description: "YouTube video explaining C# basics in Hindi (Great Learning content)",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/3j1ac1VhNcw/0.jpg",
     link: "https://www.youtube.com/watch?v=3j1ac1VhNcw",
     rating: 4.6
   },
@@ -529,7 +529,7 @@ export const trendingResources = [
     title: "C# Full Course for Beginners (Hindi) – YouTube",
     description: "Full-length YouTube course on C# in Hindi, aimed at beginners",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/qZpMX8Re_2Q/0.jpg",
     link: "https://www.youtube.com/watch?v=qZpMX8Re_2Q",
     rating: 4.7
   },
@@ -538,7 +538,7 @@ export const trendingResources = [
     title: "Basic C# Tutorial in Hindi – YouTube",
     description: "Simple Hindi-language C# tutorial covering core concepts",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/SuLiu5AK9Ps/0.jpg",
     link: "https://www.youtube.com/watch?v=SuLiu5AK9Ps",
     rating: 4.6
   },
@@ -547,7 +547,7 @@ export const trendingResources = [
     title: "C# Tutorial for Unity Beginners – YouTube",
     description: "C# tutorial geared toward Unity game development, explained in Hindi",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/wxznTygnRfQ/0.jpg",
     link: "https://www.youtube.com/watch?v=wxznTygnRfQ",
     rating: 4.5
   },
@@ -556,7 +556,7 @@ export const trendingResources = [
     title: "freeCodeCamp – Learn C# Fundamentals (YouTube English)",
     description: "English-language YouTube video on C# fundamentals from freeCodeCamp",
     category: "programming",
-    image: "https://via.placeholder.com/32",
+    image: "https://img.youtube.com/vi/grEKMHGYyns/0.jpg",
     link: "https://www.youtube.com/watch?v=grEKMHGYyns",
     rating: 4.8
   },
