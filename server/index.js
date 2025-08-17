@@ -9,7 +9,7 @@ const app = express();
 
 // CORS Configuration
 const whitelist = process.env.NODE_ENV === 'production' 
-  ? ['https://www.gaplify.in']
+  ? ['https://www.gaplify.in', 'https://gaplify.in']
   : ['http://localhost:3000', 'http://127.0.0.1:3000', 'http://localhost:5173', 'http://127.0.0.1:5173', 'http://localhost:5174', 'http://127.0.0.1:5174'];
 
 console.log('CORS Whitelist:', whitelist);
@@ -17,25 +17,38 @@ console.log('CORS Whitelist:', whitelist);
 const corsOptions = {
   origin: function (origin, callback) {
     // Allow requests with no origin (like mobile apps or curl requests)
-    if (!origin) return callback(null, true);
-        
+    if (!origin) {
+      console.log('No origin header present');
+      return callback(null, true);
+    }
     
-    if (whitelist.indexOf(origin) !== -1) {
+    // Check if origin is in whitelist
+    const originIsWhitelisted = whitelist.some(domain => 
+      origin === domain || origin.startsWith(domain + '/') || origin.endsWith(domain.replace('https://', ''))
+    );
+
+    if (originIsWhitelisted) {
+      console.log('CORS allowed for origin:', origin);
       callback(null, true);
     } else {
       console.warn('Blocked by CORS:', origin);
+      console.warn('Allowed origins:', whitelist);
       callback(new Error('Not allowed by CORS'));
     }
   },
-  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization'],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS', 'PATCH'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
   credentials: true,
-  optionsSuccessStatus: 200 // Some legacy browsers (IE11, various SmartTVs) choke on 204
+  preflightContinue: false,
+  optionsSuccessStatus: 204
 };
 
 // Middleware
-app.use(cors(corsOptions));
 app.use(express.json());
+app.use(cors(corsOptions));
+
+// Handle preflight requests
+app.options('*', cors(corsOptions));
 
 // MongoDB Connection
 mongoose.connect(process.env.MONGODB_URI)
