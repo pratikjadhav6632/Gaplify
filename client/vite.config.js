@@ -17,6 +17,7 @@ export default defineConfig({
     },
     historyApiFallback: true, // For SPA routing
   },
+  assetsInclude: ['**/*.xml', '**/*.txt'],
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
