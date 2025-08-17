@@ -12,7 +12,7 @@ const mentors = [
     name: "Pratik Jadhav",
     expertise: "Web Development, UI/UX Design, Entrepreneurship, IT Field, Mentorship & Community Building",
     email: "Pratikjadhav6632@gmail.com",
-    mobile: "+91 8408868107",
+    mobile: "+91 8408868xxx",
     bio: `Full-stack web developer and CTO at Foundrr, where I led the development of a scalable platform connecting entrepreneurs, mentors, and investors across India.
 
 I specialize in building modern, responsive web applications using technologies like React, Node.js, Express.js, MongoDB, Firebase, Appwrite, and Tailwind CSS.

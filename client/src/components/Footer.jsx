@@ -13,7 +13,7 @@ const Footer = () => {
           <div className="lg:col-span-1">
             <div className="flex items-center mb-6">
               <div className="w-12 h-12 bg-gradient-to-br from-white to-secondary-500 rounded-xl flex items-center justify-center text-white text-xl  font-bold mr-4">
-                 <img src="./public/brand_logo.png" alt="Gaplify Logo" />
+                 <img src="../public/brand_logo.png" alt="Gaplify Logo"/>
               </div>
               <div>
                
