@@ -48,9 +48,9 @@ async function sendDailyReminderNow() {
 }
 
 /**
- * Schedule cron jobs to send 5 reminders per day at:
- * 10:30, 13:30, 16:30, 19:30, 21:30 IST?  // Correction below:
- * We target 10:00, 13:00, 16:00, 19:00, 21:00 IST → 04:30, 07:30, 10:30, 13:30, 15:30 UTC.
+ * Schedule cron jobs to send reminders per day at:
+ * - 10:00, 13:00, 16:00, 19:00, 21:00 IST → 04:30, 07:30, 10:30, 13:30, 15:30 UTC.
+ * - Additional slot 19:15 IST → 13:45 UTC.
  */
 function scheduleDailyReminder() {
   // Minute 30 of hours 4,7,10,13,15 UTC every day
@@ -59,6 +59,15 @@ function scheduleDailyReminder() {
       await sendDailyReminderNow();
     } catch (error) {
       console.error('Failed to send daily reminder:', error?.response?.data || error.message);
+    }
+  }, { timezone: 'UTC' });
+
+  // Additional run at 13:45 UTC (19:15 IST)
+  cron.schedule('45 13 * * *', async () => {
+    try {
+      await sendDailyReminderNow();
+    } catch (error) {
+      console.error('Failed to send daily reminder (19:15 IST):', error?.response?.data || error.message);
     }
   }, { timezone: 'UTC' });
 }

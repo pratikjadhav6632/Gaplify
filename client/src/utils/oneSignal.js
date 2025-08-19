@@ -39,23 +39,49 @@ export async function initOneSignal() {
         serviceWorkerPath: '/OneSignalSDKWorker.js',
         serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
       });
+      console.log('[OneSignal] init called with appId', appId);
     });
 
-    // Prompt for push permission if not already granted or denied
+    // Prompt using built-in browser prompt (via OneSignal) on first user gesture
     OneSignal.push(async function() {
       try {
-        const permission = await OneSignal.Notifications.getPermissionStatus?.();
-        if (permission === 'default' || permission === 'prompt') {
-          if (OneSignal.Slidedown?.promptPush) {
-            await OneSignal.Slidedown.promptPush();
-          } else if (OneSignal.showSlidedownPrompt) {
-            await OneSignal.showSlidedownPrompt();
-          } else if (OneSignal.Notifications?.requestPermission) {
-            await OneSignal.Notifications.requestPermission();
+        const getStatus = async () => {
+          if (OneSignal.Notifications?.getPermissionStatus) {
+            return await OneSignal.Notifications.getPermissionStatus();
           }
+          return window.Notification?.permission || 'default';
+        };
+
+        const request = async () => {
+          if (OneSignal.Notifications?.requestPermission) {
+            return await OneSignal.Notifications.requestPermission();
+          }
+          if (window.Notification?.requestPermission) {
+            return await window.Notification.requestPermission();
+          }
+        };
+
+        const ensurePromptOnGesture = () => {
+          const handler = async () => {
+            try { await request(); } catch (_) {}
+            window.removeEventListener('click', handler);
+            window.removeEventListener('keydown', handler);
+            window.removeEventListener('touchstart', handler);
+          };
+          window.addEventListener('click', handler, { once: true, passive: true });
+          window.addEventListener('keydown', handler, { once: true });
+          window.addEventListener('touchstart', handler, { once: true, passive: true });
+        };
+
+        const status = await getStatus();
+        if (status === 'default' || status === 'prompt') {
+          // Some browsers require a user gesture for the native prompt
+          ensurePromptOnGesture();
+        } else if (status === 'denied') {
+          console.warn('[OneSignal] Permission denied by user/browser. User must enable in site settings.');
         }
       } catch (err) {
-        console.warn('OneSignal permission prompt failed:', err);
+        console.warn('OneSignal permission setup failed:', err);
       }
     });
   } catch (error) {
