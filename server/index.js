@@ -77,6 +77,8 @@ const userInterestsRoutes = require('./routes/userInterests');
 const chatbotRoute = require('./routes/chatbot');
 const paymentRoutes = require('./routes/payment');
 const emailRoutes = require('./routes/email');
+const notificationRoutes = require('./routes/notifications');
+const { scheduleDailyReminder } = require('./jobs/dailyReminder');
 
 
 app.use('/api/auth', authRoutes);
@@ -88,6 +90,7 @@ app.use('/api/chatbot', chatbotRoute);
 app.use('/api/feedback', feedbackRoutes);
 app.use('/api/payment', paymentRoutes);
 app.use('/api', emailRoutes);
+app.use('/api', notificationRoutes);
 
 const PORT = process.env.PORT || 5000;
 
@@ -100,3 +103,13 @@ if (!process.env.VERCEL) {
 
 // Export the Express instance for Vercel Serverless Functions
 module.exports = app; 
+
+// Start cron jobs only when running as a long-lived server (not in serverless)
+if (!process.env.VERCEL) {
+  try {
+    scheduleDailyReminder();
+    console.log('Daily reminder cron scheduled.');
+  } catch (err) {
+    console.error('Failed to schedule cron:', err);
+  }
+}
