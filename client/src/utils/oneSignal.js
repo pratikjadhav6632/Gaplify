@@ -33,11 +33,7 @@ export async function initOneSignal() {
       OneSignal.init({
         appId,
         allowLocalhostAsSecureOrigin: true,
-        notifyButton: { enable: false },
-        // Explicitly set service worker files and scope
-        serviceWorkerParam: { scope: '/' },
-        serviceWorkerPath: '/OneSignalSDKWorker.js',
-        serviceWorkerUpdaterPath: '/OneSignalSDKUpdaterWorker.js'
+        notifyButton: { enable: false }
       });
       console.log('[OneSignal] init called with appId', appId);
     });
