@@ -2,6 +2,7 @@ const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
 const dotenv = require('dotenv');
+const { checkRedisHealth } = require('./services/redisService');
 
 dotenv.config();
 
@@ -69,6 +70,33 @@ app.get('/', (req, res) => {
     timestamp: new Date().toISOString(),
     environment: process.env.NODE_ENV || 'development'
   });
+});
+
+// Health check endpoint
+app.get('/healthz', async (req, res) => {
+  try {
+    const redisHealthy = await checkRedisHealth();
+    if (redisHealthy) {
+      return res.status(200).json({ 
+        status: 'ok', 
+        redis: 'connected',
+        timestamp: new Date().toISOString()
+      });
+    }
+    return res.status(500).json({ 
+      status: 'error', 
+      message: 'Redis connection failed',
+      timestamp: new Date().toISOString()
+    });
+  } catch (error) {
+    console.error('Health check failed:', error);
+    return res.status(500).json({ 
+      status: 'error', 
+      message: 'Health check failed', 
+      error: error.message,
+      timestamp: new Date().toISOString()
+    });
+  }
 });
 
 // Routes
