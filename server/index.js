@@ -48,6 +48,10 @@ const corsOptions = {
 
 // Middleware
 app.use(express.json());
+
+// Routes
+const cronRoutes = require('./routes/cron');
+app.use('/api/cron', cronRoutes);
 app.use(cors(corsOptions));
 
 // Handle preflight requests

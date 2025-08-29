@@ -49,27 +49,32 @@ async function sendDailyReminderNow() {
 
 /**
  * Schedule cron jobs to send reminders per day at:
- * - 10:00, 13:00, 16:00, 19:00, 21:00 IST → 04:30, 07:30, 10:30, 13:30, 15:30 UTC.
- * - Additional slot 19:15 IST → 13:45 UTC.
+ * - 8:00, 10:30, 12:30, 15:00, 19:30, 20:15, 22:00 IST
+ * - 2:30, 5:00, 7:00, 9:30, 14:00, 14:45, 16:30 UTC
  */
 function scheduleDailyReminder() {
-  // Minute 30 of hours 4,7,10,13,15 UTC every day
-  cron.schedule('30 4,7,10,13,15 * * *', async () => {
+  // :00 and :30 times (2:30, 5:00, 7:00, 9:30, 14:00, 16:30 UTC)
+  cron.schedule('30 2,14 * * *', async () => {  // 8:00 AM and 7:30 PM IST
+    await sendScheduledNotification('8:00 AM');
+  }, { timezone: 'UTC' });
+  
+  cron.schedule('0 5,7,9,16 * * *', async () => {  // 10:30 AM, 12:30 PM, 3:00 PM, 10:00 PM IST
+    await sendScheduledNotification();
+  }, { timezone: 'UTC' });
+  
+  cron.schedule('45 14 * * *', async () => {  // 8:15 PM IST
+    await sendScheduledNotification('8:15 PM');
+  }, { timezone: 'UTC' });
+  
+  // Helper function to handle notification sending with error handling
+  async function sendScheduledNotification(time = '') {
     try {
       await sendDailyReminderNow();
+      console.log(`[${new Date().toISOString()}] Notification sent successfully${time ? ' at ' + time : ''}`);
     } catch (error) {
-      console.error('Failed to send daily reminder:', error?.response?.data || error.message);
+      console.error(`[${new Date().toISOString()}] Failed to send daily reminder${time ? ' at ' + time : ''}:`, error?.response?.data || error.message);
     }
-  }, { timezone: 'UTC' });
-
-  // Additional run at 13:45 UTC (19:15 IST)
-  cron.schedule('45 13 * * *', async () => {
-    try {
-      await sendDailyReminderNow();
-    } catch (error) {
-      console.error('Failed to send daily reminder (19:15 IST):', error?.response?.data || error.message);
-    }
-  }, { timezone: 'UTC' });
+  }
 }
 
 module.exports = {

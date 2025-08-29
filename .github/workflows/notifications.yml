@@ -1,0 +1,47 @@
+name: Trigger Daily Notifications
+
+on:
+  schedule:
+    # Wake up server 1 minute before each notification time
+    - cron: '29 2,5,7,9,14,16 * * *'  # Wake up for :00 and :30 times
+    - cron: '59 13 * * *'             # Wake up for 7:30 PM IST
+    - cron: '44 14 * * *'             # Wake up for 8:15 PM IST
+    
+    # Actual notification times (1 minute after wake-up)
+    - cron: '30 2,5,7,9,14,16 * * *'  # :00 and :30 times
+    - cron: '0 14 * * *'              # 7:30 PM IST (2:00 PM UTC)
+    - cron: '45 14 * * *'             # 8:15 PM IST (2:45 PM UTC)
+  
+  # Allow manual triggers from GitHub Actions UI
+  workflow_dispatch:
+
+jobs:
+  send-notification:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if this is a wake-up ping
+        id: check-time
+        run: |
+          CURRENT_MINUTE=$(date +"%M")
+          # If minute is 29, 59, or 44, it's a wake-up ping
+          if [[ "$CURRENT_MINUTE" == "29" || "$CURRENT_MINUTE" == "59" || "$CURRENT_MINUTE" == "44" ]]; then
+            echo "is_wakeup=true" >> $GITHUB_OUTPUT
+            echo "This is a wake-up ping"
+          else
+            echo "is_wakeup=false" >> $GITHUB_OUTPUT
+            echo "This is a notification trigger"
+          fi
+
+      - name: Wake up server
+        if: steps.check-time.outputs.is_wakeup == 'true'
+        run: |
+          # Just make a GET request to wake up the server
+          curl -s "${{ secrets.APP_URL }}" > /dev/null
+          echo "Server wake-up ping sent"
+
+      - name: Send Notification
+        if: steps.check-time.outputs.is_wakeup != 'true'
+        run: |
+          # Wait 1 minute to ensure server is awake
+          sleep 60
+          curl -X GET "${{ secrets.APP_URL }}/api/cron/trigger-notification?key=${{ secrets.CRON_SECRET_KEY }}"
