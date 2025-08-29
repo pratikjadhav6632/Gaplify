@@ -150,7 +150,7 @@
     </script>
     
     <!-- Preload critical resources -->
-    <link rel="preload" href="/src/main.jsx" as="script" fetchpriority="high">
+    <script type="module" src="/src/main.jsx"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="dns-prefetch" href="https://fonts.googleapis.com">
@@ -158,49 +158,12 @@
     
     <!-- OneSignal Web SDK -->
     <script src="https://cdn.onesignal.com/sdks/OneSignalSDK.js" async></script>
-    <script>
-      // Initialize OneSignal with your app ID
-      window.OneSignal = window.OneSignal || [];
-      
-      // Only initialize in browser environment
-      if (typeof window !== 'undefined') {
-        // This will be called when OneSignal is ready
-        window.OneSignal.push(function() {
-          // Enable debug logging in development
-          if (process.env.NODE_ENV === 'development') {
-            window.OneSignal.setLogLevel({ display: true, debug: true });
-          }
-          
-          // Log OneSignal initialization
-          console.log('OneSignal SDK is ready');
-          
-          // Check if user is already subscribed
-          window.OneSignal.Notifications.isPushSupported().then(isSupported => {
-            if (isSupported) {
-              console.log('Push notifications are supported');
-              // Check current subscription state
-              window.OneSignal.Notifications.getPermission().then(permission => {
-                console.log('Notification permission state:', permission);
-                
-                // If not subscribed, show the native prompt
-                if (permission === 'default') {
-                  // Use a button click or other user gesture to show the prompt
-                  const showPrompt = () => {
-                    window.OneSignal.Notifications.requestPermission().then(accepted => {
-                      console.log('Notification permission:', accepted ? 'granted' : 'denied');
-                    });
-                  };
-                  
-                  // Show prompt after a short delay to ensure OneSignal is fully initialized
-                  setTimeout(showPrompt, 1000);
-                }
-              });
-            } else {
-              console.warn('Push notifications are not supported in this browser');
-            }
-          });
-        });
-      }
+    <script type="module">
+      import { initOneSignal } from '/src/utils/oneSignal.js';
+      // Initialize OneSignal when the page loads
+      document.addEventListener('DOMContentLoaded', () => {
+        initOneSignal().catch(console.error);
+      });
     </script>
     
     <!-- Preload critical CSS -->
@@ -218,7 +181,8 @@
     <meta name="application-url" content="https://gaplify.in">
     <meta name="application-type" content="webapp">
     <meta name="application-platform" content="web">
-    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes"> <!-- Fallback for older iOS -->
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Gaplify">
     

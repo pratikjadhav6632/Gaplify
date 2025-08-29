@@ -17,7 +17,7 @@ const structuredData = {
   "logo": "https://www.gaplify.com/logo.png",
   "contactPoint": {
     "@type": "ContactPoint",
-    "telephone": "+1-555-0123",
+    "telephone": "+91 8408868107",
     "contactType": "customer service"
   },
   "sameAs": [

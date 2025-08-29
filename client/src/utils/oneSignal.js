@@ -24,65 +24,77 @@ export async function initOneSignal() {
       return;
     }
 
-    const OneSignal = await loadOneSignalScript();
-    // Ensure OneSignal array exists (compat with older SDK async init pattern)
+    await loadOneSignalScript();
+    
+    // Initialize OneSignal with your app ID
     window.OneSignal = window.OneSignal || [];
+    
+    // Only initialize in browser environment
+    if (typeof window === 'undefined') return;
 
-    // Initialize OneSignal SDK
-    OneSignal.push(function() {
-      OneSignal.init({
-        appId,
-        allowLocalhostAsSecureOrigin: true,
-        notifyButton: { enable: false }
-      });
-      console.log('[OneSignal] init called with appId', appId);
-    });
-
-    // Prompt using built-in browser prompt (via OneSignal) on first user gesture
-    OneSignal.push(async function() {
+    // This will be called when OneSignal is ready
+    window.OneSignal.push(async function() {
       try {
-        const getStatus = async () => {
-          if (OneSignal.Notifications?.getPermissionStatus) {
-            return await OneSignal.Notifications.getPermissionStatus();
-          }
-          return window.Notification?.permission || 'default';
-        };
-
-        const request = async () => {
-          if (OneSignal.Notifications?.requestPermission) {
-            return await OneSignal.Notifications.requestPermission();
-          }
-          if (window.Notification?.requestPermission) {
-            return await window.Notification.requestPermission();
-          }
-        };
-
-        const ensurePromptOnGesture = () => {
-          const handler = async () => {
-            try { await request(); } catch (_) {}
-            window.removeEventListener('click', handler);
-            window.removeEventListener('keydown', handler);
-            window.removeEventListener('touchstart', handler);
-          };
-          window.addEventListener('click', handler, { once: true, passive: true });
-          window.addEventListener('keydown', handler, { once: true });
-          window.addEventListener('touchstart', handler, { once: true, passive: true });
-        };
-
-        const status = await getStatus();
-        if (status === 'default' || status === 'prompt') {
-          // Some browsers require a user gesture for the native prompt
-          ensurePromptOnGesture();
-        } else if (status === 'denied') {
-          console.warn('[OneSignal] Permission denied by user/browser. User must enable in site settings.');
+        // Wait for OneSignal to be fully initialized
+        if (!window.OneSignal.Notifications) {
+          console.warn('OneSignal not fully loaded yet');
+          return;
         }
-      } catch (err) {
-        console.warn('OneSignal permission setup failed:', err);
+        
+        // Enable debug logging in development
+        const isDevelopment = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+        if (isDevelopment && window.OneSignal.setLogLevel) {
+          try {
+            window.OneSignal.setLogLevel({ display: true, debug: true });
+          } catch (e) {
+            console.warn('Could not set OneSignal log level:', e);
+          }
+        }
+        
+        console.log('OneSignal SDK is ready');
+
+        // Initialize OneSignal with the app ID
+        await window.OneSignal.init({
+          appId,
+          allowLocalhostAsSecureOrigin: true,
+          notifyButton: { enable: false }
+        });
+
+        console.log('[OneSignal] Initialized with appId:', appId);
+
+        // Check if user is already subscribed
+        const isSupported = await window.OneSignal.Notifications.isPushSupported();
+        
+        if (isSupported) {
+          console.log('Push notifications are supported');
+          // Check current subscription state
+          const permission = await window.OneSignal.Notifications.getPermission();
+          console.log('Notification permission state:', permission);
+          
+          // If not subscribed, show the native prompt
+          if (permission === 'default') {
+            // Use a button click or other user gesture to show the prompt
+            const showPrompt = () => {
+              window.OneSignal.Notifications.requestPermission()
+                .then(accepted => {
+                  console.log('Notification permission:', accepted ? 'granted' : 'denied');
+                })
+                .catch(error => {
+                  console.error('Error requesting notification permission:', error);
+                });
+            };
+            
+            // Show prompt after a short delay to ensure OneSignal is fully initialized
+            setTimeout(showPrompt, 1000);
+          }
+        } else {
+          console.warn('Push notifications are not supported in this browser');
+        }
+      } catch (error) {
+        console.error('Error initializing OneSignal:', error);
       }
     });
   } catch (error) {
     console.warn('OneSignal SDK failed to load or initialize:', error);
   }
 }
-
-
