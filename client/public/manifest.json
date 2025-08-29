@@ -2,11 +2,20 @@
   "name": "Gaplify AI",
   "short_name": "Gaplify",
   "description": "Your personalized career bridge with AI-powered learning paths",
-  "start_url": "/",
+  "start_url": "/?source=pwa",
   "display": "standalone",
   "background_color": "#ffffff",
   "theme_color": "#4f46e5",
   "orientation": "portrait-primary",
+  "prefer_related_applications": false,
+  "gcm_sender_id": "482941778795",
+  "gcm_user_visible_only": true,
+  "permissions": [
+    "gcm",
+    "storage",
+    "notifications",
+    "push"
+  ],
   "icons": [
     {
       "src": "/logo.png",
