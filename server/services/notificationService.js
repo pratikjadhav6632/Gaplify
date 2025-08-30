@@ -33,8 +33,33 @@ async function sendPushNotification({ heading, message, url, data }) {
     Authorization: `Basic ${apiKey}`,
   };
 
-  const response = await axios.post(ONE_SIGNAL_API_URL, payload, { headers });
-  return response.data;
+  try {
+    const response = await axios.post(ONE_SIGNAL_API_URL, payload, { headers });
+    console.log('OneSignal API Response:', response.data);
+    return response.data;
+  } catch (error) {
+    console.error('OneSignal API Error:', error.response?.data || error.message);
+    
+    // If no subscribed users, try with "All" segment
+    if (error.response?.data?.errors?.includes('All included players are not subscribed')) {
+      console.log('No subscribed users found. Trying with "All" segment...');
+      const fallbackPayload = {
+        ...payload,
+        included_segments: ['All']
+      };
+      
+      try {
+        const fallbackResponse = await axios.post(ONE_SIGNAL_API_URL, fallbackPayload, { headers });
+        console.log('OneSignal Fallback Response:', fallbackResponse.data);
+        return fallbackResponse.data;
+      } catch (fallbackError) {
+        console.error('OneSignal Fallback Error:', fallbackError.response?.data || fallbackError.message);
+        return { error: fallbackError.response?.data || fallbackError.message };
+      }
+    }
+    
+    return { error: error.response?.data || error.message };
+  }
 }
 
 module.exports = {

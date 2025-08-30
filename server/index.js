@@ -68,35 +68,22 @@ app.get('/', (req, res) => {
   res.json({ 
     message: 'SkillBridge AI API is running',
     timestamp: new Date().toISOString(),
-    environment: process.env.NODE_ENV || 'development'
+    environment: process.env.NODE_ENV || 'development',
+    uptime: process.uptime(),
+    memory: process.memoryUsage()
   });
 });
 
-// Health check endpoint
-app.get('/healthz', async (req, res) => {
-  try {
-    const redisHealthy = await checkRedisHealth();
-    if (redisHealthy) {
-      return res.status(200).json({ 
-        status: 'ok', 
-        redis: 'connected',
-        timestamp: new Date().toISOString()
-      });
-    }
-    return res.status(500).json({ 
-      status: 'error', 
-      message: 'Redis connection failed',
-      timestamp: new Date().toISOString()
-    });
-  } catch (error) {
-    console.error('Health check failed:', error);
-    return res.status(500).json({ 
-      status: 'error', 
-      message: 'Health check failed', 
-      error: error.message,
-      timestamp: new Date().toISOString()
-    });
-  }
+
+
+// Keep-alive endpoint for uptime monitoring
+app.get('/ping', (req, res) => {
+  console.log(`[${new Date().toISOString()}] Ping received - keeping server alive`);
+  res.json({ 
+    pong: true, 
+    timestamp: new Date().toISOString(),
+    uptime: process.uptime()
+  });
 });
 
 // Routes
@@ -130,6 +117,9 @@ const PORT = process.env.PORT || 5000;
 if (!process.env.VERCEL) {
   app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
+    console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
+    console.log(`OneSignal configured: ${!!(process.env.ONE_SIGNAL_APP_ID && process.env.ONE_SIGNAL_REST_API_KEY)}`);
+    console.log(`Cron secret configured: ${!!process.env.CRON_SECRET_KEY}`);
   });
 }
 
@@ -139,8 +129,9 @@ module.exports = app;
 // Start cron jobs only when running as a long-lived server (not in serverless)
 if (!process.env.VERCEL) {
   try {
+    console.log(`[${new Date().toISOString()}] Initializing cron jobs...`);
     scheduleDailyReminder();
-    console.log('Daily reminder cron scheduled.');
+    console.log('Daily reminder cron scheduled successfully.');
   } catch (err) {
     console.error('Failed to schedule cron:', err);
   }

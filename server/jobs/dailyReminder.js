@@ -37,14 +37,35 @@ function getRandomMessage() {
 }
 
 async function sendDailyReminderNow() {
+  console.log(`[${new Date().toISOString()}] Starting daily reminder notification...`);
+  
+  // Check if OneSignal credentials are available
+  if (!process.env.ONE_SIGNAL_APP_ID || !process.env.ONE_SIGNAL_REST_API_KEY) {
+    console.error('[OneSignal] Missing credentials: ONE_SIGNAL_APP_ID or ONE_SIGNAL_REST_API_KEY');
+    return { error: 'Missing OneSignal credentials' };
+  }
+
   const message = getRandomMessage();
-  await sendPushNotification({
-    heading: 'Gaplify',
-    message,
-    url: process.env.APP_PUBLIC_URL || 'https://www.gaplify.in',
-    data: { category: 'daily_reminder' },
-  });
-  console.log(`[OneSignal] Reminder sent: ${message}`);
+  try {
+    const result = await sendPushNotification({
+      heading: 'Gaplify',
+      message,
+      url: process.env.APP_PUBLIC_URL || 'https://www.gaplify.in',
+      data: { category: 'daily_reminder' },
+    });
+    
+    if (result.error) {
+      console.error(`[OneSignal] Failed to send reminder: ${result.error}`);
+      return result;
+    }
+    
+    console.log(`[OneSignal] Reminder sent successfully: ${message}`);
+    console.log(`[OneSignal] Response:`, result);
+    return result;
+  } catch (error) {
+    console.error(`[OneSignal] Exception sending reminder:`, error);
+    return { error: error.message };
+  }
 }
 
 /**
@@ -53,31 +74,50 @@ async function sendDailyReminderNow() {
  * - 2:30, 5:00, 7:00, 9:30, 14:00, 14:45, 16:30 UTC
  */
 function scheduleDailyReminder() {
+  console.log(`[${new Date().toISOString()}] Setting up daily reminder cron jobs...`);
+  
+  // Check if we're in a serverless environment
+  if (process.env.VERCEL) {
+    console.log('[Cron] Skipping cron setup in serverless environment');
+    return;
+  }
+
   // :00 and :30 times (2:30, 5:00, 7:00, 9:30, 14:00, 16:30 UTC)
   cron.schedule('30 2,14 * * *', async () => {  // 8:00 AM and 7:30 PM IST
-    await sendScheduledNotification('8:00 AM');
+    console.log(`[${new Date().toISOString()}] Cron triggered: 8:00 AM / 7:30 PM IST`);
+    await sendScheduledNotification('8:00 AM / 7:30 PM IST');
   }, { timezone: 'UTC' });
   
   cron.schedule('0 5,7,9,16 * * *', async () => {  // 10:30 AM, 12:30 PM, 3:00 PM, 10:00 PM IST
-    await sendScheduledNotification();
+    console.log(`[${new Date().toISOString()}] Cron triggered: 10:30 AM, 12:30 PM, 3:00 PM, 10:00 PM IST`);
+    await sendScheduledNotification('10:30 AM, 12:30 PM, 3:00 PM, 10:00 PM IST');
   }, { timezone: 'UTC' });
   
   cron.schedule('45 14 * * *', async () => {  // 8:15 PM IST
-    await sendScheduledNotification('8:15 PM');
+    console.log(`[${new Date().toISOString()}] Cron triggered: 8:15 PM IST`);
+    await sendScheduledNotification('8:15 PM IST');
   }, { timezone: 'UTC' });
+  
+  console.log('[Cron] Daily reminder cron jobs scheduled successfully');
   
   // Helper function to handle notification sending with error handling
   async function sendScheduledNotification(time = '') {
     try {
-      await sendDailyReminderNow();
-      console.log(`[${new Date().toISOString()}] Notification sent successfully${time ? ' at ' + time : ''}`);
+      const result = await sendDailyReminderNow();
+      if (result.error) {
+        console.error(`[${new Date().toISOString()}] Failed to send daily reminder${time ? ' at ' + time : ''}:`, result.error);
+      } else {
+        console.log(`[${new Date().toISOString()}] Notification sent successfully${time ? ' at ' + time : ''}`);
+      }
     } catch (error) {
-      console.error(`[${new Date().toISOString()}] Failed to send daily reminder${time ? ' at ' + time : ''}:`, error?.response?.data || error.message);
+      console.error(`[${new Date().toISOString()}] Exception in scheduled notification${time ? ' at ' + time : ''}:`, error);
     }
   }
 }
 
 module.exports = {
   scheduleDailyReminder,
+  sendDailyReminderNow,
+  MESSAGES,
 };
 
